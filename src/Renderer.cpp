@@ -1,0 +1,307 @@
+#include <algorithm>
+#include "Renderer.h"
+#include "GLConfig.h"
+#include "RendererSettings.h"
+#include "LogGL.hpp"
+
+namespace NAMESPACE_RENDERING
+{
+	void Renderer::start()
+	{
+#if defined(WINDOWS) || defined(LINUX) || defined(MAC)
+		float nextTick = 0.0f;
+		bool fpsLowerThanFrameLimit = false;
+		float elapsedTime = 0.0f;
+
+		while (isRunning)
+		{
+			elapsedTime = float(timer.getElapsedTime());
+			nextTick = timer.getSkipTick();
+
+			do
+			{
+				update();
+
+				fpsLowerThanFrameLimit = elapsedTime > nextTick;
+				nextTick += timer.getSkipTick();
+			} while (fpsLowerThanFrameLimit);
+
+			//timeInterpolated = timer.getFramesPerSecond() + SKIP_TICKS - FRAMES_PER_SECOND_LIMIT / SKIP_TICKS;
+			//render(timeInterpolated);
+			render();
+
+			//cout << "FPS: " << timer.getFramesPerSecond() << END_OF_LINE;
+			//cout << "Elapsed Time: " << timer.getElapsedTime() << END_OF_LINE;
+
+			timer.update();
+
+			if (!isRunning)
+				break;
+			else
+				LogGL::glErrors(__FILE__, __LINE__);
+		}
+#endif
+	}
+
+	void Renderer::addPointerHandler(PointerInputDeviceHandler* handler)
+	{
+		for (PointerInputDevice* pointerInputDevice : pointerInputDevices)
+			pointerInputDevice->addHandler(handler);
+	}
+
+	void Renderer::addKeyboardHandler(KeyboardInputDeviceHandler* handler)
+	{
+		for (KeyboardInputDevice* keyboardInputDevice : keyboardInputDevices)
+			keyboardInputDevice->addHandler(handler);
+	}
+
+	void Renderer::addTouchHandler(TouchInputDeviceHandler* handler)
+	{
+		for (TouchInputDevice* touchInputDevice : touchInputDevices)
+			touchInputDevice->addHandler(handler);
+	}
+
+	void Renderer::addWindowHandler(WindowInputDeviceHandler* handler)
+	{
+		for (WindowInputDevice* windowInputDevice : windowInputDevices)
+			windowInputDevice->addHandler(handler);
+	}
+
+	void Renderer::addGraphicObject(GraphicObject* graphicObject)
+	{
+		graphicObjects.push_back(graphicObject);
+	}
+
+	bool Renderer::hasGraphicObject(GraphicObject* graphicObject)
+	{
+		std::vector<GraphicObject*>::iterator item = std::find(graphicObjects.begin(), graphicObjects.end(), graphicObject);
+		return item != graphicObjects.end();
+	}
+
+	void Renderer::removeGraphicObject(GraphicObject* graphicObject)
+	{
+		std::vector<GraphicObject*>::iterator item = std::find(graphicObjects.begin(), graphicObjects.end(), graphicObject);
+
+		if (item != graphicObjects.end())
+			graphicObjects.erase(item);
+	}
+
+	void Renderer::resize(int width, int height)
+	{
+		if (width == 0 || height == 0)
+			return;
+
+		RendererSettings* settings = RendererSettings::getInstance();
+		int currentWidth = settings->getWidth();
+		int currentHeight = settings->getHeight();
+
+		if (currentWidth == width && currentHeight == height)
+			return;
+
+		settings->setSize(width, height);
+
+		glViewport(0, 0, width, height);
+
+		if (camera != nullptr)
+		{
+			float aspectRatio = settings->getAspectRatio();
+			camera->updateProjectionPerspectiveAspect(aspectRatio);
+		}
+	}
+
+	void Renderer::init(DisplayDevice* displayDevice)
+	{
+		this->displayDevice = displayDevice;
+
+		Log::info("OpenGL Vendor: " + GLConfig::getGLVendor());
+		Log::info("OpenGL Version: " + GLConfig::getGLVersion());
+		Log::info("OpenGLSL Version: " + GLConfig::getGLShadingLanguageVersion());
+		Log::info("OpenGL Renderer: " + GLConfig::getGLRenderer());
+		Log::info("OpenGL Extensions:");
+
+		for (std::string extension : GLConfig::getGLExtensions())
+			Log::info(extension);
+
+		timer.start();
+
+		glEnable(GL_SCISSOR_TEST);
+		glEnable(GL_DEPTH_TEST); //elimina os vértices que sobrepoem outros vértices quando estão no mesmo eixo Z.
+		glEnable(GL_BLEND);									  //enable alpha color
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);    //enable alpha color
+		glEnable(GL_LINE_SMOOTH);
+
+		float aspectRatio = float(displayDevice->getWidth()) / float(displayDevice->getHeight());
+
+		Vec3f cameraPosition = { 0.0f, 12.0f, -17.0f };
+		Vec3f cameraTarget = { 0.0f, 10.0f, 0.0f };
+		camera = new Camera;
+		camera->initProjectionPerspective(cameraPosition, cameraTarget, aspectRatio);
+
+		glViewport(0, 0, displayDevice->getWidth(), displayDevice->getHeight());
+	}
+
+	void Renderer::updateInputDevices(long long elapsedTime)
+	{
+		for (InputDevice* device : pointerInputDevices)
+			device->update(elapsedTime);
+
+		for (InputDevice* device : keyboardInputDevices)
+			device->update(elapsedTime);
+
+		for (InputDevice* device : windowInputDevices)
+			device->update(elapsedTime);
+
+		for (InputDevice* device : touchInputDevices)
+			device->update(elapsedTime);
+	}
+
+	void Renderer::update()
+	{
+		timer.update();
+
+		long long elapsedTime = timer.getElapsedTime();
+
+		/*
+		// CHECK COLLISIONS !!!!    CUBE (OBB) x CUBE (OBB)
+		GraphicObject* a = this->graphicObjects[0];
+
+		CubeList* cubeList = dynamic_cast<CubeList*>(a);
+		Cube cube1 = cubeList->cubes[0];
+		Cube cube2 = cubeList->cubes[1];
+
+		OBB* obb1 = (OBB*) cube1.boundingVolume;
+		OBB* obb2 = (OBB*) cube2.boundingVolume;
+		OpenML::CollisionStatus status = obb1->collisionStatus(*obb2);
+
+		if (status == OpenML::CollisionStatus::INSIDE) {
+			Log::info("colidindo!");
+		}
+		else {
+			Log::info("not colidindo!");
+		}
+		*/
+
+		/*
+		// CHECK COLLISIONS !!!!
+		GraphicObject* a1 = this->graphicObjects[0];
+		GraphicObject* a2 = this->graphicObjects[1];
+
+		SphereX* ss1 = dynamic_cast<SphereX*>(a1);
+		SphereX* ss2 = (SphereX*)a2;
+		OpenML::CollisionStatus status = ss1->geometry.colisionStatus(ss2->geometry);
+
+		if (status != OpenML::CollisionStatus::OUTSIDE) {
+			CollisionResponse* response = CollisionResponse::handle(&ss1->geometry, &ss2->geometry);
+
+			if (response != NULL)
+			{
+				ss1->geometry.particleSystem->particles[0].velocity = response->object1Impulse;
+				ss2->geometry.particleSystem->particles[0].velocity = response->object2Impulse;
+			}
+		}
+		// END COLLISION !
+		*/
+
+		updateInputDevices(elapsedTime);
+
+		for (GraphicObject* graph : graphicObjects)
+			graph->update(elapsedTime);
+	}
+
+	void Renderer::render3D(RenderData renderData)
+	{
+		for (GraphicObject* graph : graphicObjects) {
+
+			if (graph->type() == GraphicObjectType::Type3D)
+				graph->render(renderData);
+		}
+	}
+
+	void Renderer::render2D(RenderData renderData)
+	{
+		for (GraphicObject* graph : graphicObjects) {
+
+			if (graph->type() != GraphicObjectType::Type2D)
+				graph->render(renderData);
+		}
+	}
+
+	void Renderer::render()
+	{
+		RendererSettings * settings = RendererSettings::getInstance();
+
+		int width = settings->getWidth();
+		int height = settings->getHeight();
+		float aspectRatio = settings->getAspectRatio();
+		ColorRGBAf backgroundColor = settings->getBackgroudColor().normalizeColor();
+
+		camera->updateProjectionPerspectiveAspect(aspectRatio);
+
+		RenderData renderData;
+		renderData.projectionMatrix = camera->getProjectionMatrix();
+		renderData.viewMatrix = camera->getViewMatrix();
+
+		glViewport(0, 0, width, height);
+		glClearColor(backgroundColor.Red, backgroundColor.Green, backgroundColor.Blue, backgroundColor.Alpha);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+		//camera->rotate(0.05f, 0.0f, 1.0f, 0.0f);
+		//camera->rotate(-0.5f, 1.0f, 0.0f, 0.0f);
+		//camera->rotate(0.05f, 1.0f, 1.0f, 0.0f);
+
+		glEnable(GL_LINE_SMOOTH);
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_CULL_FACE);
+		glEnable(GL_POLYGON_OFFSET_FILL);
+		glPolygonOffset(1.0f, 1.0f);
+
+		render3D(renderData);
+
+		renderData.projectionMatrix = camera->getHUDProjectionMatrix(float(width), float(height));
+
+		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_CULL_FACE);
+
+		render2D(renderData);
+
+		displayDevice->swapBuffer();
+	}
+
+	void Renderer::exit()
+	{
+		isRunning = false;
+	}
+
+	void Renderer::addInputDevice(InputDevice* inputDevice)
+	{
+		PointerInputDevice* pointerDevice = dynamic_cast<PointerInputDevice*>(inputDevice);
+		if (pointerDevice)
+			pointerInputDevices.push_back(pointerDevice);
+
+		KeyboardInputDevice* keyboardDevice = dynamic_cast<KeyboardInputDevice*>(inputDevice);
+		if (keyboardDevice)
+			keyboardInputDevices.push_back(keyboardDevice);
+
+		WindowInputDevice* windowDevice = dynamic_cast<WindowInputDevice*>(inputDevice);
+		if (windowDevice)
+			windowInputDevices.push_back(windowDevice);
+
+		TouchInputDevice* touchDevice = dynamic_cast<TouchInputDevice*>(inputDevice);
+		if (touchDevice)
+			touchInputDevices.push_back(touchDevice);
+	}
+
+	Camera* Renderer::getCamera()
+	{
+		return camera;
+	}
+
+	Renderer::~Renderer()
+	{
+		if (camera != nullptr)
+		{
+			delete camera;
+			camera = nullptr;
+		}
+	}
+}

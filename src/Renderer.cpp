@@ -86,25 +86,24 @@ namespace NAMESPACE_RENDERING
 			graphicObjects.erase(item);
 	}
 
-	void Renderer::resize(int width, int height)
+	void Renderer::resize(sp_float width, sp_float height)
 	{
 		if (width == 0 || height == 0)
 			return;
 
 		RendererSettings* settings = RendererSettings::getInstance();
-		int currentWidth = settings->getWidth();
-		int currentHeight = settings->getHeight();
+		Vec2f currentSize = settings->getSize();
 
-		if (currentWidth == width && currentHeight == height)
+		if (currentSize.x == width && currentSize.y == height)
 			return;
 
 		settings->setSize(width, height);
 
-		glViewport(0, 0, width, height);
+		glViewport(0, 0, (GLsizei) width, (GLsizei)height);
 
-		if (camera != nullptr)
+		if (camera != NULL)
 		{
-			float aspectRatio = settings->getAspectRatio();
+			sp_float aspectRatio = settings->getAspectRatio();
 			camera->updateProjectionPerspectiveAspect(aspectRatio);
 		}
 	}
@@ -130,14 +129,16 @@ namespace NAMESPACE_RENDERING
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);    //enable alpha color
 		glEnable(GL_LINE_SMOOTH);
 
-		float aspectRatio = float(displayDevice->getWidth()) / float(displayDevice->getHeight());
-
+		sp_float aspectRatio = (sp_float) (displayDevice->getWidth() / displayDevice->getHeight());
 		Vec3f cameraPosition = { 0.0f, 12.0f, -17.0f };
 		Vec3f cameraTarget = { 0.0f, 10.0f, 0.0f };
 		camera = new Camera;
 		camera->initProjectionPerspective(cameraPosition, cameraTarget, aspectRatio);
 
-		glViewport(0, 0, displayDevice->getWidth(), displayDevice->getHeight());
+		glViewport(0, 0, (GLsizei) displayDevice->getWidth(), (GLsizei) displayDevice->getHeight());
+
+		if (editor != NULL)
+			editor->init();
 	}
 
 	void Renderer::updateInputDevices(long long elapsedTime)
@@ -221,7 +222,7 @@ namespace NAMESPACE_RENDERING
 	{
 		for (GraphicObject* graph : graphicObjects) {
 
-			if (graph->type() != GraphicObjectType::Type2D)
+			if (graph->type() == GraphicObjectType::Type2D)
 				graph->render(renderData);
 		}
 	}
@@ -229,19 +230,17 @@ namespace NAMESPACE_RENDERING
 	void Renderer::render()
 	{
 		RendererSettings * settings = RendererSettings::getInstance();
-
-		int width = settings->getWidth();
-		int height = settings->getHeight();
-		float aspectRatio = settings->getAspectRatio();
+		Vec2f size = settings->getSize();
+		sp_float aspectRatio = settings->getAspectRatio();
 		ColorRGBAf backgroundColor = settings->getBackgroudColor().normalizeColor();
-
+		
 		camera->updateProjectionPerspectiveAspect(aspectRatio);
 
 		RenderData renderData;
 		renderData.projectionMatrix = camera->getProjectionMatrix();
 		renderData.viewMatrix = camera->getViewMatrix();
 
-		glViewport(0, 0, width, height);
+		glViewport(0, 0, (GLsizei) size.x, (GLsizei)size.y);
 		glClearColor(backgroundColor.Red, backgroundColor.Green, backgroundColor.Blue, backgroundColor.Alpha);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -257,12 +256,15 @@ namespace NAMESPACE_RENDERING
 
 		render3D(renderData);
 
-		renderData.projectionMatrix = camera->getHUDProjectionMatrix(float(width), float(height));
+		renderData.projectionMatrix = camera->getHUDProjectionMatrix(size.x, size.y);
 
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_CULL_FACE);
 
 		render2D(renderData);
+
+		if (editor != NULL)
+			editor->render(renderData);
 
 		displayDevice->swapBuffer();
 	}
@@ -302,6 +304,12 @@ namespace NAMESPACE_RENDERING
 		{
 			delete camera;
 			camera = nullptr;
+		}
+
+		if (editor != NULL)
+		{
+			editor->dispose();
+			editor = NULL;
 		}
 	}
 }

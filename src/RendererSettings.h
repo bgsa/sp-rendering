@@ -12,8 +12,8 @@ namespace NAMESPACE_RENDERING
 	private:
 		RendererSettings();
 
-		int width = 0, height = 0;
-		Vec2f rendererPosition = Vec2f(0);
+		sp_float width = ZERO_FLOAT, height = ZERO_FLOAT;
+		Vec2f rendererPosition = Vec2f(ZERO_FLOAT);
 		ColorRGBAc backgroundColor = { 128, 128, 128, 255 }; //gray backgtound color
 
 	public:
@@ -27,34 +27,35 @@ namespace NAMESPACE_RENDERING
 		/// <summary>
 		/// Set the position of the renderer on the window/screen
 		/// </summary>
-		void API_INTERFACE setRendererPosition(Vec2f& rendererPosition);
+		API_INTERFACE void setRendererPosition(const Vec2f& rendererPosition);
 
 		API_INTERFACE Rectangle2Df getScreenBound();
 
-		int API_INTERFACE getWidth();
-		void API_INTERFACE setWidth(int width);
+		API_INTERFACE sp_float getWidth();
+		API_INTERFACE void setWidth(sp_float width);
 
-		int API_INTERFACE getHeight();
-		void API_INTERFACE setHeight(int height);
+		API_INTERFACE sp_float getHeight();
+		API_INTERFACE void setHeight(sp_float height);
 
-		void API_INTERFACE setSize(int width, int height);
+		API_INTERFACE Vec2f getSize();
+		API_INTERFACE void setSize(sp_float width, sp_float height);
 
-		float API_INTERFACE getAspectRatio();
+		API_INTERFACE sp_float getAspectRatio();
 
 		/// <summary>
 		/// Get the default screen backgound color
 		/// </summary>
-		ColorRGBAc API_INTERFACE getBackgroudColor();
+		API_INTERFACE ColorRGBAc getBackgroudColor();
 
 		/// <summary>
 		/// Set the default screen backgound color
 		/// </summary>
-		void API_INTERFACE setBackgroudColor(ColorRGBAc color);
+		API_INTERFACE void setBackgroudColor(ColorRGBAc color);
 
 		/// <summary>
 		/// Get the color of a screen pixel
 		/// </summary>
-		ColorRGBAf API_INTERFACE getPixelColor(int xPosition, int yPosition);
+		API_INTERFACE ColorRGBAf getPixelColor(int xPosition, int yPosition);
 
 	};
 }

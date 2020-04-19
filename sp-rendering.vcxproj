@@ -32,6 +32,7 @@
     <ClInclude Include="src\CustomCube.h" />
     <ClInclude Include="src\CustomModel.h" />
     <ClInclude Include="src\FontGenerator.h" />
+    <ClInclude Include="src\Framebuffer.h" />
     <ClInclude Include="src\GLConfig.h" />
     <ClInclude Include="src\GraphicObject.h" />
     <ClInclude Include="src\GraphicObject2D.h" />
@@ -44,11 +45,13 @@
     <ClInclude Include="src\LineList.h" />
     <ClInclude Include="src\LogGL.hpp" />
     <ClInclude Include="src\ModelFile.h" />
+    <ClInclude Include="src\OpenGLTexture.h" />
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\PointList.h" />
     <ClInclude Include="src\Polygon3D.h" />
     <ClInclude Include="src\RenderData.h" />
     <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\RendererEditor.h" />
     <ClInclude Include="src\RendererSettings.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\SpectrumRendering.h" />
@@ -71,6 +74,7 @@
     <ClCompile Include="src\CustomCube.cpp" />
     <ClCompile Include="src\CustomModel.cpp" />
     <ClCompile Include="src\FontGenerator.cpp" />
+    <ClCompile Include="src\Framebuffer.cpp" />
     <ClCompile Include="src\GridSystem.cpp" />
     <ClCompile Include="src\IRenderer.cpp" />
     <ClCompile Include="src\kDOP18.cpp" />

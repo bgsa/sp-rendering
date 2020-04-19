@@ -30,30 +30,34 @@ namespace NAMESPACE_RENDERING
 	{
 		return rendererPosition;
 	}
-	void RendererSettings::setRendererPosition(Vec2f& position)
+	void RendererSettings::setRendererPosition(const Vec2f& position)
 	{
 		rendererPosition = position;
 	}
 
-	int RendererSettings::getWidth()
+	sp_float RendererSettings::getWidth()
 	{
 		return width;
 	}
-	void RendererSettings::setWidth(int width)
+	void RendererSettings::setWidth(sp_float width)
 	{
 		this->width = width;
 	}
 
-	int RendererSettings::getHeight()
+	sp_float RendererSettings::getHeight()
 	{
 		return height;
 	}
-	void RendererSettings::setHeight(int height)
+	void RendererSettings::setHeight(sp_float height)
 	{
 		this->height = height;
 	}
 
-	void RendererSettings::setSize(int width, int height)
+	Vec2f RendererSettings::getSize()
+	{
+		return Vec2f(width, height);
+	}
+	void RendererSettings::setSize(sp_float width, sp_float height)
 	{
 		this->width = width;
 		this->height = height;

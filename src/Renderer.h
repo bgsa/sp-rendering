@@ -7,6 +7,7 @@
 #include <KeyboardInputDevice.h>
 #include <PointerInputDevice.h>
 #include <TouchInputDevice.h>
+#include "RendererEditor.h"
 
 #include <Timer.h>
 #include "Camera.h"
@@ -36,8 +37,9 @@ namespace NAMESPACE_RENDERING
 		std::vector<WindowInputDevice*> windowInputDevices;
 		std::vector<KeyboardInputDevice*> keyboardInputDevices;
 		std::vector<TouchInputDevice*> touchInputDevices;
-
-		Camera* camera = nullptr;
+		
+		Camera* camera = NULL;
+		RendererEditor* editor = NULL;
 
 		void render2D(RenderData renderData);
 		void render3D(RenderData renderData);
@@ -45,26 +47,31 @@ namespace NAMESPACE_RENDERING
 		void updateInputDevices(long long elapsedTime);
 
 	public:
-		virtual void API_INTERFACE init(DisplayDevice* displayDevice);
-		virtual void API_INTERFACE start();
-		void API_INTERFACE resize(int width, int height);
+		API_INTERFACE virtual void init(DisplayDevice* displayDevice);
+		API_INTERFACE virtual void start();
+		API_INTERFACE void resize(sp_float width, sp_float height);
 
-		void API_INTERFACE update();
-		void API_INTERFACE render();
-		void API_INTERFACE exit();
+		API_INTERFACE void update();
+		API_INTERFACE void render();
+		API_INTERFACE void exit();
 
-		void API_INTERFACE addPointerHandler(PointerInputDeviceHandler* handler);
-		void API_INTERFACE addKeyboardHandler(KeyboardInputDeviceHandler* handler);
-		void API_INTERFACE addTouchHandler(TouchInputDeviceHandler* handler);
-		void API_INTERFACE addWindowHandler(WindowInputDeviceHandler* handler);
+		API_INTERFACE void addPointerHandler(PointerInputDeviceHandler* handler);
+		API_INTERFACE void addKeyboardHandler(KeyboardInputDeviceHandler* handler);
+		API_INTERFACE void addTouchHandler(TouchInputDeviceHandler* handler);
+		API_INTERFACE void addWindowHandler(WindowInputDeviceHandler* handler);
 
-		void API_INTERFACE addGraphicObject(GraphicObject* graphicObject);
-		bool API_INTERFACE hasGraphicObject(GraphicObject* graphicObject);
-		void API_INTERFACE removeGraphicObject(GraphicObject* graphicObject);
+		API_INTERFACE void addGraphicObject(GraphicObject* graphicObject);
+		API_INTERFACE bool hasGraphicObject(GraphicObject* graphicObject);
+		API_INTERFACE void removeGraphicObject(GraphicObject* graphicObject);
 
-		void API_INTERFACE addInputDevice(InputDevice* inputDevice);
+		API_INTERFACE void addInputDevice(InputDevice* inputDevice);
 
-		Camera* getCamera();
+		API_INTERFACE Camera* getCamera();
+
+		API_INTERFACE inline void setRendererEditor(RendererEditor* editor)
+		{
+			this->editor = editor;
+		}
 
 		API_INTERFACE ~Renderer();
 	};

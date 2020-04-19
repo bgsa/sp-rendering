@@ -1,10 +1,6 @@
 #ifndef SPECTRUM_RENDERING_HEADER
 #define SPECTRUM_RENDERING_HEADER
 
-#ifndef NAMESPACE_RENDERING
-	#define NAMESPACE_RENDERING SpRendering
-#endif
-
 #ifdef WINDOWS
 	#define ESUTIL_API  __cdecl
 	#define ESCALLBACK  __cdecl
@@ -28,6 +24,10 @@
 #endif
 
 using namespace NAMESPACE_PHYSICS;
+
+#ifndef NAMESPACE_RENDERING
+	#define NAMESPACE_RENDERING SpRendering
+#endif // NAMESPACE_RENDERING
 
 typedef unsigned char  BYTE;  // 1byte
 typedef unsigned short WORD;  // 2bytes

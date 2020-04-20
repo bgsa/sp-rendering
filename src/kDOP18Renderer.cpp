@@ -1,7 +1,4 @@
 #include "kDOP18Renderer.h"
-#include <cstdlib>
-#include <vector>
-#include "Shader.h"
 
 #define FLOAT_COUNT_PER_18DOP 96 /* (32 * 3) */
 #define FLOAT_SIZE_PER_18DOP (SIZEOF_FLOAT * FLOAT_COUNT_PER_18DOP)
@@ -297,7 +294,7 @@ namespace NAMESPACE_RENDERING
 		updatePoints(points, pointIndex, downDepthPlane, rightDepthPlane, downRightPlane);
 	}
 
-	void kDOP18Renderer::setObjects(kDOP18* kdops, size_t kdopsCount)
+	void kDOP18Renderer::setObjects(kDOP18* kdops, sp_uint kdopsCount)
 	{
 		this->kdops = kdops;
 		this->kdopsCount = kdopsCount;

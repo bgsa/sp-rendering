@@ -6,14 +6,16 @@
 
 namespace NAMESPACE_RENDERING
 {
-	template <class T>
+	template<class T>
 	class IRenderer
 	{
 	public:
 
-		virtual void setObjects(T* objects, size_t count) = 0;
+		API_INTERFACE virtual void setObjects(T* objects, sp_uint length) = 0;
 
-		virtual void render(const RenderData& renderData) = 0;
+		API_INTERFACE virtual void update() = 0;
+
+		API_INTERFACE virtual void render(const RenderData& renderData) = 0;
 
 	};
 }

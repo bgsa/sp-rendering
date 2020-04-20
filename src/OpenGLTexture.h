@@ -35,7 +35,7 @@ namespace NAMESPACE_RENDERING
 
 			// Upload pixels into texture
 			glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)size.x, (GLsizei)size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
 			return instance;
 		}
@@ -55,7 +55,7 @@ namespace NAMESPACE_RENDERING
 			glBindTexture(GL_TEXTURE_2D, textureId);
 
 			glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)size.x, (GLsizei)size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		}
 
 		API_INTERFACE inline sp_uint getId()

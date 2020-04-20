@@ -8,6 +8,7 @@
 #include <PointerInputDevice.h>
 #include <TouchInputDevice.h>
 #include "RendererEditor.h"
+#include "IRenderer.h"
 
 #include <Timer.h>
 #include "Camera.h"
@@ -22,7 +23,8 @@
 
 namespace NAMESPACE_RENDERING
 {
-	class Renderer
+	class Renderer 
+		: public IRendererManager
 	{
 	private:
 		std::vector<GraphicObject*> graphicObjects;
@@ -49,11 +51,11 @@ namespace NAMESPACE_RENDERING
 	public:
 		API_INTERFACE virtual void init(DisplayDevice* displayDevice);
 		API_INTERFACE virtual void start();
+		API_INTERFACE void stop();
 		API_INTERFACE void resize(sp_float width, sp_float height);
 
 		API_INTERFACE void update();
 		API_INTERFACE void render();
-		API_INTERFACE void exit();
 
 		API_INTERFACE void addPointerHandler(PointerInputDeviceHandler* handler);
 		API_INTERFACE void addKeyboardHandler(KeyboardInputDeviceHandler* handler);

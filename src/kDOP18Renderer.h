@@ -6,6 +6,9 @@
 #include "IRenderer.h"
 #include "kDOP18.h"
 #include <Plane3D.h>
+#include <cstdlib>
+#include <vector>
+#include "Shader.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -27,13 +30,13 @@ namespace NAMESPACE_RENDERING
 		void setUpPositionAttribute();
 
 		kDOP18* kdops = NULL;
-		size_t kdopsCount = 0;
+		sp_uint kdopsCount = 0;
 
 	public:
 
 		API_INTERFACE void init();
 
-		API_INTERFACE void setObjects(kDOP18* kdops, size_t count) override;
+		API_INTERFACE void setObjects(kDOP18* kdops, sp_uint length) override;
 
 		API_INTERFACE void render(const RenderData& renderData) override;
 

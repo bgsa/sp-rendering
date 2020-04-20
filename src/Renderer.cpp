@@ -138,7 +138,7 @@ namespace NAMESPACE_RENDERING
 		glViewport(0, 0, (GLsizei) displayDevice->getWidth(), (GLsizei) displayDevice->getHeight());
 
 		if (editor != NULL)
-			editor->init();
+			editor->init(this);
 	}
 
 	void Renderer::updateInputDevices(long long elapsedTime)
@@ -241,6 +241,7 @@ namespace NAMESPACE_RENDERING
 		renderData.viewMatrix = camera->getViewMatrix();
 
 		glViewport(0, 0, (GLsizei) size.x, (GLsizei)size.y);
+		glScissor(0, 0, (GLsizei)size.x, (GLsizei)size.y);
 		glClearColor(backgroundColor.Red, backgroundColor.Green, backgroundColor.Blue, backgroundColor.Alpha);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -269,7 +270,7 @@ namespace NAMESPACE_RENDERING
 		displayDevice->swapBuffer();
 	}
 
-	void Renderer::exit()
+	void Renderer::stop()
 	{
 		isRunning = false;
 	}

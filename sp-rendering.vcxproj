@@ -39,6 +39,7 @@
     <ClInclude Include="src\GraphicObject3D.h" />
     <ClInclude Include="src\GridSystem.h" />
     <ClInclude Include="src\IRenderer.h" />
+    <ClInclude Include="src\IRendererManager.h" />
     <ClInclude Include="src\kDOP18.h" />
     <ClInclude Include="src\kDOP18Renderer.h" />
     <ClInclude Include="src\Line.h" />

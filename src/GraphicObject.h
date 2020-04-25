@@ -17,7 +17,7 @@ namespace NAMESPACE_RENDERING
 		: public Object
 	{
 	private:
-		char* tag;
+		sp_char* tag;
 
 	protected:
 
@@ -35,19 +35,22 @@ namespace NAMESPACE_RENDERING
 
 		Mat4f modelView = Mat4f::identity();
 
-		void setTag(char* tag) {
+		API_INTERFACE virtual void init() = 0;
+
+		API_INTERFACE void setTag(sp_char* tag) {
 			this->tag = tag;
 		}
-		char* getTag() {
+		API_INTERFACE sp_char* getTag() {
 			return tag;
 		}
 
-		virtual void update(long long elapsedTime) { };
-		virtual void render(const RenderData& renderData) = 0;
+		API_INTERFACE virtual void update(sp_longlong elapsedTime) { };
 
-		virtual GraphicObjectType type() = 0;
+		API_INTERFACE virtual void render(const RenderData& renderData) = 0;
 
-		virtual ~GraphicObject()
+		API_INTERFACE virtual GraphicObjectType type() = 0;
+
+		API_INTERFACE virtual ~GraphicObject()
 		{
 			if (programShader != 0)
 				glDeleteProgram(programShader);

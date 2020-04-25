@@ -1,12 +1,12 @@
+#include "DefaultRendererManager.h"
 #include <algorithm>
-#include "Renderer.h"
 #include "GLConfig.h"
 #include "RendererSettings.h"
 #include "LogGL.hpp"
 
 namespace NAMESPACE_RENDERING
 {
-	void Renderer::start()
+	void DefaultRendererManager::start()
 	{
 #if defined(WINDOWS) || defined(LINUX) || defined(MAC)
 		float nextTick = 0.0f;
@@ -28,7 +28,9 @@ namespace NAMESPACE_RENDERING
 
 			//timeInterpolated = timer.getFramesPerSecond() + SKIP_TICKS - FRAMES_PER_SECOND_LIMIT / SKIP_TICKS;
 			//render(timeInterpolated);
+			preRender();
 			render();
+			postRender();
 
 			//cout << "FPS: " << timer.getFramesPerSecond() << END_OF_LINE;
 			//cout << "Elapsed Time: " << timer.getElapsedTime() << END_OF_LINE;
@@ -43,42 +45,42 @@ namespace NAMESPACE_RENDERING
 #endif
 	}
 
-	void Renderer::addPointerHandler(PointerInputDeviceHandler* handler)
+	void DefaultRendererManager::addPointerHandler(PointerInputDeviceHandler* handler)
 	{
 		for (PointerInputDevice* pointerInputDevice : pointerInputDevices)
 			pointerInputDevice->addHandler(handler);
 	}
 
-	void Renderer::addKeyboardHandler(KeyboardInputDeviceHandler* handler)
+	void DefaultRendererManager::addKeyboardHandler(KeyboardInputDeviceHandler* handler)
 	{
 		for (KeyboardInputDevice* keyboardInputDevice : keyboardInputDevices)
 			keyboardInputDevice->addHandler(handler);
 	}
 
-	void Renderer::addTouchHandler(TouchInputDeviceHandler* handler)
+	void DefaultRendererManager::addTouchHandler(TouchInputDeviceHandler* handler)
 	{
 		for (TouchInputDevice* touchInputDevice : touchInputDevices)
 			touchInputDevice->addHandler(handler);
 	}
 
-	void Renderer::addWindowHandler(WindowInputDeviceHandler* handler)
+	void DefaultRendererManager::addWindowHandler(WindowInputDeviceHandler* handler)
 	{
 		for (WindowInputDevice* windowInputDevice : windowInputDevices)
 			windowInputDevice->addHandler(handler);
 	}
 
-	void Renderer::addGraphicObject(GraphicObject* graphicObject)
+	void DefaultRendererManager::addGraphicObject(GraphicObject* graphicObject)
 	{
 		graphicObjects.push_back(graphicObject);
 	}
 
-	bool Renderer::hasGraphicObject(GraphicObject* graphicObject)
+	bool DefaultRendererManager::hasGraphicObject(GraphicObject* graphicObject)
 	{
 		std::vector<GraphicObject*>::iterator item = std::find(graphicObjects.begin(), graphicObjects.end(), graphicObject);
 		return item != graphicObjects.end();
 	}
 
-	void Renderer::removeGraphicObject(GraphicObject* graphicObject)
+	void DefaultRendererManager::removeGraphicObject(GraphicObject* graphicObject)
 	{
 		std::vector<GraphicObject*>::iterator item = std::find(graphicObjects.begin(), graphicObjects.end(), graphicObject);
 
@@ -86,7 +88,7 @@ namespace NAMESPACE_RENDERING
 			graphicObjects.erase(item);
 	}
 
-	void Renderer::resize(sp_float width, sp_float height)
+	void DefaultRendererManager::resize(sp_float width, sp_float height)
 	{
 		if (width == 0 || height == 0)
 			return;
@@ -100,6 +102,7 @@ namespace NAMESPACE_RENDERING
 		settings->setSize(width, height);
 
 		glViewport(0, 0, (GLsizei) width, (GLsizei)height);
+		glScissor(0, 0, (GLsizei)width, (GLsizei)height);
 
 		if (camera != NULL)
 		{
@@ -108,7 +111,7 @@ namespace NAMESPACE_RENDERING
 		}
 	}
 
-	void Renderer::init(DisplayDevice* displayDevice)
+	void DefaultRendererManager::init(DisplayDevice* displayDevice)
 	{
 		this->displayDevice = displayDevice;
 
@@ -139,9 +142,15 @@ namespace NAMESPACE_RENDERING
 
 		if (editor != NULL)
 			editor->init(this);
+
+		rockRenderer = sp_mem_new(RockRenderer)();
+		rock = sp_mem_new(Rock)();
+		rock->setRenderer(rockRenderer);
+		rockRenderer->setObjects(rock, ONE_UINT);
+		this->addGraphicObject(rock);
 	}
 
-	void Renderer::updateInputDevices(long long elapsedTime)
+	void DefaultRendererManager::updateInputDevices(long long elapsedTime)
 	{
 		for (InputDevice* device : pointerInputDevices)
 			device->update(elapsedTime);
@@ -156,7 +165,7 @@ namespace NAMESPACE_RENDERING
 			device->update(elapsedTime);
 	}
 
-	void Renderer::update()
+	void DefaultRendererManager::update()
 	{
 		timer.update();
 
@@ -209,7 +218,7 @@ namespace NAMESPACE_RENDERING
 			graph->update(elapsedTime);
 	}
 
-	void Renderer::render3D(RenderData renderData)
+	void DefaultRendererManager::render3D(RenderData renderData)
 	{
 		for (GraphicObject* graph : graphicObjects) {
 
@@ -218,7 +227,7 @@ namespace NAMESPACE_RENDERING
 		}
 	}
 
-	void Renderer::render2D(RenderData renderData)
+	void DefaultRendererManager::render2D(RenderData renderData)
 	{
 		for (GraphicObject* graph : graphicObjects) {
 
@@ -227,7 +236,13 @@ namespace NAMESPACE_RENDERING
 		}
 	}
 
-	void Renderer::render()
+	void DefaultRendererManager::preRender()
+	{
+		if (editor != NULL)
+			editor->preRender();
+	}
+
+	void DefaultRendererManager::render()
 	{
 		RendererSettings * settings = RendererSettings::getInstance();
 		Vec2f size = settings->getSize();
@@ -270,12 +285,18 @@ namespace NAMESPACE_RENDERING
 		displayDevice->swapBuffer();
 	}
 
-	void Renderer::stop()
+	void DefaultRendererManager::postRender()
+	{
+		if (editor != NULL)
+			editor->postRender();
+	}
+
+	void DefaultRendererManager::stop()
 	{
 		isRunning = false;
 	}
 
-	void Renderer::addInputDevice(InputDevice* inputDevice)
+	void DefaultRendererManager::addInputDevice(InputDevice* inputDevice)
 	{
 		PointerInputDevice* pointerDevice = dynamic_cast<PointerInputDevice*>(inputDevice);
 		if (pointerDevice)
@@ -294,12 +315,12 @@ namespace NAMESPACE_RENDERING
 			touchInputDevices.push_back(touchDevice);
 	}
 
-	Camera* Renderer::getCamera()
+	Camera* DefaultRendererManager::getCamera()
 	{
 		return camera;
 	}
 
-	Renderer::~Renderer()
+	DefaultRendererManager::~DefaultRendererManager()
 	{
 		if (camera != nullptr)
 		{

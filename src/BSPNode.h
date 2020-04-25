@@ -11,7 +11,9 @@
 
 namespace NAMESPACE_RENDERING
 {
-	class BSPNode : public GraphicObject2D, public BinaryTreeNode<BSPNode*>
+	class BSPNode 
+		: public GraphicObject2D
+		, public BinaryTreeNode<BSPNode*>
 	{
 	private:
 		//static Polygon3D* calculatePolygon3D(Polygon2D* polygon2D, float height);
@@ -21,6 +23,8 @@ namespace NAMESPACE_RENDERING
 		//Polygon2D* polygon = nullptr;
 		Polygon3D* polygon3D = nullptr;
 		float height = 100.0f;
+
+		API_INTERFACE void init() override {}
 
 		void split(NAMESPACE_PHYSICS::Line2Df line);
 

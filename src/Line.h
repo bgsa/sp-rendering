@@ -7,7 +7,7 @@
 namespace NAMESPACE_RENDERING
 {
 	class Line
-		: public GraphicObject3D<AABB>
+		: public GraphicObject3D<Line, AABB>
 	{
 	private:
 		float lineWidth = 3.0f;

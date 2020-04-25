@@ -58,6 +58,11 @@ namespace NAMESPACE_RENDERING
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)size.x, (GLsizei)size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		}
 
+		API_INTERFACE inline void resize(const Vec2f& size)
+		{
+			this->size = size;
+		}
+
 		API_INTERFACE inline sp_uint getId()
 		{
 			return textureId;

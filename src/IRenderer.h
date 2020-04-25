@@ -8,6 +8,7 @@ namespace NAMESPACE_RENDERING
 {
 	template<class T>
 	class IRenderer
+		: public Object
 	{
 	public:
 

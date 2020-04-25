@@ -9,7 +9,7 @@
 namespace NAMESPACE_RENDERING
 {
 	class SphereRenderer
-		: public GraphicObject3D<NAMESPACE_PHYSICS::Sphere>
+		: public GraphicObject3D<SphereRenderer, NAMESPACE_PHYSICS::Sphere>
 	{
 	private:
 

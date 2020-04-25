@@ -19,7 +19,11 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE virtual void update() = 0;
 
+		API_INTERFACE virtual void preRender() = 0;
+
 		API_INTERFACE virtual void render(const RenderData& renderData) = 0;
+
+		API_INTERFACE virtual void postRender() = 0;
 
 	};
 }

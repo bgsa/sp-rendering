@@ -8,41 +8,48 @@
 #include <vector>
 #include "ContentAlignment.h"
 #include <BoundingVolume.h>
+#include "IRenderer.h"
 
 namespace NAMESPACE_RENDERING
 {
-	template <class BoundingVolumeType>
+	template <class GameObjectType, class BoundingVolumeType>
 	class GraphicObject3D : public GraphicObject
 	{
 	protected:
+		IRenderer<GameObjectType>* renderer = NULL;
 		ColorRGBAf * color = new ColorRGBAf{ 1.0f, 1.0f, 1.0f, 1.0f };
 
 	public:
 		NAMESPACE_PHYSICS::BoundingVolume<BoundingVolumeType>* boundingVolume = NULL;
 
-		virtual ColorRGBAf* getColor() {
+		API_INTERFACE virtual void setRenderer(IRenderer<GameObjectType>* renderer)
+		{
+			this->renderer = renderer;
+		}
+
+		API_INTERFACE virtual ColorRGBAf* getColor() {
 			return color;
 		}
-		virtual void setColor(ColorRGBAf color) {
+		API_INTERFACE virtual void setColor(ColorRGBAf color) {
 			this->color->Red = color.Red;
 			this->color->Green = color.Green;
 			this->color->Blue = color.Blue;
 			this->color->Alpha = color.Alpha;
 		}
 
-		GraphicObjectType type() override
+		API_INTERFACE GraphicObjectType type() override
 		{
 			return GraphicObjectType::Type3D;
 		}
 
-		GraphicObject3D* scale(float xScale, float yScale, float zScale)
+		API_INTERFACE GraphicObject3D* scale(float xScale, float yScale, float zScale)
 		{
 			modelView *= Mat4f::createScale(xScale, yScale, zScale);
 			boundingVolume->scale(xScale, yScale, zScale);
 
 			return this;
 		}
-		GraphicObject3D* scaleUniform(float scaleValue)
+		API_INTERFACE GraphicObject3D* scaleUniform(float scaleValue)
 		{
 			modelView *= Mat4f::createScale(scaleValue, scaleValue, scaleValue);
 			boundingVolume->scale(scaleValue, scaleValue, scaleValue);
@@ -50,7 +57,7 @@ namespace NAMESPACE_RENDERING
 			return this;
 		}
 
-		GraphicObject3D* translate(float xAxis, float yAxis, float zAxis)
+		API_INTERFACE GraphicObject3D* translate(float xAxis, float yAxis, float zAxis)
 		{
 			modelView *= Mat4f::createTranslate(xAxis, yAxis, zAxis);
 			boundingVolume->translate(xAxis, yAxis, zAxis);
@@ -58,7 +65,7 @@ namespace NAMESPACE_RENDERING
 			return this;
 		}
 
-		GraphicObject3D* rotate(float angleInRadians, float xAxis, float yAxis, float zAxis)
+		API_INTERFACE GraphicObject3D* rotate(float angleInRadians, float xAxis, float yAxis, float zAxis)
 		{
 			modelView *= Mat4f::createRotate(angleInRadians, xAxis, yAxis, zAxis);
 			boundingVolume->rotate(angleInRadians, xAxis, yAxis, zAxis);

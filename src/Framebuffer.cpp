@@ -12,7 +12,7 @@ namespace NAMESPACE_RENDERING
 	sp_uchar* Framebuffer::getFramebuffer(GLenum framebuffer)
 	{
 		Vec2f imageSize = RendererSettings::getInstance()->getSize();
-		sp_uchar* data = new sp_uchar[FOUR_INT * imageSize.x * imageSize.y];
+		sp_uchar* data = new sp_uchar[FOUR_UINT * (sp_uint)imageSize.x * (sp_uint)imageSize.y];
 
 		glPixelStorei(GL_PACK_ALIGNMENT, ONE_INT);
 
@@ -21,7 +21,7 @@ namespace NAMESPACE_RENDERING
 		if (glGetError() == GL_INVALID_OPERATION)
 			printf("Error setting FRAMEBUFFER");
 
-		glReadPixels(ZERO_INT, ZERO_INT, imageSize.x, imageSize.y, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glReadPixels(ZERO_INT, ZERO_INT, (GLsizei) imageSize.x, (GLsizei) imageSize.y, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
 		if (glGetError() != GL_NO_ERROR)
 			printf("Unknown error Reading Pixels");
@@ -50,7 +50,7 @@ namespace NAMESPACE_RENDERING
 		return imageTexture;
 	}
 
-	void Framebuffer::saveImage(std::string filename, sp_uchar* pixels, sp_int width, sp_int height)
+	void Framebuffer::saveImage(std::string filename, sp_uchar* pixels, sp_float width, sp_float height)
 	{
 		//stbi_write_png(filename.c_str(), width, height, 4, pixels, 0);
 	}

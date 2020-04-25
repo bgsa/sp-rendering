@@ -9,7 +9,7 @@
 namespace NAMESPACE_RENDERING
 {
 	class kDOP18
-		: public GraphicObject3D<DOP18>
+		: public GraphicObject3D<kDOP18, DOP18>
 	{
 	private:
 		IRenderer<kDOP18>* renderer;

@@ -13,7 +13,7 @@
 namespace NAMESPACE_RENDERING
 {
 	class Polygon3D
-		: public GraphicObject3D<AABB>
+		: public GraphicObject3D<Polygon3D, AABB>
 	{
 	private:
 		GLint textureAttribute;

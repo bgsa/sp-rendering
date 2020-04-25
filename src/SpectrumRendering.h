@@ -1,13 +1,9 @@
 #ifndef SPECTRUM_RENDERING_HEADER
 #define SPECTRUM_RENDERING_HEADER
 
-#ifdef WINDOWS
-	#define ESUTIL_API  __cdecl
-	#define ESCALLBACK  __cdecl
-#else
-	#define ESUTIL_API
-	#define ESCALLBACK
-#endif
+#ifndef NAMESPACE_RENDERING
+	#define NAMESPACE_RENDERING SpRendering
+#endif // NAMESPACE_RENDERING
 
 #include <SpectrumPhysics.h>
 #include <vector>
@@ -25,13 +21,6 @@
 
 using namespace NAMESPACE_PHYSICS;
 
-#ifndef NAMESPACE_RENDERING
-	#define NAMESPACE_RENDERING SpRendering
-#endif // NAMESPACE_RENDERING
-
-typedef unsigned char  BYTE;  // 1byte
-typedef unsigned short WORD;  // 2bytes
-typedef unsigned long  DWORD; // 4bytes
-
+#include "RendererSettings.h"
 
 #endif // !SPECTRUM_RENDERING_HEADER

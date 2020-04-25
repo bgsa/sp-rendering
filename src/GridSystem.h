@@ -14,7 +14,7 @@ namespace NAMESPACE_RENDERING
 	};
 
 	class GridSystem
-		: public GraphicObject3D<AABB>
+		: public GraphicObject3D<GridSystem, AABB>
 	{
 	private:
 

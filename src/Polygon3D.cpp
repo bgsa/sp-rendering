@@ -63,10 +63,10 @@ namespace NAMESPACE_RENDERING
 		//Log::info("Bouding Box Min(" + StringHelper::toString(minX.x) + " , " + StringHelper::toString(minY.y) + " , " + StringHelper::toString(minZ.z) + ")");
 		//Log::info("Bouding Box Max(" + StringHelper::toString(maxX.x) + " , " + StringHelper::toString(maxY.y) + " , " + StringHelper::toString(maxZ.z) + ")");
 
-		float* buffer = new float[vertexes.count * 3 + vertexes.count * 2];
-		size_t bufferIndex = 0;
+		sp_float* buffer = new sp_float[vertexes.count * 3 + vertexes.count * 2];
+		sp_size bufferIndex = 0;
 
-		for (int i = 0; i < vertexes.count; i++)
+		for (sp_uint i = 0; i < vertexes.count; i++)
 		{
 			Vec3f point = vertexes.points[i];
 
@@ -79,7 +79,7 @@ namespace NAMESPACE_RENDERING
 			bufferIndex += 3;
 		}
 
-		for (int i = 0; i < vertexes.count; i++)
+		for (sp_uint i = 0; i < vertexes.count; i++)
 		{
 			Vec3f texturePoint = vertexes.points[i];
 

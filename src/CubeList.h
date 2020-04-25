@@ -6,7 +6,7 @@
 namespace NAMESPACE_RENDERING
 {
 	class CubeList
-		: public GraphicObject3D<OBB>
+		: public GraphicObject3D<CubeList, OBB>
 	{
 	private:
 		CubeRenderer* renderer;

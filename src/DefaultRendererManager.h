@@ -1,5 +1,5 @@
-#ifndef RENDERER_HEADER
-#define RENDERER_HEADER
+#ifndef DEFAULT_RENDERER_MANAGER_HEADER
+#define DEFAULT_RENDERER_MANAGER_HEADER
 
 #include "SpectrumRendering.h"
 #include <DisplayDevice.h>
@@ -8,7 +8,6 @@
 #include <PointerInputDevice.h>
 #include <TouchInputDevice.h>
 #include "RendererEditor.h"
-#include "IRenderer.h"
 
 #include <Timer.h>
 #include "Camera.h"
@@ -20,10 +19,11 @@
 #include "Cube.h"
 #include <OBB.h>
 #include "CubeList.h"
+#include "RockRenderer.h"
 
 namespace NAMESPACE_RENDERING
 {
-	class Renderer 
+	class DefaultRendererManager
 		: public IRendererManager
 	{
 	private:
@@ -32,6 +32,9 @@ namespace NAMESPACE_RENDERING
 		Timer timer;
 
 		bool isRunning = true;
+
+		Rock* rock = NULL;
+		RockRenderer* rockRenderer = NULL;
 
 	protected:
 		DisplayDevice* displayDevice;
@@ -52,10 +55,12 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE virtual void init(DisplayDevice* displayDevice);
 		API_INTERFACE virtual void start();
 		API_INTERFACE void stop();
-		API_INTERFACE void resize(sp_float width, sp_float height);
+		API_INTERFACE void resize(sp_float width, sp_float height) override;
 
 		API_INTERFACE void update();
+		API_INTERFACE void preRender();
 		API_INTERFACE void render();
+		API_INTERFACE void postRender();
 
 		API_INTERFACE void addPointerHandler(PointerInputDeviceHandler* handler);
 		API_INTERFACE void addKeyboardHandler(KeyboardInputDeviceHandler* handler);
@@ -75,8 +80,8 @@ namespace NAMESPACE_RENDERING
 			this->editor = editor;
 		}
 
-		API_INTERFACE ~Renderer();
+		API_INTERFACE ~DefaultRendererManager();
 	};
 }
 
-#endif // RENDERER_HEADER
+#endif // DEFAULT_RENDERER_MANAGER_HEADER

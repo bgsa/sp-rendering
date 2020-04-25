@@ -8,7 +8,7 @@
 namespace NAMESPACE_RENDERING
 {
 	class SphereX
-		: public GraphicObject3D<NAMESPACE_PHYSICS::Sphere>
+		: public GraphicObject3D<SphereX, NAMESPACE_PHYSICS::Sphere>
 	{
 	public:
 

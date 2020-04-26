@@ -25,12 +25,15 @@ namespace NAMESPACE_RENDERING
 
 	void Sprite::loadSpriteAnimation()
 	{
-		IFileManager* fileManager = Factory::getFileManagerInstance();
-		std::string spriteXml = fileManager->readTextFile("resources/sprites/sonic.xml");
-		delete fileManager;
+		SP_FILE file;
+		file.open("resources/sprites/sonic.xml", std::ios::in);
+		const sp_size fileSize = file.length();
+		sp_char* spriteXml = ALLOC_ARRAY(sp_char, fileSize);
+		file.read(spriteXml, fileSize);
+		file.close();
 
 		pugi::xml_document doc;
-		pugi::xml_parse_result result = doc.load_string(spriteXml.c_str());
+		pugi::xml_parse_result result = doc.load_string(spriteXml);
 
 		if (result.status != pugi::status_ok)
 			Log::error("Error loading XML file!");

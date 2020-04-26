@@ -5,6 +5,7 @@
 #include "GraphicObject3D.h"
 #include "DOP18.h"
 #include "IRenderer.h"
+#include <FileSystem.h>
 
 namespace NAMESPACE_RENDERING
 {
@@ -15,7 +16,15 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE void init() override
 		{
+			SP_FILE file;
+			file.open("asd", std::ios::in);
+			const sp_size fileSize = file.length();
+			sp_char* content = ALLOC_ARRAY(sp_char, fileSize);
+			file.read(content, fileSize);
 
+			//content
+
+			ALLOC_RELEASE(content);
 		}
 
 		API_INTERFACE void update(long long elapsedTime) override

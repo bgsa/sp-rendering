@@ -3,13 +3,12 @@
 
 #include "SpectrumRendering.h"
 #include "Shader.h"
-#include <Factory.h>
-#include <IFileManager.h>
 #include <Image.h>
 #include <ImageFactory.h>
 #include <vector>
 #include <map>
 #include <pugixml/pugixml.hpp>
+#include <FileSystem.h>
 
 namespace NAMESPACE_RENDERING
 {

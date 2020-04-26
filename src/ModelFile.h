@@ -2,11 +2,7 @@
 #define MODEL_FILE_RENDERING
 
 #include "SpectrumRendering.h"
-#include <fstream>
-#include <IFile.h>
-#include <IFileManager.h>
-#include <Factory.h>
-#include <IFile.h>
+#include "FileSystem.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -47,7 +43,7 @@ namespace NAMESPACE_RENDERING
 	class ModelFile
 	{
 	private:
-		IFile* file;
+		SP_FILE file;
 		ModelFileHeader header;
 
 	public:

@@ -5,8 +5,6 @@
 #include <vector>
 
 #include "Shader.h"
-#include <Factory.h>
-#include <IFileManager.h>
 #include <Image.h>
 #include <ImageFactory.h>
 

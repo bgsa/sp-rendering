@@ -9,22 +9,22 @@ namespace NAMESPACE_RENDERING
 
 	GLfloat* ModelFile::getVertexes()
 	{
-		file->seek(sizeof(ModelFileHeader));
+		file.seek(sizeof(ModelFileHeader));
 
 		GLfloat* vertexes = new GLfloat[header.VertexCount];
 
-		file->read(&vertexes[0], header.VertexCount * sizeof(GLfloat));
+		file.read((sp_char*)&vertexes[0], header.VertexCount * sizeof(GLfloat));
 
 		return vertexes;
 	}
 
 	GLfloat* ModelFile::getNormals()
 	{
-		file->seek(sizeof(ModelFileHeader) + header.VertexCount * sizeof(GLfloat));
+		file.seek(sizeof(ModelFileHeader) + header.VertexCount * sizeof(GLfloat));
 
 		GLfloat* normals = new GLfloat[header.VertexCount];
 
-		file->read(&normals[0], header.VertexCount * sizeof(GLfloat));
+		file.read((sp_char*)&normals[0], header.VertexCount * sizeof(GLfloat));
 
 		return normals;
 	}
@@ -34,11 +34,11 @@ namespace NAMESPACE_RENDERING
 		if (header.TextureUVCount == 0)
 			return nullptr;
 
-		file->seek(sizeof(ModelFileHeader) + ((header.VertexCount * 2) * sizeof(GLfloat)));
+		file.seek(sizeof(ModelFileHeader) + ((header.VertexCount * 2) * sizeof(GLfloat)));
 
 		GLfloat* textures = new GLfloat[header.TextureUVCount];
 
-		file->read(textures, header.TextureUVCount * sizeof(GLfloat));
+		file.read((sp_char*) textures, header.TextureUVCount * sizeof(GLfloat));
 
 		return textures;
 	}
@@ -50,24 +50,24 @@ namespace NAMESPACE_RENDERING
 		if (header.TextureUVCount > 0)
 			offset += header.TextureUVCount * sizeof(GLfloat);
 
-		file->seek(offset);
+		file.seek(offset);
 
 		GLushort* faces = new GLushort[header.FacesCount];
 
-		file->read(faces, header.FacesCount * sizeof(GLushort));
+		file.read((sp_char*)faces, header.FacesCount * sizeof(GLushort));
 
 		return faces;
 	}
 
 	GLfloat* ModelFile::getPositionNormalsTexture()
 	{
-		file->seek(sizeof(ModelFileHeader));
+		file.seek(sizeof(ModelFileHeader));
 
 		size_t size = (header.VertexCount * 2) + header.TextureUVCount;
 
 		GLfloat* buffer = new GLfloat[size];
 
-		file->read(buffer, sizeof(GLfloat), size);
+		file.read((sp_char*)buffer, sizeof(GLfloat) * size);
 
 		return buffer;
 	}
@@ -85,10 +85,10 @@ namespace NAMESPACE_RENDERING
 
 		offset += header.FacesCount * sizeof(GLushort); // + faces offset
 
-		file->seek(offset);
+		file.seek(offset);
 
 		size_t totalBonesNameSize;
-		file->read(&totalBonesNameSize, sizeof(size_t));
+		file.read((sp_char*)&totalBonesNameSize, sizeof(size_t));
 
 		return totalBonesNameSize;
 	}
@@ -99,7 +99,7 @@ namespace NAMESPACE_RENDERING
 		size_t totalBonesNameSize = getBonesNameSize();
 
 		char* buffer = (char*)malloc(totalBonesNameSize);
-		file->read(buffer, totalBonesNameSize);
+		file.read(buffer, totalBonesNameSize);
 
 		size_t index = 0;
 		for (size_t i = 0; i < header.BonesCount; i++)
@@ -134,10 +134,10 @@ namespace NAMESPACE_RENDERING
 		offset += sizeof(size_t);     // + bones name total size offset
 		offset += getBonesNameSize(); // + bones name offset
 
-		file->seek(offset);
+		file.seek(offset);
 
 		GLfloat* temp = new GLfloat[header.BonesCount * MAT4_SIZE];
-		file->read((char*)&temp[0], header.BonesCount * MAT4_SIZE * sizeof(GLfloat));
+		file.read((char*)&temp[0], header.BonesCount * MAT4_SIZE * sizeof(GLfloat));
 
 		Mat4f* result = new Mat4f[header.BonesCount];
 		for (size_t i = 0; i < header.BonesCount; i++)
@@ -179,12 +179,12 @@ namespace NAMESPACE_RENDERING
 
 		offset += header.BonesCount * MAT4_SIZE * sizeof(GLfloat); // + (bones matrixes) offset
 
-		file->seek(offset);
+		file.seek(offset);
 
 		size_t totalSize = getBonesIndexesSize();
 
 		GLint* buffer = (GLint*)malloc(totalSize);
-		file->read(buffer, totalSize);
+		file.read((sp_char*)buffer, totalSize);
 
 		return buffer;
 	}
@@ -206,12 +206,12 @@ namespace NAMESPACE_RENDERING
 		offset += header.BonesCount * MAT4_SIZE * sizeof(GLfloat); // + (bones matrixes) offset
 		offset += getBonesIndexesSize(); // + bones indexes
 
-		file->seek(offset);
+		file.seek(offset);
 
 		size_t totalSize = getBonesWeightsSize();
 
 		GLfloat* buffer = (GLfloat*)malloc(totalSize);
-		file->read(buffer, totalSize);
+		file.read((sp_char*)buffer, totalSize);
 
 		return buffer;
 	}
@@ -233,31 +233,28 @@ namespace NAMESPACE_RENDERING
 
 		offset += header.BonesCount * MAT4_SIZE * sizeof(GLfloat); // + (bones matrixes) offset
 
-		file->seek(offset);
+		file.seek(offset);
 
 		size_t totalSize = getBonesIndexesAndWeightsSize();
 
 		void* buffer = malloc(totalSize);
-		file->read(buffer, totalSize);
+		file.read((sp_char*)buffer, totalSize);
 
 		return buffer;
 	}
 
 	ModelFileHeader ModelFile::load(std::string filename)
 	{
-		IFileManager* fileManager = Factory::getFileManagerInstance();
+		file.open(filename.c_str(), std::ios::in);
 
-		file = fileManager->open(filename);
-		file->read(&header, sizeof(ModelFileHeader));
-
-		delete fileManager;
+		file.read((sp_char*)&header, sizeof(ModelFileHeader));
 
 		return header;
 	}
 
 	ModelFile::~ModelFile()
 	{
-		if (file != NULL)
-			delete file;
+		if (file.isOpened())
+			file.close();
 	}
 }

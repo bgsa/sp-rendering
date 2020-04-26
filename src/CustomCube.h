@@ -1,11 +1,10 @@
-#pragma once
+#ifndef CUSTOM_CUBE_HEADER
+#define CUSTOM_CUBE_HEADER
 
 #include "SpectrumRendering.h"
 #include "Shader.h"
 #include <cstdlib>
 #include <vector>
-#include <Factory.h>
-#include <IFileManager.h>
 #include <Image.h>
 #include <ImageFactory.h>
 
@@ -106,3 +105,5 @@ namespace NAMESPACE_RENDERING
 		void render(Mat4f projectionViewMatrix);
 	};
 }
+
+#endif // CUSTOM_CUBE_HEADER

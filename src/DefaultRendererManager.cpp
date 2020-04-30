@@ -145,6 +145,7 @@ namespace NAMESPACE_RENDERING
 
 		rockRenderer = sp_mem_new(RockRenderer)();
 		rock = sp_mem_new(Rock)();
+		rock->init();
 		rock->setRenderer(rockRenderer);
 		rockRenderer->setObjects(rock, ONE_UINT);
 		this->addGraphicObject(rock);

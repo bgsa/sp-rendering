@@ -44,7 +44,7 @@ namespace NAMESPACE_RENDERING
 
 		// Upload pixels into texture
 		glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageSize.x, imageSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageBuffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei) imageSize.x, (GLsizei)imageSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageBuffer);
 
 		delete[] imageBuffer;
 		return imageTexture;

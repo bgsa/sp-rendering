@@ -45,7 +45,9 @@
     <ClInclude Include="src\Line.h" />
     <ClInclude Include="src\LineList.h" />
     <ClInclude Include="src\LogGL.hpp" />
+    <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\ModelFile.h" />
+    <ClInclude Include="src\ObjModel.h" />
     <ClInclude Include="src\OpenGLTexture.h" />
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\PointList.h" />

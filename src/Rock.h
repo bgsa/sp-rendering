@@ -5,8 +5,7 @@
 #include "GraphicObject3D.h"
 #include "DOP18.h"
 #include "IRenderer.h"
-#include <FileSystem.h>
-#include <SpText.h>
+#include "ObjModel.h"
 
 namespace NAMESPACE_RENDERING
 {

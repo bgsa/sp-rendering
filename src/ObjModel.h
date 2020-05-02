@@ -5,6 +5,7 @@
 #include "Model.h"
 #include "FileSystem.h"
 #include "SpText.h"
+#include "SpArrayOfString.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -30,6 +31,8 @@ namespace NAMESPACE_RENDERING
 			file.close();
 
 			SpText text = SpText(content);
+			ALLOC_RELEASE(content);
+
 			sp_uint vertexesLength = text.countLinesStartWith(SP_VERTEX_PREFIX);
 			sp_uint normalsLength = text.countLinesStartWith(SP_NORMAL_PREFIX);
 			sp_uint texturesCoordLength = text.countLinesStartWith(SP_TEXTURE_PREFIX);
@@ -43,48 +46,45 @@ namespace NAMESPACE_RENDERING
 
 			for (sp_size i = ZERO_SIZE; i < text.length(); i++)
 			{
-				if (text[i]->startWith("v"))
+				if (text[i]->startWith("v "))
 				{
-					const SpArray<SpString*> values = text[i]->split(' ');
-
-					SpString* a = values[0];
-					SpString* b = values[1];
-					SpString* c = values[2];
-					SpString* d = values[3];
-
-					std::cout << a->toString() << END_OF_LINE;
-					std::cout << b->toString() << END_OF_LINE;
-					std::cout << c->toString() << END_OF_LINE;
-					std::cout << d->toString() << END_OF_LINE;
+					const SpArrayOfString* values = text[i]->split(' ');
+					SpString* numbers = values->data();
 
 					vertexes->add({
-						values[1]->to<sp_float>(),
-						values[2]->to<sp_float>(),
-						values[3]->to<sp_float>()
-						});
+						numbers[1].to<sp_float>(),
+						numbers[2].to<sp_float>(),
+						numbers[3].to<sp_float>()
+					});
+
+					sp_mem_delete(values, SpArrayOfString);
 				}
-				/*
 				else if (text[i]->startWith("vn"))
 				{
-					SpArray<SpString> values = text[i]->split(' ');
+					SpArrayOfString* values = text[i]->split(' ');
+					SpString* numbers = values->data();
+
 					normals->add({
-						values[1].to<sp_float>(),
-						values[2].to<sp_float>(),
-						values[3].to<sp_float>()
-						});
+						numbers[1].to<sp_float>(),
+						numbers[2].to<sp_float>(),
+						numbers[3].to<sp_float>()
+					});
+
+					sp_mem_delete(values, SpArrayOfString);
 				}
 				else if (text[i]->startWith("vt"))
 				{
-					SpArray<SpString> values = text[i]->split(' ');
-					textureCoordinates->add({
-						values[1].to<sp_float>(),
-						values[2].to<sp_float>()
-						});
-				}
-				*/
-			}
+					SpArrayOfString* values = text[i]->split(' ');
+					SpString* numbers = values->data();
 
-			ALLOC_RELEASE(content);
+					textureCoordinates->add({
+						numbers[1].to<sp_float>(),
+						numbers[2].to<sp_float>()
+					});
+
+					sp_mem_delete(values, SpArrayOfString);
+				}
+			}
 		}
 
 		API_INTERFACE virtual const char* toString() override

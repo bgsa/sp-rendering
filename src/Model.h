@@ -10,18 +10,35 @@ namespace NAMESPACE_RENDERING
 	class Model
 		: public Object
 	{
-	protected:
+	public:
 		SpArray<Vec3f>* vertexes;
 		SpArray<Vec3f>* normals;
+		SpArray<Vec3ui>* faces;
 		SpArray<Vec2f>* textureCoordinates;
-
-	public:
 
 		API_INTERFACE Model()
 		{
 			vertexes = NULL;
-			normals = NULL;
+			normals = NULL; 
+			faces = NULL;
 			textureCoordinates = NULL;
+		}
+
+		API_INTERFACE inline sp_size sizeOfVertexes()
+		{
+			return vertexes->length() * sizeof(Vec3f);
+		}
+		API_INTERFACE inline sp_size sizeOfFaces()
+		{
+			return faces->length() * sizeof(Vec3ui);
+		}
+		API_INTERFACE inline sp_size sizeOfNormals()
+		{
+			return normals->length() * sizeof(Vec3f);
+		}
+		API_INTERFACE inline sp_size sizeOftextures()
+		{
+			return textureCoordinates->length() * sizeof(Vec2f);
 		}
 
 		API_INTERFACE virtual void load(const SpString& filename) = 0;
@@ -44,6 +61,12 @@ namespace NAMESPACE_RENDERING
 			{
 				sp_mem_release(textureCoordinates);
 				textureCoordinates = NULL;
+			}
+
+			if (faces != NULL)
+			{
+				sp_mem_release(faces);
+				faces = NULL;
 			}
 		}
 

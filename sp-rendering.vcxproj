@@ -81,7 +81,6 @@
     <ClCompile Include="src\FontGenerator.cpp" />
     <ClCompile Include="src\Framebuffer.cpp" />
     <ClCompile Include="src\GridSystem.cpp" />
-    <ClCompile Include="src\IRenderer.cpp" />
     <ClCompile Include="src\kDOP18.cpp" />
     <ClCompile Include="src\kDOP18Renderer.cpp" />
     <ClCompile Include="src\Line.cpp" />

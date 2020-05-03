@@ -21,7 +21,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE virtual void load(const SpString& filename)
 		{
-			assert(filename.length() != ZERO_UINT);
+			sp_assert(filename.length() != ZERO_UINT);
 
 			SP_FILE file;
 			file.open(filename, std::ios::in);
@@ -38,7 +38,7 @@ namespace NAMESPACE_RENDERING
 			sp_uint texturesCoordLength = text.countLinesStartWith(SP_TEXTURE_PREFIX);
 			sp_uint facesLength = text.countLinesStartWith(SP_FACE_PREFIX);
 
-			assert(vertexesLength == normalsLength);
+			sp_assert(vertexesLength == normalsLength);
 
 			vertexes = sp_mem_new(SpArray<Vec3f>)(vertexesLength);
 			normals = sp_mem_new(SpArray<Vec3f>)(normalsLength);

@@ -177,7 +177,7 @@ namespace NAMESPACE_RENDERING
 
 	void BSPNode::removeChild(BSPNode* child)
 	{
-		assert(child == leftNode() || child == rightNode());
+		sp_assert(child == leftNode() || child == rightNode());
 
 		/*
 		TODO: REDO!

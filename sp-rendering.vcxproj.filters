@@ -194,9 +194,6 @@
     <ClCompile Include="src\GridSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\IRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\kDOP18.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

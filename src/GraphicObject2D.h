@@ -82,18 +82,18 @@ namespace NAMESPACE_RENDERING
 
 		virtual void setBotomMargin(float bottomMargin)
 		{
-			assert(bottomMargin > 0.0f);
+			sp_assert(bottomMargin > 0.0f);
 			margin[1] = bottomMargin;
 		}
 		virtual void setLeftMargin(float leftMargin)
 		{
-			assert(leftMargin > 0.0f);
+			sp_assert(leftMargin > 0.0f);
 			margin[0] = leftMargin;
 		}
 
 		virtual void setRelativeBottomMargin(float relativeBottomMargin)
 		{
-			assert(relativeBottomMargin > 0.0f);
+			sp_assert(relativeBottomMargin > 0.0f);
 
 			Vec2f parentSize = getParentSize();
 
@@ -101,7 +101,7 @@ namespace NAMESPACE_RENDERING
 		}
 		virtual void setRelativeLeftMargin(float relativeLeftMargin)
 		{
-			assert(relativeLeftMargin > 0.0f);
+			sp_assert(relativeLeftMargin > 0.0f);
 
 			Vec2f parentSize = getParentSize();
 
@@ -150,7 +150,7 @@ namespace NAMESPACE_RENDERING
 		}
 		virtual void setRelativeWidth(float relativeWidth)
 		{
-			assert(relativeWidth > 0);
+			sp_assert(relativeWidth > 0);
 
 			float windowWidth = float(RendererSettings::getInstance()->getWidth());
 			modelView[0] = windowWidth * (relativeWidth / 100.0f);
@@ -166,7 +166,7 @@ namespace NAMESPACE_RENDERING
 		}
 		virtual void setRelativeHeight(float relativeHeight)
 		{
-			assert(relativeHeight > 0);
+			sp_assert(relativeHeight > 0);
 
 			float windowHeight = float(RendererSettings::getInstance()->getHeight());
 			modelView[5] = windowHeight * (relativeHeight / 100.0f);

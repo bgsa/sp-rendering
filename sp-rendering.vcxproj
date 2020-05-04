@@ -61,6 +61,8 @@
     <ClInclude Include="src\Rock.h" />
     <ClInclude Include="src\RockRenderer.h" />
     <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\ShaderAttribute.h" />
+    <ClInclude Include="src\ShaderUniform.h" />
     <ClInclude Include="src\SpectrumRendering.h" />
     <ClInclude Include="src\SphereRenderer.h" />
     <ClInclude Include="src\SphereX.h" />

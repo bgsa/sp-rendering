@@ -107,9 +107,9 @@ namespace NAMESPACE_RENDERING
 	void Square::setUpImage(std::string filename)
 	{
 		Image *image = ImageFactory::load(filename.c_str());
-		unsigned char* pixels = image->getData();
-		GLsizei width = image->getWidth();
-		GLsizei height = image->getHeight();
+		sp_uchar* pixels = image->data();
+		GLsizei width = image->width();
+		GLsizei height = image->height();
 		GLenum colorFormat = image->getColorFormat();
 
 		glGenTextures(1, &texture);

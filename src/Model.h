@@ -11,6 +11,7 @@ namespace NAMESPACE_RENDERING
 		: public Object
 	{
 	public:
+		SpString* name;
 		SpArray<Vec3f>* vertexes;
 		SpArray<Vec3f>* normals;
 		SpArray<Vec3ui>* faces;
@@ -18,6 +19,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE Model()
 		{
+			name = NULL;
 			vertexes = NULL;
 			normals = NULL; 
 			faces = NULL;
@@ -45,6 +47,12 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE virtual void dispose() override
 		{
+			if (name != NULL)
+			{
+				sp_mem_delete(name, SpString);
+				name = NULL;
+			}
+
 			if (vertexes != NULL)
 			{
 				sp_mem_release(vertexes);

@@ -8,6 +8,8 @@
 #include "ObjModel.h"
 #include "OpenGLBuffer.h"
 #include "OpenGLShader.h"
+#include "OpenGLTexture.h"
+#include "ImageBMP.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -18,8 +20,10 @@ namespace NAMESPACE_RENDERING
 		OpenGLBuffer* vertexBuffer;
 		OpenGLShader* shader;
 
-
 		ObjModel model; // teste only
+		OpenGLTexture* texture = NULL;
+
+		sp_int textureAttribute;
 
 	public:
 

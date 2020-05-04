@@ -13,52 +13,55 @@ namespace NAMESPACE_RENDERING
 	{
 	private:
 		GLuint textureId = NULL;
-		Vec2f size;
-
-		OpenGLTexture()
-		{
-		}
+		Vec2i size;
 
 	public:
 
-		API_INTERFACE static OpenGLTexture* create(const sp_uchar* data, Vec2f size)
+		API_INTERFACE OpenGLTexture()
 		{
-			OpenGLTexture* instance = new OpenGLTexture();
-			instance->size = size;
+		}
 
-			glGenTextures(1, &instance->textureId);
-			glBindTexture(GL_TEXTURE_2D, instance->textureId);
+		API_INTERFACE inline OpenGLTexture* init()
+		{
+			glGenTextures(1, &textureId);
+			return this;
+		}
 
-			// Setup filtering parameters for display
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		API_INTERFACE inline OpenGLTexture* use()
+		{
+			glBindTexture(GL_TEXTURE_2D, textureId);
+			return this;
+		}
 
-			// Upload pixels into texture
-			glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)size.x, (GLsizei)size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-
-			return instance;
+		API_INTERFACE inline OpenGLTexture* setProperty(GLenum name, GLint value)
+		{
+			glTexParameteri(GL_TEXTURE_2D, name, value);
+			return this;
 		}
 
 		API_INTERFACE static OpenGLTexture* createFromFramebuffer(GLenum framebuffer = GL_BACK)
 		{
 			Vec2f size = RendererSettings::getInstance()->getSize();
 			sp_uchar* data = Framebuffer::getFramebuffer(framebuffer);
-			OpenGLTexture* texture = create(data, size);
 
-			delete[] data;
+			OpenGLTexture* texture = sp_mem_new(OpenGLTexture)();
+			texture->use()
+				->setProperty(GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+				->setProperty(GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+				->setData(data, Vec2i((sp_int) size.x, (sp_int)size.y));
+			
+			sp_mem_release(data);
 			return texture;
 		}
 
-		API_INTERFACE inline void updateData(const sp_uchar* data)
+		API_INTERFACE inline void setData(const sp_uchar* data, const Vec2i& size)
 		{
-			glBindTexture(GL_TEXTURE_2D, textureId);
-
+			this->size = size;
 			glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei)size.x, (GLsizei)size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		}
 
-		API_INTERFACE inline void resize(const Vec2f& size)
+		API_INTERFACE inline void resize(const Vec2i& size)
 		{
 			this->size = size;
 		}

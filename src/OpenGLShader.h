@@ -3,6 +3,9 @@
 
 #include "SpectrumRendering.h"
 #include <SpVector.h>
+#include <SpArray.h>
+#include "ShaderAttribute.h"
+#include "ShaderUniform.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -11,6 +14,62 @@ namespace NAMESPACE_RENDERING
 	private:
 		GLuint program;
 		SpVector<sp_uint> shadersId;
+		SpArray<ShaderAttribute*>* attributes;
+		SpArray<ShaderUniform*>* uniforms;
+
+		void loadAttributes()
+		{
+			sp_int count;
+			glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &count);
+
+			attributes = sp_mem_new(SpArray<ShaderAttribute*>)(count);
+
+			for (sp_int i = ZERO_INT; i < count; i++)
+			{
+				GLint arraySize = 0;
+				GLenum type = 0;
+				GLsizei actualLength = 0;
+				sp_char* name = (sp_char*) ALLOC_ARRAY(sp_char, SP_DEFAULT_STRING_LENGTH);
+
+				glGetActiveAttrib(program, (GLuint)i, SP_DEFAULT_STRING_SIZE, &actualLength, &arraySize, &type, name);
+
+				ShaderAttribute* attr = sp_mem_new(ShaderAttribute)();
+				attr->name = sp_mem_new(SpString)(name);
+				attr->type = type;
+				attr->location = getAttribute(attr->name->data());
+
+				attributes->add(attr);
+
+				ALLOC_RELEASE(name);
+			}
+		}
+
+		void loadUniforms()
+		{
+			sp_int count;
+			glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &count);
+
+			uniforms = sp_mem_new(SpArray<ShaderUniform*>)(count);
+
+			for (sp_int i = ZERO_INT; i < count; i++)
+			{
+				GLint arraySize = 0;
+				GLenum type = 0;
+				GLsizei actualLength = 0;
+				sp_char* name = (sp_char*)ALLOC_ARRAY(sp_char, SP_DEFAULT_STRING_LENGTH);
+
+				glGetActiveUniform(program, (GLuint)i, SP_DEFAULT_STRING_SIZE, &actualLength, &arraySize, &type, name);
+
+				ShaderUniform* attr = sp_mem_new(ShaderUniform)();
+				attr->name = sp_mem_new(SpString)(name);
+				attr->type = type;
+				attr->location = getUniform(attr->name->data());
+
+				uniforms->add(attr);
+
+				ALLOC_RELEASE(name);
+			}
+		}
 
 	public:
 
@@ -129,6 +188,25 @@ namespace NAMESPACE_RENDERING
 			}
 
 			shadersId.dispose();
+
+			loadAttributes();
+			loadUniforms();
+		}
+
+		/// <summary>
+		/// Get the uniforms of actived shader
+		/// </summary>
+		API_INTERFACE inline SpArray<ShaderUniform*>* getUniforms()
+		{
+			return uniforms;
+		}
+
+		/// <summary>
+		/// Get the attributes of actived shader
+		/// </summary>
+		API_INTERFACE inline SpArray<ShaderAttribute*>* getAttributes()
+		{
+			return attributes;
 		}
 
 		/// <summary>
@@ -217,12 +295,39 @@ namespace NAMESPACE_RENDERING
 		}
 
 		/// <summary>
+		/// Eisable all attributes enabled. It is usually used at the begining of shader render
+		/// </summary>
+		API_INTERFACE inline void enableAttributes()
+		{
+			for (sp_uint i = 0; i < attributes->length(); i++)
+				glEnableVertexAttribArray(attributes->data()[i]->location);
+		}
+
+		/// <summary>
+		/// Disable all attributes enabled. It is usually used at the end of shader render
+		/// </summary>
+		API_INTERFACE inline void disableAttributes()
+		{
+			for (sp_uint i = 0; i < attributes->length(); i++)
+				glDisableVertexAttribArray(attributes->data()[i]->location);
+		}
+		
+
+		/// <summary>
 		/// Destruct the shader
 		/// </summary>
 		API_INTERFACE ~OpenGLShader()
 		{
 			if (program != NULL)
+			{
 				glDeleteProgram(program);
+				program = NULL;
+			}
+
+			if (attributes != NULL)
+			{
+				sp_mem_delete(attributes, SpArray<ShaderAttribute*>);
+			}
 		}
 	};
 }

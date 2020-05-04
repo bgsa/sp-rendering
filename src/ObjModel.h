@@ -7,6 +7,7 @@
 #include "SpText.h"
 #include "SpArrayOfString.h"
 
+#define SP_OBJECT_PREFIX  "o "
 #define SP_VERTEX_PREFIX  "v "
 #define SP_NORMAL_PREFIX  "vn"
 #define SP_TEXTURE_PREFIX "vt"
@@ -53,7 +54,16 @@ namespace NAMESPACE_RENDERING
 
 			for (sp_size i = ZERO_SIZE; i < text.length(); i++)
 			{
-				if (text[i]->startWith(SP_VERTEX_PREFIX))
+				if (text[i]->startWith(SP_OBJECT_PREFIX))
+				{
+					const SpArrayOfString* values = text[i]->split(' ');
+					sp_char* content = values->data()[1].data();
+
+					name = sp_mem_new(SpString)(content);
+
+					sp_mem_delete(values, SpArrayOfString);
+				}
+				else if (text[i]->startWith(SP_VERTEX_PREFIX))
 				{
 					const SpArrayOfString* values = text[i]->split(' ');
 					SpString* numbers = values->data();
@@ -124,6 +134,7 @@ namespace NAMESPACE_RENDERING
 	};
 }
 
+#undef SP_OBJECT_PREFIX
 #undef SP_VERTEX_PREFIX
 #undef SP_NORMAL_PREFIX
 #undef SP_TEXTURE_PREFIX

@@ -12,7 +12,7 @@ namespace NAMESPACE_RENDERING
 	sp_uchar* Framebuffer::getFramebuffer(GLenum framebuffer)
 	{
 		Vec2f imageSize = RendererSettings::getInstance()->getSize();
-		sp_uchar* data = new sp_uchar[FOUR_UINT * (sp_uint)imageSize.x * (sp_uint)imageSize.y];
+		sp_uchar* data = (sp_uchar*) sp_mem_calloc(FOUR_UINT * (sp_uint)imageSize.x * (sp_uint)imageSize.y, SIZEOF_UCHAR);
 
 		glPixelStorei(GL_PACK_ALIGNMENT, ONE_INT);
 
@@ -27,27 +27,6 @@ namespace NAMESPACE_RENDERING
 			printf("Unknown error Reading Pixels");
 
 		return data;
-	}
-
-	sp_uint Framebuffer::getFramebufferTexture(GLenum framebuffer)
-	{
-		Vec2f imageSize = RendererSettings::getInstance()->getSize();
-		sp_uchar* imageBuffer = Framebuffer::getFramebuffer(framebuffer);
-
-		GLuint imageTexture;
-		glGenTextures(1, &imageTexture);
-		glBindTexture(GL_TEXTURE_2D, imageTexture);
-
-		// Setup filtering parameters for display
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		// Upload pixels into texture
-		glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (GLsizei) imageSize.x, (GLsizei)imageSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageBuffer);
-
-		delete[] imageBuffer;
-		return imageTexture;
 	}
 
 	void Framebuffer::saveImage(std::string filename, sp_uchar* pixels, sp_float width, sp_float height)

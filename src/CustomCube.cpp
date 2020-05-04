@@ -140,9 +140,9 @@ namespace NAMESPACE_RENDERING
 		setUpTextureAttribute();
 
 		Image *image = ImageFactory::load((std::string("resources/images/") + textureFilename).c_str());
-		unsigned char* pixels = image->getData();
-		GLsizei width = image->getWidth();
-		GLsizei height = image->getHeight();
+		sp_uchar* pixels = image->data();
+		GLsizei width = image->width();
+		GLsizei height = image->height();
 		GLenum colorFormat = image->getColorFormat();
 
 		glGenTextures(1, &texture);

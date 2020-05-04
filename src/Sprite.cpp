@@ -212,9 +212,9 @@ namespace NAMESPACE_RENDERING
 
 		//Image *image = ImageFactory::load("resources/images/mickey.bmp");
 		Image *image = ImageFactory::load("resources/images/sprite.png");
-		unsigned char* pixels = image->getData();
-		GLsizei width = image->getWidth();
-		GLsizei height = image->getHeight();
+		sp_uchar* pixels = image->data();
+		GLsizei width = image->width();
+		GLsizei height = image->height();
 		GLenum colorFormat = image->getColorFormat();
 
 		glGenTextures(1, &texture);

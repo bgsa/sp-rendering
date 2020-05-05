@@ -62,4 +62,4 @@ namespace NAMESPACE_RENDERING
 	};
 }
 
-#endif GRAPHIC_OBJECT
+#endif // GRAPHIC_OBJECT

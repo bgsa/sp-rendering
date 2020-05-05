@@ -12,7 +12,7 @@ namespace NAMESPACE_RENDERING
 		: Object
 	{
 	private:
-		GLuint textureId = NULL;
+		GLuint textureId = ZERO_UINT;
 		Vec2i size;
 
 	public:
@@ -78,10 +78,10 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE void dispose() override
 		{
-			if (textureId != NULL)
+			if (textureId != ZERO_UINT)
 			{
 				glDeleteTextures(ONE_SIZE, &textureId);
-				textureId = NULL;
+				textureId = ZERO_UINT;
 			}
 		}
 

@@ -76,4 +76,4 @@ namespace NAMESPACE_RENDERING
 	};
 }
 
-#endif GRAPHIC_OBJECT_3D
+#endif // GRAPHIC_OBJECT_3D

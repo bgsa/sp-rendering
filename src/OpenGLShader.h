@@ -80,7 +80,7 @@ namespace NAMESPACE_RENDERING
 		{
 			program = glCreateProgram();
 
-			if (program == 0)
+			if (program == ZERO_UINT)
 				Log::error("glCreateProgram was not able to create a new shader program");
 		}
 
@@ -114,7 +114,7 @@ namespace NAMESPACE_RENDERING
 		{
 			GLuint shader = glCreateShader(type);
 
-			if (shader == NULL)
+			if (shader == ZERO_UINT)
 				return NULL;
 
 			glShaderSource(shader, 1, &source, nullptr);
@@ -235,66 +235,6 @@ namespace NAMESPACE_RENDERING
 		}
 
 		/// <summary>
-		/// Set the uniform value of shader for Mat4f value
-		/// </summary>
-		template <>
-		API_INTERFACE inline OpenGLShader* setUniform(const GLint id, const Mat4f& value)
-		{
-			glUniformMatrix4fv(id, ONE_INT, GL_FALSE, value);
-			return this;
-		}
-
-		/// <summary>
-		/// Set the uniform value of shader for Mat3f value
-		/// </summary>
-		template <>
-		API_INTERFACE inline OpenGLShader* setUniform(const GLint id, const Mat3f& value)
-		{
-			glUniformMatrix3fv(id, ONE_INT, GL_FALSE, value);
-			return this;
-		}
-
-		/// <summary>
-		/// Set the uniform value of shader for Mat2f value
-		/// </summary>
-		template <>
-		API_INTERFACE inline OpenGLShader* setUniform(const GLint id, const Mat2f& value)
-		{
-			glUniformMatrix3fv(id, ONE_INT, GL_FALSE, value);
-			return this;
-		}
-
-		/// <summary>
-		/// Set the uniform value of shader for Mat2f value
-		/// </summary>
-		template <>
-		API_INTERFACE inline OpenGLShader* setUniform(const GLint id, const Vec4f& value)
-		{
-			glUniform4fv(id, ONE_INT, value);
-			return this;
-		}
-
-		/// <summary>
-		/// Set the uniform value of shader for Mat2f value
-		/// </summary>
-		template <>
-		API_INTERFACE inline OpenGLShader* setUniform(const GLint id, const Vec3f& value)
-		{
-			glUniform3fv(id, ONE_INT, value);
-			return this;
-		}
-
-		/// <summary>
-		/// Set the uniform value of shader for Mat2f value
-		/// </summary>
-		template <>
-		API_INTERFACE inline OpenGLShader* setUniform(const GLint id, const Vec2f& value)
-		{
-			glUniform2fv(id, ONE_INT, value);
-			return this;
-		}
-
-		/// <summary>
 		/// Eisable all attributes enabled. It is usually used at the begining of shader render
 		/// </summary>
 		API_INTERFACE inline void enableAttributes()
@@ -318,10 +258,10 @@ namespace NAMESPACE_RENDERING
 		/// </summary>
 		API_INTERFACE ~OpenGLShader()
 		{
-			if (program != NULL)
+			if (program != ZERO_UINT)
 			{
 				glDeleteProgram(program);
-				program = NULL;
+				program = ZERO_UINT;
 			}
 
 			if (attributes != NULL)
@@ -330,6 +270,67 @@ namespace NAMESPACE_RENDERING
 			}
 		}
 	};
+
+
+	/// <summary>
+	/// Set the uniform value of shader for Mat4f value
+	/// </summary>
+	template <>
+	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const Mat4f& value)
+	{
+		glUniformMatrix4fv(id, ONE_INT, GL_FALSE, value);
+		return this;
+	}
+
+	/// <summary>
+	/// Set the uniform value of shader for Mat3f value
+	/// </summary>
+	template <>
+	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const Mat3f& value)
+	{
+		glUniformMatrix3fv(id, ONE_INT, GL_FALSE, value);
+		return this;
+	}
+
+	/// <summary>
+	/// Set the uniform value of shader for Mat2f value
+	/// </summary>
+	template <>
+	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const Mat2f& value)
+	{
+		glUniformMatrix3fv(id, ONE_INT, GL_FALSE, value);
+		return this;
+	}
+
+	/// <summary>
+	/// Set the uniform value of shader for Mat2f value
+	/// </summary>
+	template <>
+	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const Vec4f& value)
+	{
+		glUniform4fv(id, ONE_INT, value);
+		return this;
+	}
+
+	/// <summary>
+	/// Set the uniform value of shader for Mat2f value
+	/// </summary>
+	template <>
+	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const Vec3f& value)
+	{
+		glUniform3fv(id, ONE_INT, value);
+		return this;
+	}
+
+	/// <summary>
+	/// Set the uniform value of shader for Mat2f value
+	/// </summary>
+	template <>
+	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const Vec2f& value)
+	{
+		glUniform2fv(id, ONE_INT, value);
+		return this;
+	}
 }
 
 #endif // OPENGL_SHADER_HEADER

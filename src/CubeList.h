@@ -26,4 +26,4 @@ namespace NAMESPACE_RENDERING
 	};
 }
 
-#endif CUBE_LIST
+#endif // CUBE_LIST

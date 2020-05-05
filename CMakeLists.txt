@@ -26,7 +26,6 @@ set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_DIR}/lib)
 set (SP_FOUNDATION_DIR ${SOLUTION_DIR}/sp-foundation)
 set (SP_PHYSICS_DIR ${SOLUTION_DIR}/sp-physics)
 set (VENDOR_DIR ${SOLUTION_DIR}/vendor)
-set (ENV_DEFINITION "-DENV_32BITS")
 
 set (CMAKE_C_STANDARD 11)
 set (CMAKE_C_STANDARD_REQUIRED ON)
@@ -37,16 +36,17 @@ if ( ${ARCH_BITS} STREQUAL "64" )
 	set (ARCH "x86_64")
 	set (CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -m64 -fPIC -std=c11" )
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64 -fPIC -std=c++11" )
-	set (ENV_DEFINITION "-DENV_64BITS")
+	set (OS_LIB_DIR       /usr/lib/x86_64-linux-gnu)
+	set (OS_BIN_DIR       /usr/bin/x86_64-linux-gnu)
 else()
 	set (ARCH "x86")	
 	set (CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -m32 -fPIC -std=c11" )
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -fPIC -std=c++11" )
-	set (ENV_DEFINITION "-DENV_32BITS")
+	set (OS_LIB_DIR       /usr/local/lib)
+	set (OS_BIN_DIR       /usr/local/bin)
 endif()
 
 if ( ${OPERATING_SYSTEM} STREQUAL "WINDOWS" )
-
 	if( ${BUILD_SHARED_LIBS} )
 		set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD")
 		set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG}   /MDd")
@@ -58,13 +58,15 @@ if ( ${OPERATING_SYSTEM} STREQUAL "WINDOWS" )
 	set (SP_FOUNDATION_LIB_NAME "SpFoundation.lib")
 	set (SP_PHYSICS_LIB_NAME    "SpPhysics.lib")
 	set (CUSTOM_DEFINITIONS "-D_CRT_SECURE_NO_WARNINGS")
+	set (OS_INCLUDE_DIR .)
 
-elseif ( ${OPERATING_SYSTEM} STREQUAL "LINUX" OR ${OPERATING_SYSTEM} STREQUAL "UNIX" )
+elseif ( ${OPERATING_SYSTEM} STREQUAL "LINUX" OR ${OPERATING_SYSTEM} STREQUAL "OSX" )
 	set (SP_FOUNDATION_LIB_NAME "libSpFoundation.a")
 	set (SP_PHYSICS_LIB_NAME "libSpPhysics.a"   )
-	set (CUSTOM_DEFINITIONS "-Wno-dangling-else")	
+	set (CUSTOM_DEFINITIONS "-Wno-dangling-else" "-Wno-ignored-attributes")
+	set (OS_INCLUDE_DIR /usr/local/include)
 else()
-    message(FATAL_ERROR "Operating System not defined!")
+	message(FATAL_ERROR "Operating System not defined!")
 endif()
 
 file(GLOB SOURCES "src/*.cpp")
@@ -81,9 +83,8 @@ link_directories(
 	${VENDOR_DIR}/lib/${BUILD_TYPE}
 	${SP_FOUNDATION_DIR}/lib/${BUILD_TYPE}
 	${SP_PHYSICS_DIR}/lib/${BUILD_TYPE}
-	/usr/bin/x86_64-linux-gnu
-	/usr/lib/x86_64-linux-gnu
-	/usr/local/lib
+	${OS_LIB_DIR}
+	${OS_BIN_DIR}
 )
 
 if ( ${BUILD_SHARED_LIBS} )
@@ -92,12 +93,12 @@ else()
 	add_library(${PROJECT_NAME} STATIC ${SOURCES})
 endif()
 
-if ( ${OPERATING_SYSTEM} STREQUAL "WINDOWS" )
-    add_definitions(-DAPI_EXPORT -DOPENGL_ENABLED ${ENV_DEFINITION} ${CUSTOM_DEFINITIONS} -DWINDOWS)
-elseif ( ${OPERATING_SYSTEM} STREQUAL "LINUX" )
-    add_definitions(-DAPI_EXPORT -DOPENGL_ENABLED ${ENV_DEFINITION} ${CUSTOM_DEFINITIONS} -DLINUX)
-elseif ( ${OPERATING_SYSTEM} STREQUAL "UNIX" )
-    add_definitions(-DAPI_EXPORT -DOPENGL_ENABLED ${ENV_DEFINITION} ${CUSTOM_DEFINITIONS} -DUNIX)
+if     ( ${OPERATING_SYSTEM} STREQUAL "WINDOWS" )
+    add_definitions(-DAPI_EXPORT -DOPENGL_ENABLED ${CUSTOM_DEFINITIONS} -DWINDOWS)
+elseif ( ${OPERATING_SYSTEM} STREQUAL "LINUX"   )
+    add_definitions(-DAPI_EXPORT -DOPENGL_ENABLED ${CUSTOM_DEFINITIONS} -DLINUX)
+elseif ( ${OPERATING_SYSTEM} STREQUAL "OSX"     )
+    add_definitions(-DAPI_EXPORT -DOPENGL_ENABLED ${CUSTOM_DEFINITIONS} -DOSX)
 else()
     message(FATAL_ERROR "Operating System not defined!")
 endif()
@@ -108,7 +109,7 @@ target_link_libraries(${PROJECT_NAME}
 	${OpenCL_LIBRARIES}
 )
 
-if ( ${OPERATING_SYSTEM} STREQUAL "UNIX" )
+if ( ${OPERATING_SYSTEM} STREQUAL "OSX" )
 	target_link_libraries(${PROJECT_NAME}
 	    "-framework Cocoa"
 	    "-framework IOKit"

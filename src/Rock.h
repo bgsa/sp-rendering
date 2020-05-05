@@ -17,11 +17,14 @@ namespace NAMESPACE_RENDERING
 		: public GraphicObject3D<Rock, DOP18>
 	{
 	private:
-		OpenGLBuffer* vertexBuffer;
+		OpenGLBuffer* buffer;
 		OpenGLShader* shader;
 
 		ObjModel model; // teste only
 		OpenGLTexture* texture = NULL;
+
+		sp_size sizeOfVertexes;
+		sp_size sizeOfNormals;
 
 		sp_int textureAttribute;
 

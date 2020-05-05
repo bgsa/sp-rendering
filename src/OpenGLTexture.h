@@ -48,17 +48,17 @@ namespace NAMESPACE_RENDERING
 			texture->use()
 				->setProperty(GL_TEXTURE_MIN_FILTER, GL_LINEAR)
 				->setProperty(GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-				->setData(data, Vec2i((sp_int) size.x, (sp_int)size.y));
+				->setData(data, Vec2i((sp_int) size.x, (sp_int)size.y), GL_RGBA);
 			
 			sp_mem_release(data);
 			return texture;
 		}
 
-		API_INTERFACE inline void setData(const sp_uchar* data, const Vec2i& size)
+		API_INTERFACE inline void setData(const sp_uchar* data, const Vec2i& size, GLint colorFormat)
 		{
 			this->size = size;
 			glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, colorFormat, size.x, size.y, 0, colorFormat, GL_UNSIGNED_BYTE, data);
 		}
 
 		API_INTERFACE inline void resize(const Vec2i& size)

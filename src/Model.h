@@ -38,12 +38,28 @@ namespace NAMESPACE_RENDERING
 		{
 			return normals->length() * sizeof(Vec3f);
 		}
-		API_INTERFACE inline sp_size sizeOftextures()
+		API_INTERFACE inline sp_size sizeOfTextures()
 		{
 			return textureCoordinates->length() * sizeof(Vec2f);
 		}
 
 		API_INTERFACE virtual void load(const SpString& filename) = 0;
+
+		API_INTERFACE virtual sp_size sizeOfAllBuffers()
+		{
+			return sizeOfVertexes() + sizeOfNormals() + sizeOfTextures();
+		}
+
+		API_INTERFACE virtual void allBuffers(sp_char* allocatedBuffer)
+		{
+			const sp_size sizeVertexes = sizeOfVertexes();
+			const sp_size sizeNormals = sizeOfNormals();
+			const sp_size sizeTextures = sizeOfTextures();
+
+			std::memcpy(allocatedBuffer, (sp_char*) vertexes->data(), sizeVertexes);
+			std::memcpy(&allocatedBuffer[sizeVertexes], (sp_char*)normals->data(), sizeNormals);
+			std::memcpy(&allocatedBuffer[sizeVertexes + sizeNormals], (sp_char*)textureCoordinates->data(), sizeTextures);
+		}
 
 		API_INTERFACE virtual void dispose() override
 		{

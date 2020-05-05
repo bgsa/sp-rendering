@@ -6,22 +6,23 @@ namespace NAMESPACE_RENDERING
 	void Rock::render(const RenderData& renderData)
 	{
 		shader->use();
+		buffer->use();
+		texture->use();
 
-		vertexBuffer->use();
 		glVertexAttribPointer(positionAttribute,
 			3,
 			GL_FLOAT,
 			GL_FALSE,
 			0,
-			0);
-
-		texture->use();
+			0
+		);
 		glVertexAttribPointer(textureAttribute,
 			2,
 			GL_FLOAT,
 			GL_FALSE,
 			0,
-			0);
+			(void*)(sizeOfVertexes + sizeOfNormals)
+		);
 
 		shader->enableAttributes();
 
@@ -42,7 +43,18 @@ namespace NAMESPACE_RENDERING
 	void Rock::init()
 	{
 		model.load("resources\\models\\rocks\\RockCustom.obj");
-		vertexBuffer = sp_mem_new(OpenGLBuffer)(model.sizeOfVertexes(), model.vertexes->data());
+
+		//vertexBuffer = sp_mem_new(OpenGLBuffer)(model.sizeOfVertexes(), model.vertexes->data());
+		//sizeOfVertexes = model.sizeOfVertexes();
+		//sizeOfNormals = model.sizeOfNormals();
+		sizeOfVertexes = model.vertexes->length();
+		sizeOfNormals = model.normals->length();
+
+		const sp_size sizeAllBuffers = model.sizeOfAllBuffers();
+		sp_char* tempCpuBuffer = ALLOC_ARRAY(sp_char, sizeAllBuffers);
+		model.allBuffers(tempCpuBuffer);
+		buffer = sp_mem_new(OpenGLBuffer)(sizeAllBuffers, tempCpuBuffer);
+		ALLOC_RELEASE(tempCpuBuffer);
 
 		shader = sp_mem_new(OpenGLShader)();
 		shader
@@ -55,24 +67,24 @@ namespace NAMESPACE_RENDERING
 		modelViewLocation = shader->getUniform("modelMatrix");
 
 		positionAttribute = shader->getAttribute("Position");
-		textureAttribute = shader->getAttribute("TextureCoordinates");
+		textureAttribute = shader->getAttribute("TexCoord");
 
 		texture = sp_mem_new(OpenGLTexture)();
-		ImageBMP* image = ImageBMP::load("resources\\models\\rocks\\RockCustom.bmp");
+		ImageBMP* image = ImageBMP::load("resources\\models\\rocks\\Rock1.bmp");
 		texture->init()
 			->use()
 			->setProperty(GL_TEXTURE_MIN_FILTER, GL_LINEAR)
 			->setProperty(GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-			->setData(image->data(), Vec2i(image->width(), image->height()));
+			->setData(image->data(), Vec2i(image->width(), image->height()), image->getColorFormat());
 		sp_mem_delete(image, ImageBMP);
 	}
 
 	void Rock::dispose()
 	{
-		if (vertexBuffer != NULL)
+		if (buffer != NULL)
 		{
-			sp_mem_delete(vertexBuffer, OpenGLBuffer);
-			vertexBuffer = NULL;
+			sp_mem_delete(buffer, OpenGLBuffer);
+			buffer = NULL;
 		}
 
 		if (texture != NULL)

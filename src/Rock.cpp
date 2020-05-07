@@ -42,9 +42,8 @@ namespace NAMESPACE_RENDERING
 
 	void Rock::init()
 	{
-		model.load("resources\\models\\rocks\\RockCustom.obj");
+		model.load("resources\\models\\MyRock.OBJ");
 
-		//vertexBuffer = sp_mem_new(OpenGLBuffer)(model.sizeOfVertexes(), model.vertexes->data());
 		//sizeOfVertexes = model.sizeOfVertexes();
 		//sizeOfNormals = model.sizeOfNormals();
 		sizeOfVertexes = model.vertexes->length();
@@ -70,7 +69,7 @@ namespace NAMESPACE_RENDERING
 		textureAttribute = shader->getAttribute("TexCoord");
 
 		texture = sp_mem_new(OpenGLTexture)();
-		ImageBMP* image = ImageBMP::load("resources\\models\\rocks\\Rock1.bmp");
+		ImageBMP* image = ImageBMP::load("resources\\models\\FreeRock\\FreeRock.bmp");
 		texture->init()
 			->use()
 			->setProperty(GL_TEXTURE_MIN_FILTER, GL_LINEAR)

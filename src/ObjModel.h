@@ -21,6 +21,22 @@ namespace NAMESPACE_RENDERING
 	class ObjModel
 		: public Model
 	{
+	private:
+
+		sp_uint countFaces(const SpText& text)
+		{
+			sp_uint result = ZERO_UINT;
+
+			for (sp_uint i = ZERO_UINT; i < text.length(); i++)
+				if (text[i]->startWith(SP_FACE_PREFIX))
+				{
+					sp_uint count = text[i]->count(' ');
+					result += divideBy2(count);
+				}
+
+			return result;
+		}
+
 	public:
 
 		/// <summary>
@@ -41,18 +57,14 @@ namespace NAMESPACE_RENDERING
 			ALLOC_RELEASE(content);
 
 			sp_uint vertexesLength = text.countLinesStartWith(SP_VERTEX_PREFIX);
-			sp_uint normalsLength = text.countLinesStartWith(SP_NORMAL_PREFIX);
 			sp_uint texturesCoordLength = text.countLinesStartWith(SP_TEXTURE_PREFIX);
-			sp_uint facesLength = text.countLinesStartWith(SP_FACE_PREFIX);
-
-			sp_assert(vertexesLength == normalsLength);
+			sp_uint facesLength = countFaces(text);
 
 			vertexes = sp_mem_new(SpArray<Vec3f>)(vertexesLength);
-			normals = sp_mem_new(SpArray<Vec3f>)(normalsLength);
 			textureCoordinates = sp_mem_new(SpArray<Vec2f>)(texturesCoordLength);
 			faces = sp_mem_new(SpArray<Vec3ui>)(facesLength);
 
-			for (sp_size i = ZERO_SIZE; i < text.length(); i++)
+			for (sp_uint i = ZERO_UINT; i < text.length(); i++)
 			{
 				if (text[i]->startWith(SP_OBJECT_PREFIX))
 				{
@@ -69,19 +81,6 @@ namespace NAMESPACE_RENDERING
 					SpString* numbers = values->data();
 
 					vertexes->add({
-						numbers[1].to<sp_float>(),
-						numbers[2].to<sp_float>(),
-						numbers[3].to<sp_float>()
-					});
-
-					sp_mem_delete(values, SpArrayOfString);
-				}
-				else if (text[i]->startWith(SP_NORMAL_PREFIX))
-				{
-					SpArrayOfString* values = text[i]->split(' ');
-					SpString* numbers = values->data();
-
-					normals->add({
 						numbers[1].to<sp_float>(),
 						numbers[2].to<sp_float>(),
 						numbers[3].to<sp_float>()
@@ -114,6 +113,16 @@ namespace NAMESPACE_RENDERING
 
 					faces->add({ index1, index2, index3 });
 
+					if (values->length() == 5u) // if face with 4 vertexes...
+					{
+						SpArrayOfString* pair4 = values->data()[4].split('/');
+						sp_uint index4 = pair4->data()[0].to<sp_uint>() - ONE_UINT;
+
+						faces->add({ index3, index4, index1 });
+
+						sp_mem_delete(pair4, SpArrayOfString);
+					}
+
 					sp_mem_delete(pair3, SpArrayOfString);
 					sp_mem_delete(pair2, SpArrayOfString);
 					sp_mem_delete(pair1, SpArrayOfString);
@@ -121,9 +130,7 @@ namespace NAMESPACE_RENDERING
 				}
 			}
 
-			Vec3ui face1 = faces->data()[0];
-			Vec3ui face2 = faces->data()[1];
-			Vec3ui face3 = faces->data()[2];
+			generateNormals();
 		}
 
 		API_INTERFACE virtual const char* toString() override

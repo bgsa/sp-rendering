@@ -61,6 +61,37 @@ namespace NAMESPACE_RENDERING
 			std::memcpy(&allocatedBuffer[sizeVertexes + sizeNormals], (sp_char*)textureCoordinates->data(), sizeTextures);
 		}
 
+		API_INTERFACE virtual void generateNormals()
+		{
+			if (normals != NULL)
+			{
+				sp_mem_delete(normals, SpArray<Vec3f>);
+			}
+
+			normals = sp_mem_new(SpArray<Vec3f>)(vertexes->length());
+
+			for (sp_uint i = ZERO_UINT; i < vertexes->length(); i++)
+				normals->data()[i] = Vec3f(ZERO_FLOAT);
+
+			for (sp_uint i = ZERO_UINT; i < faces->length(); i++)
+			{
+				const Vec3ui indexes = faces->data()[i];
+
+				const Plane3D plane(
+					vertexes->data()[indexes[0]],
+					vertexes->data()[indexes[1]],
+					vertexes->data()[indexes[2]]
+				);
+
+				normals->data()[indexes[0]] += plane.normalVector;
+				normals->data()[indexes[1]] += plane.normalVector;
+				normals->data()[indexes[2]] += plane.normalVector;
+			}
+
+			for (sp_uint i = ZERO_UINT; i < vertexes->length(); i++)
+				normals->data()[i] = normals->data()[i].normalize();
+		}
+
 		API_INTERFACE virtual void dispose() override
 		{
 			if (name != NULL)

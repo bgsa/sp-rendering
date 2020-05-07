@@ -2,8 +2,6 @@
 #define DEFAULT_RENDERER_MANAGER_HEADER
 
 #include "SpectrumRendering.h"
-#include <DisplayDevice.h>
-#include <WindowInputDevice.h>
 #include <KeyboardInputDevice.h>
 #include <PointerInputDevice.h>
 #include <TouchInputDevice.h>
@@ -37,9 +35,8 @@ namespace NAMESPACE_RENDERING
 		RockRenderer* rockRenderer = NULL;
 
 	protected:
-		DisplayDevice* displayDevice;
+		SpWindow* window;
 		std::vector<PointerInputDevice*> pointerInputDevices;
-		std::vector<WindowInputDevice*> windowInputDevices;
 		std::vector<KeyboardInputDevice*> keyboardInputDevices;
 		std::vector<TouchInputDevice*> touchInputDevices;
 		
@@ -52,7 +49,7 @@ namespace NAMESPACE_RENDERING
 		void updateInputDevices(long long elapsedTime);
 
 	public:
-		API_INTERFACE virtual void init(DisplayDevice* displayDevice);
+		API_INTERFACE virtual void init(SpWindow* window);
 		API_INTERFACE virtual void start();
 		API_INTERFACE void stop();
 		API_INTERFACE void resize(sp_float width, sp_float height) override;
@@ -65,7 +62,6 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE void addPointerHandler(PointerInputDeviceHandler* handler);
 		API_INTERFACE void addKeyboardHandler(KeyboardInputDeviceHandler* handler);
 		API_INTERFACE void addTouchHandler(TouchInputDeviceHandler* handler);
-		API_INTERFACE void addWindowHandler(WindowInputDeviceHandler* handler);
 
 		API_INTERFACE void addGraphicObject(GraphicObject* graphicObject);
 		API_INTERFACE bool hasGraphicObject(GraphicObject* graphicObject);

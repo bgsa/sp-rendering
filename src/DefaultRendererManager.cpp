@@ -3,23 +3,25 @@
 #include "GLConfig.h"
 #include "RendererSettings.h"
 #include "LogGL.hpp"
+#include "SpEventDispatcher.h"
 
 namespace NAMESPACE_RENDERING
 {
 	void DefaultRendererManager::start()
 	{
 #if defined(WINDOWS) || defined(LINUX) || defined(MAC)
-		float nextTick = 0.0f;
-		bool fpsLowerThanFrameLimit = false;
-		float elapsedTime = 0.0f;
+		sp_float nextTick = ZERO_FLOAT;
+		sp_bool fpsLowerThanFrameLimit = false;
+		sp_float elapsedTime = ZERO_FLOAT;
 
 		while (isRunning)
 		{
-			elapsedTime = float(timer.getElapsedTime());
+			elapsedTime = sp_float(timer.getElapsedTime());
 			nextTick = timer.getSkipTick();
 
 			do
 			{
+				SpEventDispatcher::instance()->processAllEvents();
 				update();
 
 				fpsLowerThanFrameLimit = elapsedTime > nextTick;
@@ -61,12 +63,6 @@ namespace NAMESPACE_RENDERING
 	{
 		for (TouchInputDevice* touchInputDevice : touchInputDevices)
 			touchInputDevice->addHandler(handler);
-	}
-
-	void DefaultRendererManager::addWindowHandler(WindowInputDeviceHandler* handler)
-	{
-		for (WindowInputDevice* windowInputDevice : windowInputDevices)
-			windowInputDevice->addHandler(handler);
 	}
 
 	void DefaultRendererManager::addGraphicObject(GraphicObject* graphicObject)
@@ -111,9 +107,9 @@ namespace NAMESPACE_RENDERING
 		}
 	}
 
-	void DefaultRendererManager::init(DisplayDevice* displayDevice)
+	void DefaultRendererManager::init(SpWindow* window)
 	{
-		this->displayDevice = displayDevice;
+		this->window = window;
 
 		Log::info("OpenGL Vendor: " + GLConfig::getGLVendor());
 		Log::info("OpenGL Version: " + GLConfig::getGLVersion());
@@ -132,13 +128,13 @@ namespace NAMESPACE_RENDERING
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);    //enable alpha color
 		glEnable(GL_LINE_SMOOTH);
 
-		sp_float aspectRatio = (sp_float) (displayDevice->getWidth() / displayDevice->getHeight());
+		sp_float aspectRatio = (sp_float) (window->width() / window->height());
 		Vec3f cameraPosition = { 0.0f, 12.0f, -17.0f };
 		Vec3f cameraTarget = { 0.0f, 10.0f, 0.0f };
 		camera = new Camera;
 		camera->initProjectionPerspective(cameraPosition, cameraTarget, aspectRatio);
 
-		glViewport(0, 0, (GLsizei) displayDevice->getWidth(), (GLsizei) displayDevice->getHeight());
+		glViewport(0, 0, window->width(), window->height());
 
 		if (editor != NULL)
 			editor->init(this);
@@ -157,9 +153,6 @@ namespace NAMESPACE_RENDERING
 			device->update(elapsedTime);
 
 		for (InputDevice* device : keyboardInputDevices)
-			device->update(elapsedTime);
-
-		for (InputDevice* device : windowInputDevices)
 			device->update(elapsedTime);
 
 		for (InputDevice* device : touchInputDevices)
@@ -283,7 +276,7 @@ namespace NAMESPACE_RENDERING
 		if (editor != NULL)
 			editor->render(renderData);
 
-		displayDevice->swapBuffer();
+		window->refresh();
 	}
 
 	void DefaultRendererManager::postRender()
@@ -306,10 +299,6 @@ namespace NAMESPACE_RENDERING
 		KeyboardInputDevice* keyboardDevice = dynamic_cast<KeyboardInputDevice*>(inputDevice);
 		if (keyboardDevice)
 			keyboardInputDevices.push_back(keyboardDevice);
-
-		WindowInputDevice* windowDevice = dynamic_cast<WindowInputDevice*>(inputDevice);
-		if (windowDevice)
-			windowInputDevices.push_back(windowDevice);
 
 		TouchInputDevice* touchDevice = dynamic_cast<TouchInputDevice*>(inputDevice);
 		if (touchDevice)

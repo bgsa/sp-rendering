@@ -2,7 +2,7 @@
 #define I_RENDERER_MANAGER_HEADER
 
 #include "SpectrumRendering.h"
-#include "DisplayDevice.h"
+#include "SpWindow.h"
 #include "RenderData.h"
 #include "GraphicObject.h"
 
@@ -12,7 +12,7 @@ namespace NAMESPACE_RENDERING
 	{
 	public:
 
-		API_INTERFACE virtual void init(DisplayDevice* displayDevice) = 0;
+		API_INTERFACE virtual void init(SpWindow* window) = 0;
 
 		API_INTERFACE virtual void start() = 0;
 

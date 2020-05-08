@@ -2,9 +2,6 @@
 #define DEFAULT_RENDERER_MANAGER_HEADER
 
 #include "SpectrumRendering.h"
-#include <KeyboardInputDevice.h>
-#include <PointerInputDevice.h>
-#include <TouchInputDevice.h>
 #include "RendererEditor.h"
 
 #include <Timer.h>
@@ -36,17 +33,12 @@ namespace NAMESPACE_RENDERING
 
 	protected:
 		SpWindow* window;
-		std::vector<PointerInputDevice*> pointerInputDevices;
-		std::vector<KeyboardInputDevice*> keyboardInputDevices;
-		std::vector<TouchInputDevice*> touchInputDevices;
 		
 		Camera* camera = NULL;
 		RendererEditor* editor = NULL;
 
 		void render2D(RenderData renderData);
 		void render3D(RenderData renderData);
-
-		void updateInputDevices(long long elapsedTime);
 
 	public:
 		API_INTERFACE virtual void init(SpWindow* window);
@@ -59,15 +51,9 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE void render();
 		API_INTERFACE void postRender();
 
-		API_INTERFACE void addPointerHandler(PointerInputDeviceHandler* handler);
-		API_INTERFACE void addKeyboardHandler(KeyboardInputDeviceHandler* handler);
-		API_INTERFACE void addTouchHandler(TouchInputDeviceHandler* handler);
-
 		API_INTERFACE void addGraphicObject(GraphicObject* graphicObject);
 		API_INTERFACE bool hasGraphicObject(GraphicObject* graphicObject);
 		API_INTERFACE void removeGraphicObject(GraphicObject* graphicObject);
-
-		API_INTERFACE void addInputDevice(InputDevice* inputDevice);
 
 		API_INTERFACE Camera* getCamera();
 

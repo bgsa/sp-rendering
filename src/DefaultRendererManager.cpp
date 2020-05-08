@@ -47,24 +47,6 @@ namespace NAMESPACE_RENDERING
 #endif
 	}
 
-	void DefaultRendererManager::addPointerHandler(PointerInputDeviceHandler* handler)
-	{
-		for (PointerInputDevice* pointerInputDevice : pointerInputDevices)
-			pointerInputDevice->addHandler(handler);
-	}
-
-	void DefaultRendererManager::addKeyboardHandler(KeyboardInputDeviceHandler* handler)
-	{
-		for (KeyboardInputDevice* keyboardInputDevice : keyboardInputDevices)
-			keyboardInputDevice->addHandler(handler);
-	}
-
-	void DefaultRendererManager::addTouchHandler(TouchInputDeviceHandler* handler)
-	{
-		for (TouchInputDevice* touchInputDevice : touchInputDevices)
-			touchInputDevice->addHandler(handler);
-	}
-
 	void DefaultRendererManager::addGraphicObject(GraphicObject* graphicObject)
 	{
 		graphicObjects.push_back(graphicObject);
@@ -128,13 +110,12 @@ namespace NAMESPACE_RENDERING
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);    //enable alpha color
 		glEnable(GL_LINE_SMOOTH);
 
-		sp_float aspectRatio = (sp_float) (window->width() / window->height());
 		Vec3f cameraPosition = { 0.0f, 12.0f, -17.0f };
 		Vec3f cameraTarget = { 0.0f, 10.0f, 0.0f };
-		camera = new Camera;
-		camera->initProjectionPerspective(cameraPosition, cameraTarget, aspectRatio);
+		camera = sp_mem_new(Camera)();
+		camera->initProjectionPerspective(cameraPosition, cameraTarget, window->state()->aspectRatio());
 
-		glViewport(0, 0, window->width(), window->height());
+		glViewport(0, 0, window->state()->width, window->state()->height);
 
 		if (editor != NULL)
 			editor->init(this);
@@ -147,23 +128,11 @@ namespace NAMESPACE_RENDERING
 		this->addGraphicObject(rock);
 	}
 
-	void DefaultRendererManager::updateInputDevices(long long elapsedTime)
-	{
-		for (InputDevice* device : pointerInputDevices)
-			device->update(elapsedTime);
-
-		for (InputDevice* device : keyboardInputDevices)
-			device->update(elapsedTime);
-
-		for (InputDevice* device : touchInputDevices)
-			device->update(elapsedTime);
-	}
-
 	void DefaultRendererManager::update()
 	{
 		timer.update();
 
-		long long elapsedTime = timer.getElapsedTime();
+		sp_longlong elapsedTime = timer.getElapsedTime();
 
 		/*
 		// CHECK COLLISIONS !!!!    CUBE (OBB) x CUBE (OBB)
@@ -205,9 +174,7 @@ namespace NAMESPACE_RENDERING
 		}
 		// END COLLISION !
 		*/
-
-		updateInputDevices(elapsedTime);
-
+		
 		for (GraphicObject* graph : graphicObjects)
 			graph->update(elapsedTime);
 	}
@@ -290,21 +257,6 @@ namespace NAMESPACE_RENDERING
 		isRunning = false;
 	}
 
-	void DefaultRendererManager::addInputDevice(InputDevice* inputDevice)
-	{
-		PointerInputDevice* pointerDevice = dynamic_cast<PointerInputDevice*>(inputDevice);
-		if (pointerDevice)
-			pointerInputDevices.push_back(pointerDevice);
-
-		KeyboardInputDevice* keyboardDevice = dynamic_cast<KeyboardInputDevice*>(inputDevice);
-		if (keyboardDevice)
-			keyboardInputDevices.push_back(keyboardDevice);
-
-		TouchInputDevice* touchDevice = dynamic_cast<TouchInputDevice*>(inputDevice);
-		if (touchDevice)
-			touchInputDevices.push_back(touchDevice);
-	}
-
 	Camera* DefaultRendererManager::getCamera()
 	{
 		return camera;
@@ -312,10 +264,10 @@ namespace NAMESPACE_RENDERING
 
 	DefaultRendererManager::~DefaultRendererManager()
 	{
-		if (camera != nullptr)
+		if (camera != NULL)
 		{
-			delete camera;
-			camera = nullptr;
+			sp_mem_delete(camera, Camera);
+			camera = NULL;
 		}
 
 		if (editor != NULL)

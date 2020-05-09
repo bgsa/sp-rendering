@@ -15,14 +15,14 @@ namespace NAMESPACE_RENDERING
 		Mat4f projectionMatrix;
 		Mat4f viewMatrix;
 
-		Vec3f position = Vec3f(0.0f);
-		Vec3f target = Vec3f(0.0f);
-		Vec3f up = Vec3f(0.0f);
+		Vec3f position = Vec3f(ZERO_FLOAT);
+		Vec3f target = Vec3f(ZERO_FLOAT);
+		Vec3f up = Vec3f(ZERO_FLOAT);
 
-		float fieldOfView = MAX_FIELD_OF_VIEW;
-		float aspectRatio = 0.0f;
-		float nearFrustum = 1.0f;
-		float farFrustum = 1000.0f;
+		sp_float fieldOfView = MAX_FIELD_OF_VIEW;
+		sp_float aspectRatio = ZERO_FLOAT;
+		sp_float nearFrustum = ONE_FLOAT;
+		sp_float farFrustum = 1000.0f;
 
 		Vec4f nearUpperLeft, nearLowerLeft, nearUpperRight, nearLowerRight;
 		Vec4f farUpperLeft, farLowerLeft, farUpperRright, farLowerRight;
@@ -30,29 +30,31 @@ namespace NAMESPACE_RENDERING
 		void updateViewMatrix();
 
 	public:
-		void init(const Vec3f& position, const Vec3f& target, const Vec3f& up = Vec3f(0.0f, 1.0f, 0.0f));
-		void initProjectionPerspective(const Vec3f& position, const Vec3f& target, float aspectRatio);
+		Mat4f transform;
+		
+		API_INTERFACE void init(const Vec3f& position, const Vec3f& target, const Vec3f& up = Vec3f(ZERO_FLOAT, ONE_FLOAT, ZERO_FLOAT));
+		API_INTERFACE void initProjectionPerspective(const Vec3f& position, const Vec3f& target, sp_float aspectRatio);
 
-		float getFieldOfView();
+		API_INTERFACE inline sp_float getFieldOfView() const;
 
-		void zoom(float scale);
-		void moveForward(float distance);
-		void moveBackward(float distance);
-		void moveLeft(float distance);
-		void moveRight(float distance);
-		void lookAtHorizontal(float angleInRadians);
-		void lookAtVertical(float angleInRadians);
+		API_INTERFACE void zoom(sp_float scale);
+		API_INTERFACE void moveForward(sp_float distance);
+		API_INTERFACE void moveBackward(sp_float distance);
+		API_INTERFACE void moveLeft(sp_float distance);
+		API_INTERFACE void moveRight(sp_float distance);
+		API_INTERFACE void lookAtHorizontal(sp_float angleInRadians);
+		API_INTERFACE void lookAtVertical(sp_float angleInRadians);
 
-		Mat4f& getProjectionMatrix();
-		Mat4f& getViewMatrix();
-		Mat4f getHUDProjectionMatrix(float width, float height);
+		API_INTERFACE Mat4f& getProjectionMatrix();
+		API_INTERFACE Mat4f& getViewMatrix();
+		API_INTERFACE Mat4f getHUDProjectionMatrix(sp_float width, sp_float height);
 
-		void setProjectionPerspective(float fieldOfView, float aspect, float near, float far);
-		void setProjectionOrthographic(GLfloat xMin, GLfloat xMax, GLfloat yMin, GLfloat yMax, GLfloat zMin, GLfloat zMax);
+		API_INTERFACE void setProjectionPerspective(sp_float fieldOfView, sp_float aspect, sp_float near, sp_float far);
+		API_INTERFACE void setProjectionOrthographic(sp_float xMin, sp_float xMax, sp_float yMin, sp_float yMax, sp_float zMin, sp_float zMax);
 
-		void updateProjectionPerspectiveAspect(float aspectRatio);
+		API_INTERFACE void updateProjectionPerspectiveAspect(sp_float aspectRatio);
 
-		Vec3f getFromWorldToScreen(Vec3f& vertex, Mat4f& modelViewMatrix);
+		API_INTERFACE Vec3f getFromWorldToScreen(Vec3f& vertex, Mat4f& modelViewMatrix);
 	};
 }
 

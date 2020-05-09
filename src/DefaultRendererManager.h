@@ -33,29 +33,25 @@ namespace NAMESPACE_RENDERING
 
 	protected:
 		SpWindow* window;
-		
-		Camera* camera = NULL;
 		RendererEditor* editor = NULL;
 
 		void render2D(RenderData renderData);
 		void render3D(RenderData renderData);
 
 	public:
-		API_INTERFACE virtual void init(SpWindow* window);
-		API_INTERFACE virtual void start();
-		API_INTERFACE void stop();
+		API_INTERFACE virtual void init(SpWindow* window) override;
+		API_INTERFACE virtual void start() override;
+		API_INTERFACE void stop() override;
 		API_INTERFACE void resize(sp_float width, sp_float height) override;
 
-		API_INTERFACE void update();
-		API_INTERFACE void preRender();
-		API_INTERFACE void render();
-		API_INTERFACE void postRender();
+		API_INTERFACE void update() override;
+		API_INTERFACE void preRender() override;
+		API_INTERFACE void render() override;
+		API_INTERFACE void postRender() override;
 
-		API_INTERFACE void addGraphicObject(GraphicObject* graphicObject);
-		API_INTERFACE bool hasGraphicObject(GraphicObject* graphicObject);
-		API_INTERFACE void removeGraphicObject(GraphicObject* graphicObject);
-
-		API_INTERFACE Camera* getCamera();
+		API_INTERFACE void addGraphicObject(GraphicObject* graphicObject) override;
+		API_INTERFACE sp_bool hasGraphicObject(GraphicObject* graphicObject) override;
+		API_INTERFACE void removeGraphicObject(GraphicObject* graphicObject) override;
 
 		API_INTERFACE inline void setRendererEditor(RendererEditor* editor)
 		{

@@ -52,7 +52,7 @@ namespace NAMESPACE_RENDERING
 		graphicObjects.push_back(graphicObject);
 	}
 
-	bool DefaultRendererManager::hasGraphicObject(GraphicObject* graphicObject)
+	sp_bool DefaultRendererManager::hasGraphicObject(GraphicObject* graphicObject)
 	{
 		std::vector<GraphicObject*>::iterator item = std::find(graphicObjects.begin(), graphicObjects.end(), graphicObject);
 		return item != graphicObjects.end();
@@ -82,11 +82,7 @@ namespace NAMESPACE_RENDERING
 		glViewport(0, 0, (GLsizei) width, (GLsizei)height);
 		glScissor(0, 0, (GLsizei)width, (GLsizei)height);
 
-		if (camera != NULL)
-		{
-			sp_float aspectRatio = settings->getAspectRatio();
-			camera->updateProjectionPerspectiveAspect(aspectRatio);
-		}
+		_camera->updateProjectionPerspectiveAspect(settings->getAspectRatio());
 	}
 
 	void DefaultRendererManager::init(SpWindow* window)
@@ -112,8 +108,8 @@ namespace NAMESPACE_RENDERING
 
 		Vec3f cameraPosition = { 0.0f, 12.0f, -17.0f };
 		Vec3f cameraTarget = { 0.0f, 10.0f, 0.0f };
-		camera = sp_mem_new(Camera)();
-		camera->initProjectionPerspective(cameraPosition, cameraTarget, window->state()->aspectRatio());
+		_camera = sp_mem_new(Camera)();
+		_camera->initProjectionPerspective(cameraPosition, cameraTarget, window->state()->aspectRatio());
 
 		glViewport(0, 0, window->state()->width, window->state()->height);
 
@@ -210,11 +206,11 @@ namespace NAMESPACE_RENDERING
 		sp_float aspectRatio = settings->getAspectRatio();
 		ColorRGBAf backgroundColor = settings->getBackgroudColor().normalizeColor();
 		
-		camera->updateProjectionPerspectiveAspect(aspectRatio);
+		_camera->updateProjectionPerspectiveAspect(aspectRatio);
 
 		RenderData renderData;
-		renderData.projectionMatrix = camera->getProjectionMatrix();
-		renderData.viewMatrix = camera->getViewMatrix();
+		renderData.projectionMatrix = _camera->getProjectionMatrix();
+		renderData.viewMatrix = _camera->getViewMatrix() * _camera->transform;
 
 		glViewport(0, 0, (GLsizei) size.x, (GLsizei)size.y);
 		glScissor(0, 0, (GLsizei)size.x, (GLsizei)size.y);
@@ -233,7 +229,7 @@ namespace NAMESPACE_RENDERING
 
 		render3D(renderData);
 
-		renderData.projectionMatrix = camera->getHUDProjectionMatrix(size.x, size.y);
+		renderData.projectionMatrix = _camera->getHUDProjectionMatrix(size.x, size.y);
 
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_CULL_FACE);
@@ -257,17 +253,12 @@ namespace NAMESPACE_RENDERING
 		isRunning = false;
 	}
 
-	Camera* DefaultRendererManager::getCamera()
-	{
-		return camera;
-	}
-
 	DefaultRendererManager::~DefaultRendererManager()
 	{
-		if (camera != NULL)
+		if (_camera != NULL)
 		{
-			sp_mem_delete(camera, Camera);
-			camera = NULL;
+			sp_mem_delete(_camera, Camera);
+			_camera = NULL;
 		}
 
 		if (editor != NULL)

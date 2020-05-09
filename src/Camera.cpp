@@ -8,6 +8,8 @@ namespace NAMESPACE_RENDERING
 		this->target = target;
 		this->up = up;
 
+		transform = Mat4f::identity();
+
 		updateViewMatrix();
 	}
 
@@ -18,28 +20,28 @@ namespace NAMESPACE_RENDERING
 		Vec3f cameraUp = cameraDirection.cross(cameraRight);       //yAxis
 
 		viewMatrix = {
-			cameraRight[0], cameraUp[0], cameraDirection[0], 0.0f,
-			cameraRight[1], cameraUp[1], cameraDirection[1], 0.0f,
-			cameraRight[2], cameraUp[2], cameraDirection[2], 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f
+			cameraRight[0], cameraUp[0], cameraDirection[0], ZERO_FLOAT,
+			cameraRight[1], cameraUp[1], cameraDirection[1], ZERO_FLOAT,
+			cameraRight[2], cameraUp[2], cameraDirection[2], ZERO_FLOAT,
+			ZERO_FLOAT, ZERO_FLOAT, ZERO_FLOAT, ONE_FLOAT
 		};
 
 		viewMatrix *= Mat4f::createTranslate(-position[0], -position[1], -position[2]);
 	}
 
-	void Camera::initProjectionPerspective(const Vec3f& position, const Vec3f& target, float aspectRatio)
+	void Camera::initProjectionPerspective(const Vec3f& position, const Vec3f& target, sp_float aspectRatio)
 	{
 		init(position, target);
 		updateProjectionPerspectiveAspect(aspectRatio);
 	}
 
-	void Camera::updateProjectionPerspectiveAspect(float aspectRatio)
+	void Camera::updateProjectionPerspectiveAspect(sp_float aspectRatio)
 	{
 		this->aspectRatio = aspectRatio;
 		setProjectionPerspective(fieldOfView, aspectRatio, nearFrustum, farFrustum);
 	}
 
-	float Camera::getFieldOfView()
+	sp_float Camera::getFieldOfView() const
 	{
 		return fieldOfView;
 	}
@@ -54,35 +56,35 @@ namespace NAMESPACE_RENDERING
 		return viewMatrix;
 	}
 
-	void Camera::setProjectionPerspective(float fieldOfView, float aspectRatio, float near, float far)
+	void Camera::setProjectionPerspective(sp_float fieldOfView, sp_float aspectRatio, sp_float near, sp_float far)
 	{
 		this->fieldOfView = fieldOfView;
 		this->aspectRatio = aspectRatio;
 		this->nearFrustum = near;
 		this->farFrustum = far;
 
-		float xmin, xmax, ymin, ymax;       // Dimensions of near clipping plane
-		float xFmin, xFmax, yFmin, yFmax;   // Dimensions of far  clipping plane
+		sp_float xmin, xmax, ymin, ymax;       // Dimensions of near clipping plane
+		sp_float xFmin, xFmax, yFmin, yFmax;   // Dimensions of far  clipping plane
 
 		// Do the Math for the near clipping plane
-		ymax = near * tanf(float(fieldOfView * PI_DIV_360));
+		ymax = near * tanf(sp_float(fieldOfView * PI_DIV_360));
 		ymin = -ymax;
 		xmin = ymin * aspectRatio;
 		xmax = -xmin;
 
 		// Construct the projection matrix
 		projectionMatrix = Mat4f::identity();
-		projectionMatrix[0] = (2.0f * near) / (xmax - xmin);
-		projectionMatrix[5] = (2.0f * near) / (ymax - ymin);
+		projectionMatrix[0] = (TWO_FLOAT * near) / (xmax - xmin);
+		projectionMatrix[5] = (TWO_FLOAT * near) / (ymax - ymin);
 		projectionMatrix[8] = (xmax + xmin) / (xmax - xmin);
 		projectionMatrix[9] = (ymax + ymin) / (ymax - ymin);
 		projectionMatrix[10] = -((far + near) / (far - near));
-		projectionMatrix[11] = -1.0f;
-		projectionMatrix[14] = -((2.0f * far * near) / (far - near));
-		projectionMatrix[15] = 0.0f;
+		projectionMatrix[11] = -ONE_FLOAT;
+		projectionMatrix[14] = -((TWO_FLOAT * far * near) / (far - near));
+		projectionMatrix[15] = ZERO_FLOAT;
 
 		// Do the Math for the far clipping plane
-		yFmax = far * tanf(float(fieldOfView * PI_DIV_360));
+		yFmax = far * tanf(sp_float(fieldOfView * PI_DIV_360));
 		yFmin = -yFmax;
 		xFmin = yFmin * aspectRatio;
 		xFmax = -xFmin;
@@ -92,52 +94,52 @@ namespace NAMESPACE_RENDERING
 		nearUpperLeft[0] = xmin;
 		nearUpperLeft[1] = ymax;
 		nearUpperLeft[2] = -near;
-		nearUpperLeft[3] = 1.0f;
+		nearUpperLeft[3] = ONE_FLOAT;
 
 		// Near Lower Left
 		nearLowerLeft[0] = xmin;
 		nearLowerLeft[1] = ymin;
 		nearLowerLeft[2] = -near;
-		nearLowerLeft[3] = 1.0f;
+		nearLowerLeft[3] = ONE_FLOAT;
 
 		// Near Upper Right
 		nearUpperRight[0] = xmax;
 		nearUpperRight[1] = ymax;
 		nearUpperRight[2] = -near;
-		nearUpperRight[3] = 1.0f;
+		nearUpperRight[3] = ONE_FLOAT;
 
 		// Near Lower Right
 		nearLowerRight[0] = xmax;
 		nearLowerRight[1] = ymin;
 		nearLowerRight[2] = -near;
-		nearLowerRight[3] = 1.0f;
+		nearLowerRight[3] = ONE_FLOAT;
 
 		// Far Upper Left
 		farUpperLeft[0] = xFmin;
 		farUpperLeft[1] = yFmax;
 		farUpperLeft[2] = -far;
-		farUpperLeft[3] = 1.0f;
+		farUpperLeft[3] = ONE_FLOAT;
 
 		// Far Lower Left
 		farLowerLeft[0] = xFmin;
 		farLowerLeft[1] = yFmin;
 		farLowerLeft[2] = -far;
-		farLowerLeft[3] = 1.0f;
+		farLowerLeft[3] = ONE_FLOAT;
 
 		// Far Upper Right
 		farUpperRright[0] = xFmax;
 		farUpperRright[1] = yFmax;
 		farUpperRright[2] = -far;
-		farUpperRright[3] = 1.0f;
+		farUpperRright[3] = ONE_FLOAT;
 
 		// Far Lower Right
 		farLowerRight[0] = xFmax;
 		farLowerRight[1] = yFmin;
 		farLowerRight[2] = -far;
-		farLowerRight[3] = 1.0f;
+		farLowerRight[3] = ONE_FLOAT;
 	}
 
-	void Camera::setProjectionOrthographic(GLfloat xMin, GLfloat xMax, GLfloat yMin, GLfloat yMax, GLfloat zMin, GLfloat zMax)
+	void Camera::setProjectionOrthographic(sp_float xMin, sp_float xMax, sp_float yMin, sp_float yMax, sp_float zMin, sp_float zMax)
 	{
 		projectionMatrix = Mat4f::createOrthographicMatrix(xMin, xMax, yMin, yMax, zMin, zMax);
 
@@ -145,75 +147,75 @@ namespace NAMESPACE_RENDERING
 		nearUpperLeft[0] = xMin;
 		nearUpperLeft[1] = yMax;
 		nearUpperLeft[2] = zMin;
-		nearUpperLeft[3] = 1.0f;
+		nearUpperLeft[3] = ONE_FLOAT;
 
 		// Near Lower Left
 		nearLowerLeft[0] = xMin;
 		nearLowerLeft[1] = yMin;
 		nearLowerLeft[2] = zMin;
-		nearLowerLeft[3] = 1.0f;
+		nearLowerLeft[3] = ONE_FLOAT;
 
 		// Near Upper Right
 		nearUpperRight[0] = xMax;
 		nearUpperRight[1] = yMax;
 		nearUpperRight[2] = zMin;
-		nearUpperRight[3] = 1.0f;
+		nearUpperRight[3] = ONE_FLOAT;
 
 		// Near Lower Right
 		nearLowerRight[0] = xMax;
 		nearLowerRight[1] = yMin;
 		nearLowerRight[2] = zMin;
-		nearLowerRight[3] = 1.0f;
+		nearLowerRight[3] = ONE_FLOAT;
 
 		// Far Upper Left
 		farUpperLeft[0] = xMin;
 		farUpperLeft[1] = yMax;
 		farUpperLeft[2] = zMax;
-		farUpperLeft[3] = 1.0f;
+		farUpperLeft[3] = ONE_FLOAT;
 
 		// Far Lower Left
 		farLowerLeft[0] = xMin;
 		farLowerLeft[1] = yMin;
 		farLowerLeft[2] = zMax;
-		farLowerLeft[3] = 1.0f;
+		farLowerLeft[3] = ONE_FLOAT;
 
 		// Far Upper Right
 		farUpperRright[0] = xMax;
 		farUpperRright[1] = yMax;
 		farUpperRright[2] = zMax;
-		farUpperRright[3] = 1.0f;
+		farUpperRright[3] = ONE_FLOAT;
 
 		// Far Lower Right
 		farLowerRight[0] = xMax;
 		farLowerRight[1] = yMin;
 		farLowerRight[2] = zMax;
-		farLowerRight[3] = 1.0f;
+		farLowerRight[3] = ONE_FLOAT;
 	}
 
-	Mat4f Camera::getHUDProjectionMatrix(float width, float height)
+	Mat4f Camera::getHUDProjectionMatrix(sp_float width, sp_float height)
 	{
-		return Mat4f::createOrthographicMatrix(0.0f, width, 0.0f, height, -1.0f, 1.0f);
+		return Mat4f::createOrthographicMatrix(ZERO_FLOAT, width, ZERO_FLOAT, height, -ONE_FLOAT, ONE_FLOAT);
 	}
 
 	Vec3f Camera::getFromWorldToScreen(Vec3f& vertex, Mat4f& modelViewMatrix)
 	{
-		float halhWidth = RendererSettings::getInstance()->getWidth() / 2.0f;
-		float halhHeight = RendererSettings::getInstance()->getHeight() / 2.0f;
+		sp_float halhWidth = RendererSettings::getInstance()->getWidth() / TWO_FLOAT;
+		sp_float halhHeight = RendererSettings::getInstance()->getHeight() / TWO_FLOAT;
 
 		//Vec4f vertex4D = Vec4f(vertex, 1.0f) * modelViewMatrix * viewMatrix * projectionMatrix;
-		Vec4f vertex4D = projectionMatrix * viewMatrix * modelViewMatrix * Vec4f(vertex, 1.0f);
+		Vec4f vertex4D = projectionMatrix * viewMatrix * modelViewMatrix * Vec4f(vertex, ONE_FLOAT);
 		vertex4D /= vertex4D[3];
 
 		Vec3f vertexOnDeviceSpace = vertex4D.toVec3();
 
 		return Vec3f(
-			(vertexOnDeviceSpace[0] + 1.0f) * halhWidth,
-			(vertexOnDeviceSpace[1] + 1.0f) * halhHeight,
+			(vertexOnDeviceSpace[0] + ONE_FLOAT) * halhWidth,
+			(vertexOnDeviceSpace[1] + ONE_FLOAT) * halhHeight,
 			vertex4D[3]
 		);
 	}
 
-	void Camera::lookAtHorizontal(float angle)
+	void Camera::lookAtHorizontal(sp_float angle)
 	{
 		Vec3f direction = target - position;
 
@@ -226,7 +228,7 @@ namespace NAMESPACE_RENDERING
 		updateViewMatrix();
 	}
 
-	void Camera::lookAtVertical(float angle)
+	void Camera::lookAtVertical(sp_float angle)
 	{
 		Vec3f direction = target - position;
 		angle *= -1.0f;
@@ -240,9 +242,9 @@ namespace NAMESPACE_RENDERING
 		updateViewMatrix();
 	}
 
-	void Camera::zoom(float scale)
+	void Camera::zoom(sp_float scale)
 	{
-		float newFieldOfView = fieldOfView + (fieldOfView * scale);
+		sp_float newFieldOfView = fieldOfView + (fieldOfView * scale);
 
 		if (newFieldOfView <= MIN_FIELD_OF_VIEW || newFieldOfView >= MAX_FIELD_OF_VIEW)
 			return;
@@ -251,7 +253,7 @@ namespace NAMESPACE_RENDERING
 		setProjectionPerspective(fieldOfView, aspectRatio, nearFrustum, farFrustum);
 	}
 
-	void Camera::moveForward(float distance)
+	void Camera::moveForward(sp_float distance)
 	{
 		Vec3f directionToMove = (position - target).normalize();
 		directionToMove *= distance;
@@ -262,7 +264,7 @@ namespace NAMESPACE_RENDERING
 		updateViewMatrix();
 	}
 
-	void Camera::moveBackward(float distance)
+	void Camera::moveBackward(sp_float distance)
 	{
 		Vec3f directionToMove = (position - target).normalize();
 		directionToMove *= distance;
@@ -273,7 +275,7 @@ namespace NAMESPACE_RENDERING
 		updateViewMatrix();
 	}
 
-	void Camera::moveLeft(float distance)
+	void Camera::moveLeft(sp_float distance)
 	{
 		Vec3f cameraDirection = (position - target).normalize();
 		Vec3f directionToMove = up.cross(cameraDirection).normalize();
@@ -286,7 +288,7 @@ namespace NAMESPACE_RENDERING
 		updateViewMatrix();
 	}
 
-	void Camera::moveRight(float distance)
+	void Camera::moveRight(sp_float distance)
 	{
 		Vec3f cameraDirection = (position - target).normalize();
 		Vec3f directionToMove = up.cross(cameraDirection).normalize();

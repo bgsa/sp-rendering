@@ -6,23 +6,27 @@ namespace NAMESPACE_RENDERING
 	{
 		this->position = position;
 		this->target = target;
-		this->up = up;
+		this->_up = up;
 
-		transform = Mat4f::identity();
+		this->velocity = 0.2f;
+
+		this->fieldOfView = SP_DEFAULT_FIELD_OF_VIEW;
+		this->nearFrustum = ONE_FLOAT;
+		this->farFrustum = 1000.0f;
 
 		updateViewMatrix();
 	}
 
 	void Camera::updateViewMatrix()
 	{
-		Vec3f cameraDirection = (position - target).normalize();   //zAxis
-		Vec3f cameraRight = up.cross(cameraDirection).normalize(); //xAxis
-		Vec3f cameraUp = cameraDirection.cross(cameraRight);       //yAxis
+		_direction = (position - target).normalize();   //zAxis
+		_right = _up.cross(_direction).normalize();     //xAxis
+		Vec3f cameraUp = _direction.cross(_right);      //yAxis
 
 		viewMatrix = {
-			cameraRight[0], cameraUp[0], cameraDirection[0], ZERO_FLOAT,
-			cameraRight[1], cameraUp[1], cameraDirection[1], ZERO_FLOAT,
-			cameraRight[2], cameraUp[2], cameraDirection[2], ZERO_FLOAT,
+			_right[0], cameraUp[0], _direction[0], ZERO_FLOAT,
+			_right[1], cameraUp[1], _direction[1], ZERO_FLOAT,
+			_right[2], cameraUp[2], _direction[2], ZERO_FLOAT,
 			ZERO_FLOAT, ZERO_FLOAT, ZERO_FLOAT, ONE_FLOAT
 		};
 
@@ -46,12 +50,12 @@ namespace NAMESPACE_RENDERING
 		return fieldOfView;
 	}
 
-	Mat4f& Camera::getProjectionMatrix()
+	Mat4f& Camera::getProjectionMatrix() noexcept
 	{
 		return projectionMatrix;
 	}
 
-	Mat4f& Camera::getViewMatrix()
+	Mat4f& Camera::getViewMatrix() noexcept
 	{
 		return viewMatrix;
 	}
@@ -192,15 +196,15 @@ namespace NAMESPACE_RENDERING
 		farLowerRight[3] = ONE_FLOAT;
 	}
 
-	Mat4f Camera::getHUDProjectionMatrix(sp_float width, sp_float height)
+	Mat4f Camera::getHUDProjectionMatrix(sp_float width, sp_float height) const
 	{
 		return Mat4f::createOrthographicMatrix(ZERO_FLOAT, width, ZERO_FLOAT, height, -ONE_FLOAT, ONE_FLOAT);
 	}
 
-	Vec3f Camera::getFromWorldToScreen(Vec3f& vertex, Mat4f& modelViewMatrix)
+	Vec3f Camera::getFromWorldToScreen(const Vec3f& vertex, const Mat4f& modelViewMatrix, const SpViewportData* viewport)
 	{
-		sp_float halhWidth = RendererSettings::getInstance()->getWidth() / TWO_FLOAT;
-		sp_float halhHeight = RendererSettings::getInstance()->getHeight() / TWO_FLOAT;
+		sp_float halhWidth = viewport->width * HALF_FLOAT;
+		sp_float halhHeight = viewport->height * HALF_FLOAT;
 
 		//Vec4f vertex4D = Vec4f(vertex, 1.0f) * modelViewMatrix * viewMatrix * projectionMatrix;
 		Vec4f vertex4D = projectionMatrix * viewMatrix * modelViewMatrix * Vec4f(vertex, ONE_FLOAT);
@@ -215,89 +219,4 @@ namespace NAMESPACE_RENDERING
 		);
 	}
 
-	void Camera::lookAtHorizontal(sp_float angle)
-	{
-		Vec3f direction = target - position;
-
-		target = Vec3f(
-			position[0] + direction[0] * cos(angle) + direction[2] * sin(angle),
-			target[1],
-			position[2] + direction[2] * cos(angle) + (position[0] - target[0]) * sin(angle)
-		);
-
-		updateViewMatrix();
-	}
-
-	void Camera::lookAtVertical(sp_float angle)
-	{
-		Vec3f direction = target - position;
-		angle *= -1.0f;
-
-		target = Vec3f(
-			target[0],
-			position[1] + direction[1] * cos(angle) + (position[2] - target[2]) * sin(angle),
-			position[2] + direction[1] * sin(angle) + direction[2] * cos(angle)
-		);
-
-		updateViewMatrix();
-	}
-
-	void Camera::zoom(sp_float scale)
-	{
-		sp_float newFieldOfView = fieldOfView + (fieldOfView * scale);
-
-		if (newFieldOfView <= MIN_FIELD_OF_VIEW || newFieldOfView >= MAX_FIELD_OF_VIEW)
-			return;
-
-		fieldOfView = newFieldOfView;
-		setProjectionPerspective(fieldOfView, aspectRatio, nearFrustum, farFrustum);
-	}
-
-	void Camera::moveForward(sp_float distance)
-	{
-		Vec3f directionToMove = (position - target).normalize();
-		directionToMove *= distance;
-
-		position -= directionToMove;
-		target -= directionToMove;
-
-		updateViewMatrix();
-	}
-
-	void Camera::moveBackward(sp_float distance)
-	{
-		Vec3f directionToMove = (position - target).normalize();
-		directionToMove *= distance;
-
-		position += directionToMove;
-		target += directionToMove;
-
-		updateViewMatrix();
-	}
-
-	void Camera::moveLeft(sp_float distance)
-	{
-		Vec3f cameraDirection = (position - target).normalize();
-		Vec3f directionToMove = up.cross(cameraDirection).normalize();
-
-		Vec3f distanceToMove = directionToMove * distance;
-
-		position -= distanceToMove;
-		target -= distanceToMove;
-
-		updateViewMatrix();
-	}
-
-	void Camera::moveRight(sp_float distance)
-	{
-		Vec3f cameraDirection = (position - target).normalize();
-		Vec3f directionToMove = up.cross(cameraDirection).normalize();
-
-		Vec3f distanceToMove = directionToMove * distance;
-
-		position += distanceToMove;
-		target += distanceToMove;
-
-		updateViewMatrix();
-	}
 }

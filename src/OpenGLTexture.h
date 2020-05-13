@@ -41,14 +41,16 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE static OpenGLTexture* createFromFramebuffer(GLenum framebuffer = GL_BACK)
 		{
-			Vec2f size = RendererSettings::getInstance()->getSize();
+			GLint viewport[4];
+			glGetIntegerv(GL_VIEWPORT, viewport);
+
 			sp_uchar* data = Framebuffer::getFramebuffer(framebuffer);
 
 			OpenGLTexture* texture = sp_mem_new(OpenGLTexture)();
 			texture->use()
 				->setProperty(GL_TEXTURE_MIN_FILTER, GL_LINEAR)
 				->setProperty(GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-				->setData(data, Vec2i((sp_int) size.x, (sp_int)size.y), GL_RGBA);
+				->setData(data, Vec2i(viewport[2], viewport[3]), GL_RGBA);
 			
 			sp_mem_release(data);
 			return texture;

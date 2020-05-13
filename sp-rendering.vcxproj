@@ -67,6 +67,7 @@
     <ClInclude Include="src\SphereRenderer.h" />
     <ClInclude Include="src\SphereX.h" />
     <ClInclude Include="src\Sprite.h" />
+    <ClInclude Include="src\SpViewportData.h" />
     <ClInclude Include="src\Square.h" />
     <ClInclude Include="src\Triangle.h" />
   </ItemGroup>
@@ -103,16 +104,6 @@
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\Square.cpp" />
     <ClCompile Include="src\Triangle.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\sp-foundation\sp-foundation.vcxproj">
-      <Project>{0607c5ac-e8da-43db-a0b4-279c05ec6613}</Project>
-      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
-    </ProjectReference>
-    <ProjectReference Include="..\sp-physics\sp-physics.vcxproj">
-      <Project>{e59b16ca-ee86-41bb-b1b4-e81db09e8561}</Project>
-      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -192,7 +183,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>DEBUG;MAJOR_COLUMN_ORDER;API_EXPORT;OPENGL_ENABLED;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG;GLFW_ENABLED;MAJOR_COLUMN_ORDER;API_EXPORT;OPENGL_ENABLED;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)vendor\include;$(SolutionDir)sp-foundation\src;$(SolutionDir)sp-physics\src</AdditionalIncludeDirectories>
@@ -208,7 +199,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>DEBUG;MAJOR_COLUMN_ORDER;API_EXPORT;OPENGL_ENABLED;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG;GLFW_ENABLED;MAJOR_COLUMN_ORDER;API_EXPORT;OPENGL_ENABLED;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)vendor\include;$(SolutionDir)sp-foundation\src;$(SolutionDir)sp-physics\src</AdditionalIncludeDirectories>
@@ -226,7 +217,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>ENV_32BITS;MAJOR_COLUMN_ORDER;API_EXPORT;WINDOWS;OPENGL_ENABLED;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLFW_ENABLED;MAJOR_COLUMN_ORDER;API_EXPORT;WINDOWS;OPENGL_ENABLED;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)vendor\include;$(SolutionDir)sp-foundation\src;$(SolutionDir)sp-physics\src</AdditionalIncludeDirectories>
@@ -246,7 +237,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>MAJOR_COLUMN_ORDER;API_EXPORT;OPENGL_ENABLED;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLFW_ENABLED;MAJOR_COLUMN_ORDER;API_EXPORT;OPENGL_ENABLED;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)vendor\include;$(SolutionDir)sp-foundation\src;$(SolutionDir)sp-physics\src</AdditionalIncludeDirectories>

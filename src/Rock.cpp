@@ -26,7 +26,7 @@ namespace NAMESPACE_RENDERING
 
 		shader->enableAttributes();
 
-		modelView = Mat4f::createScale(7.0f, 7.0f, 7.0f);
+		//modelView = Mat4f::createScale(7.0f, 7.0f, 7.0f);
 
 		shader
 			->setUniform<Mat4f>(projectionMatrixLocation, renderData.projectionMatrix)

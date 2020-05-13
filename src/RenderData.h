@@ -2,6 +2,7 @@
 #define RENDERER_DATA_HEADER
 
 #include "SpectrumRendering.h"
+#include "SpViewportData.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -10,6 +11,7 @@ namespace NAMESPACE_RENDERING
 	public:
 		Mat4f projectionMatrix;
 		Mat4f viewMatrix;
+		SpViewportData* viewport;
 
 	};
 }

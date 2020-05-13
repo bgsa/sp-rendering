@@ -76,7 +76,7 @@ namespace NAMESPACE_RENDERING
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject); //associa o bufffer ao ponteiro
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6, buffer, GL_STATIC_DRAW);  //insere os dados no buffer para usar glDraw*
 																									// Get the sampler location
-		modelViewLocation = glGetUniformLocation(programShader, "modelView");
+		transformMatrixLocation = glGetUniformLocation(programShader, "modelView");
 		projectionMatrixLocation = glGetUniformLocation(programShader, "projection");
 		viewMatrixLocation = glGetUniformLocation(programShader, "view");
 		positionAttribute = glGetAttribLocation(programShader, "Position");
@@ -93,7 +93,7 @@ namespace NAMESPACE_RENDERING
 
 		glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, renderData.projectionMatrix);
 		glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, renderData.viewMatrix);
-		glUniformMatrix4fv(modelViewLocation, 1, GL_FALSE, modelView);
+		glUniformMatrix4fv(transformMatrixLocation, 1, GL_FALSE, transform);
 		glUniform4f(colorLocation, color->Red, color->Green, color->Blue, color->Alpha);
 
 		setUpPositionAttribute();

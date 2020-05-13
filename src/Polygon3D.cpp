@@ -12,7 +12,7 @@ namespace NAMESPACE_RENDERING
 
 		projectionMatrixLocation = glGetUniformLocation(programShader, "projection");
 		viewMatrixLocation = glGetUniformLocation(programShader, "view");
-		modelViewLocation = glGetUniformLocation(programShader, "modelView");
+		transformMatrixLocation = glGetUniformLocation(programShader, "modelView");
 		colorLocation = glGetUniformLocation(programShader, "Color");
 		textureEnableLocation = glGetUniformLocation(programShader, "isTextureEnabled");
 
@@ -168,7 +168,7 @@ namespace NAMESPACE_RENDERING
 
 		glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, renderData.projectionMatrix);
 		glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, renderData.viewMatrix);
-		glUniformMatrix4fv(modelViewLocation, 1, GL_FALSE, modelView);
+		glUniformMatrix4fv(transformMatrixLocation, 1, GL_FALSE, transform);
 		glUniform4f(colorLocation, color->Red, color->Green, color->Blue, color->Alpha);
 		glUniform1i(textureEnableLocation, isTextureEnabled() ? 1 : 0);
 

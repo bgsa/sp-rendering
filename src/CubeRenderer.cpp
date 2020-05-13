@@ -162,7 +162,7 @@ namespace NAMESPACE_RENDERING
 		float* modelMatrixes = ALLOC_ARRAY(float, cubesCount * MAT4_SIZE);
 		for (size_t index = 0; index < cubesCount; index++)
 			for (size_t i = 0; i < MAT4_SIZE; i++)
-				modelMatrixes[(index * MAT4_SIZE) + i] = cubes[index].modelView[i];
+				modelMatrixes[(index * MAT4_SIZE) + i] = cubes[index].transform[i];
 
 		glBindBuffer(GL_TEXTURE_BUFFER, modelBufferObject);
 		glBufferData(GL_TEXTURE_BUFFER, sizeof(Mat4f) * cubesCount, modelMatrixes, GL_DYNAMIC_DRAW);

@@ -26,13 +26,10 @@ namespace NAMESPACE_RENDERING
 
 		shader->enableAttributes();
 
-		//modelView = Mat4f::createScale(7.0f, 7.0f, 7.0f);
-
 		shader
 			->setUniform<Mat4f>(projectionMatrixLocation, renderData.projectionMatrix)
 			->setUniform<Mat4f>(viewMatrixLocation, renderData.viewMatrix)
-			->setUniform<Mat4f>(modelViewLocation, modelView);
-
+			->setUniform<Mat4f>(transformMatrixLocation, transform);
 
 		glDrawElements(GL_TRIANGLES, model.sizeOfFaces(), GL_UNSIGNED_INT, model.faces->data());
 		//renderer->render(renderData);
@@ -63,7 +60,7 @@ namespace NAMESPACE_RENDERING
 
 		projectionMatrixLocation = shader->getUniform("projectionMatrix");
 		viewMatrixLocation = shader->getUniform("viewMatrix");
-		modelViewLocation = shader->getUniform("modelMatrix");
+		transformMatrixLocation = shader->getUniform("modelMatrix");
 
 		positionAttribute = shader->getAttribute("Position");
 		textureAttribute = shader->getAttribute("TexCoord");
@@ -80,6 +77,8 @@ namespace NAMESPACE_RENDERING
 
 	void Rock::dispose()
 	{
+		GraphicObject3D::dispose();
+
 		if (buffer != NULL)
 		{
 			sp_mem_delete(buffer, OpenGLBuffer);

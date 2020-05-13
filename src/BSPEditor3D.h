@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BSPTree.h"
+#include "AABB.h"
 #include "GraphicObject3D.h"
 
 namespace NAMESPACE_RENDERING

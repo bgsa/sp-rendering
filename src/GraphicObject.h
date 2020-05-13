@@ -26,14 +26,18 @@ namespace NAMESPACE_RENDERING
 
 		GLint projectionMatrixLocation;
 		GLint viewMatrixLocation;
-		GLint modelViewLocation;
+		GLint transformMatrixLocation;
 
 		GLint positionAttribute = -1;
 		GLint colorLocation = -1;
 
 	public:
+		Mat4f transform;
 
-		Mat4f modelView = Mat4f::identity();
+		API_INTERFACE GraphicObject()
+		{
+			transform = Mat4f::identity();
+		}
 
 		API_INTERFACE virtual void init() = 0;
 
@@ -50,13 +54,22 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE virtual GraphicObjectType type() = 0;
 
-		API_INTERFACE virtual ~GraphicObject()
+		API_INTERFACE virtual void dispose() override
 		{
 			if (programShader != 0)
+			{
 				glDeleteProgram(programShader);
+			}
 
 			if (vertexBufferObject != 0)
+			{
 				glDeleteBuffers(1, &vertexBufferObject);
+			}
+		}
+
+		API_INTERFACE virtual ~GraphicObject()
+		{
+			dispose();
 		}
 
 	};

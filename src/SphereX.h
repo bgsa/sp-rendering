@@ -29,13 +29,13 @@ namespace NAMESPACE_RENDERING
 
 			Vec3f position = geometry.particleSystem->particles[0].position;
 
-			modelView = Mat4f::createTranslate(position.x, position.y, position.z);
+			transform = Mat4f::createTranslate(position.x, position.y, position.z);
 		}
 
 		void render(const RenderData& renderData) override
 		{
 			renderer->geometry = &geometry;
-			renderer->modelView = this->modelView;
+			renderer->transform = this->transform;
 			renderer->setColor(*this->color);
 
 			renderer->render(renderData);

@@ -2,6 +2,7 @@
 #define LINE_HEADER
 
 #include "SpectrumRendering.h"
+#include "AABB.h"
 #include "GraphicObject3D.h"
 
 namespace NAMESPACE_RENDERING

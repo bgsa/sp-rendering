@@ -63,7 +63,7 @@ namespace NAMESPACE_RENDERING
 
 		projectionMatrixLocation = glGetUniformLocation(programShader, "projection");
 		viewMatrixLocation = glGetUniformLocation(programShader, "view");
-		modelViewLocation = glGetUniformLocation(programShader, "modelView");
+		transformMatrixLocation = glGetUniformLocation(programShader, "modelView");
 
 		positionAttribute = glGetAttribLocation(programShader, "Position");
 		radiusLocation = glGetUniformLocation(programShader, "Radius");
@@ -82,7 +82,7 @@ namespace NAMESPACE_RENDERING
 
 		glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, renderData.projectionMatrix);
 		glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, renderData.viewMatrix);
-		glUniformMatrix4fv(modelViewLocation, 1, GL_FALSE, modelView);
+		glUniformMatrix4fv(transformMatrixLocation, 1, GL_FALSE, transform);
 
 		glUniform4fv(colorLocation, 1, color->toVec4());
 		glUniform1f(radiusLocation, geometry->ray);

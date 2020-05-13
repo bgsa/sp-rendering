@@ -86,7 +86,7 @@ namespace NAMESPACE_RENDERING
 
 		projectionMatrixLocation = glGetUniformLocation(programShader, "projection");
 		viewMatrixLocation = glGetUniformLocation(programShader, "view");
-		modelViewLocation = glGetUniformLocation(programShader, "modelView");
+		transformMatrixLocation = glGetUniformLocation(programShader, "modelView");
 
 		colorLocation = glGetUniformLocation(programShader, "Color");
 		positionAttribute = glGetAttribLocation(programShader, "Position");
@@ -102,7 +102,7 @@ namespace NAMESPACE_RENDERING
 
 		glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, renderData.projectionMatrix);
 		glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, renderData.viewMatrix);
-		glUniformMatrix4fv(modelViewLocation, 1, GL_FALSE, modelView);
+		glUniformMatrix4fv(transformMatrixLocation, 1, GL_FALSE, transform);
 
 		glUniform4f(colorLocation, color->Red, color->Green, color->Blue, color->Alpha);
 
@@ -121,19 +121,19 @@ namespace NAMESPACE_RENDERING
 			//draw lines on Z axis
 			Mat4f matrixTranslatedX = Mat4f::createTranslate(i, 0.0f, 0.0f);
 
-			Mat4f result = modelView * matrixTranslatedX;
+			Mat4f result = transform * matrixTranslatedX;
 
-			glUniformMatrix4fv(modelViewLocation, 1, GL_FALSE, result);
+			glUniformMatrix4fv(transformMatrixLocation, 1, GL_FALSE, result);
 			glDrawArrays(GL_LINES, 0, 2);
 
 			//draw lines on X axis		
 			Mat4f matrixTranslatedZ = Mat4f::createTranslate(0.0f, 0.0f, i);
 
-			result = matrixRotate * modelView;
+			result = matrixRotate * transform;
 
 			Mat4f result2 = matrixTranslatedZ * result;
 
-			glUniformMatrix4fv(modelViewLocation, 1, GL_FALSE, result2);
+			glUniformMatrix4fv(transformMatrixLocation, 1, GL_FALSE, result2);
 			glDrawArrays(GL_LINES, 0, 2);
 		}
 

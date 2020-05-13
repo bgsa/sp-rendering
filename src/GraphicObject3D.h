@@ -13,14 +13,21 @@
 namespace NAMESPACE_RENDERING
 {
 	template <class GameObjectType, class BoundingVolumeType>
-	class GraphicObject3D : public GraphicObject
+	class GraphicObject3D : 
+		public GraphicObject
 	{
 	protected:
 		IRenderer<GameObjectType>* renderer = NULL;
 		ColorRGBAf * color = new ColorRGBAf{ 1.0f, 1.0f, 1.0f, 1.0f };
 
 	public:
-		NAMESPACE_PHYSICS::BoundingVolume<BoundingVolumeType>* boundingVolume = NULL;
+		BoundingVolume<BoundingVolumeType>* boundingVolume = NULL;
+
+		API_INTERFACE GraphicObject3D()
+			: GraphicObject()
+		{
+			boundingVolume = sp_mem_new(BoundingVolumeType)();
+		}
 
 		API_INTERFACE virtual void setRenderer(IRenderer<GameObjectType>* renderer)
 		{
@@ -42,35 +49,46 @@ namespace NAMESPACE_RENDERING
 			return GraphicObjectType::Type3D;
 		}
 
-		API_INTERFACE GraphicObject3D* scale(float xScale, float yScale, float zScale)
+		API_INTERFACE GraphicObject3D* scale(sp_float xScale, sp_float yScale, sp_float zScale)
 		{
-			modelView *= Mat4f::createScale(xScale, yScale, zScale);
+			transform *= Mat4f::createScale(xScale, yScale, zScale);
 			boundingVolume->scale(xScale, yScale, zScale);
 
 			return this;
 		}
-		API_INTERFACE GraphicObject3D* scaleUniform(float scaleValue)
+		API_INTERFACE GraphicObject3D* scaleUniform(sp_float scaleValue)
 		{
-			modelView *= Mat4f::createScale(scaleValue, scaleValue, scaleValue);
+			transform *= Mat4f::createScale(scaleValue, scaleValue, scaleValue);
 			boundingVolume->scale(scaleValue, scaleValue, scaleValue);
 
 			return this;
 		}
 
-		API_INTERFACE GraphicObject3D* translate(float xAxis, float yAxis, float zAxis)
+		API_INTERFACE GraphicObject3D* translate(sp_float xAxis, sp_float yAxis, sp_float zAxis)
 		{
-			modelView *= Mat4f::createTranslate(xAxis, yAxis, zAxis);
+			transform *= Mat4f::createTranslate(xAxis, yAxis, zAxis);
 			boundingVolume->translate(xAxis, yAxis, zAxis);
 
 			return this;
 		}
 
-		API_INTERFACE GraphicObject3D* rotate(float angleInRadians, float xAxis, float yAxis, float zAxis)
+		API_INTERFACE GraphicObject3D* rotate(sp_float angleInRadians, sp_float xAxis, sp_float yAxis, sp_float zAxis)
 		{
-			modelView *= Mat4f::createRotate(angleInRadians, xAxis, yAxis, zAxis);
+			transform *= Mat4f::createRotate(angleInRadians, xAxis, yAxis, zAxis);
 			boundingVolume->rotate(angleInRadians, xAxis, yAxis, zAxis);
 
 			return this;
+		}
+
+		API_INTERFACE virtual void dispose() override
+		{
+			if (boundingVolume != nullptr)
+			{
+				boundingVolume->dispose();
+				sp_mem_release(boundingVolume);
+			}
+
+			GraphicObject::dispose();
 		}
 
 	};

@@ -1,9 +1,11 @@
-#include "DefaultRendererManager.h"
+#ifdef OPENGL_ENABLED
+
+#include "OpenGLRendererManager.h"
 
 namespace NAMESPACE_RENDERING
 {
 
-	void DefaultRendererManager::resize(sp_float width, sp_float height)
+	void OpenGLRendererManager::resize(sp_float width, sp_float height)
 	{
 		if (width == ZERO_FLOAT || height == ZERO_FLOAT)
 			return;
@@ -19,7 +21,7 @@ namespace NAMESPACE_RENDERING
 		_camera->updateProjectionPerspectiveAspect(_viewport->aspectRatio());
 	}
 
-	void DefaultRendererManager::init(Camera* camera)
+	void OpenGLRendererManager::init(Camera* camera)
 	{
 		this->_camera = camera;
 
@@ -42,11 +44,11 @@ namespace NAMESPACE_RENDERING
 		glScissor(_viewport->x, _viewport->y, _viewport->width, _viewport->height);
 	}
 
-	void DefaultRendererManager::preRender()
+	void OpenGLRendererManager::preRender()
 	{
 	}
 
-	void DefaultRendererManager::render()
+	void OpenGLRendererManager::render()
 	{
 		_camera->updateProjectionPerspectiveAspect(_viewport->aspectRatio());
 
@@ -76,11 +78,11 @@ namespace NAMESPACE_RENDERING
 		render2D(renderData);
 	}
 
-	void DefaultRendererManager::postRender()
+	void OpenGLRendererManager::postRender()
 	{
 	}
 
-	DefaultRendererManager::~DefaultRendererManager()
+	OpenGLRendererManager::~OpenGLRendererManager()
 	{
 		if (_camera != NULL)
 		{
@@ -89,3 +91,5 @@ namespace NAMESPACE_RENDERING
 		}
 	}
 }
+
+#endif // OPENGL_ENABLED

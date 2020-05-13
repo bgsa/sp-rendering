@@ -1,5 +1,7 @@
-#ifndef DEFAULT_RENDERER_MANAGER_HEADER
-#define DEFAULT_RENDERER_MANAGER_HEADER
+#ifdef OPENGL_ENABLED
+
+#ifndef OPENGL_RENDERER_MANAGER_HEADER
+#define OPENGL_RENDERER_MANAGER_HEADER
 
 #include "SpectrumRendering.h"
 #include <CollisionResponse.h>
@@ -15,12 +17,12 @@
 
 namespace NAMESPACE_RENDERING
 {
-	class DefaultRendererManager
+	class OpenGLRendererManager
 		: public IRendererManager
 	{
 	public:
 
-		API_INTERFACE DefaultRendererManager()
+		API_INTERFACE OpenGLRendererManager()
 			: IRendererManager()
 		{
 		}
@@ -32,8 +34,10 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE void render() override;
 		API_INTERFACE void postRender() override;
 
-		API_INTERFACE ~DefaultRendererManager();
+		API_INTERFACE ~OpenGLRendererManager();
 	};
 }
 
-#endif // DEFAULT_RENDERER_MANAGER_HEADER
+#endif // OPENGL_RENDERER_MANAGER_HEADER
+
+#endif // OPENGL_ENABLED

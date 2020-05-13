@@ -34,6 +34,7 @@ namespace NAMESPACE_RENDERING
 
 	public:
 
+		sp_float invertY;
 		sp_float velocity;
 		
 		API_INTERFACE inline void init(const Vec3f& position, const Vec3f& target, const Vec3f& up = Vec3f(ZERO_FLOAT, ONE_FLOAT, ZERO_FLOAT));

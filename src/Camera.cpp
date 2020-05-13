@@ -8,6 +8,7 @@ namespace NAMESPACE_RENDERING
 		this->target = target;
 		this->_up = up;
 
+		this->invertY = ONE_FLOAT;
 		this->velocity = 0.2f;
 
 		this->fieldOfView = SP_DEFAULT_FIELD_OF_VIEW;

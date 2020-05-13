@@ -55,7 +55,7 @@
     <ClInclude Include="src\PointList.h" />
     <ClInclude Include="src\Polygon3D.h" />
     <ClInclude Include="src\RenderData.h" />
-    <ClInclude Include="src\DefaultRendererManager.h" />
+    <ClInclude Include="src\OpenGLRendererManager.h" />
     <ClInclude Include="src\RendererEditor.h" />
     <ClInclude Include="src\RendererSettings.h" />
     <ClInclude Include="src\Rock.h" />

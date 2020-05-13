@@ -97,12 +97,6 @@ namespace NAMESPACE_RENDERING
 			sp_mem_delete(shader, OpenGLShader);
 			shader = NULL;
 		}
-
-		if (renderer != NULL)
-		{
-			RockRenderer* r = (RockRenderer*)renderer;
-			sp_mem_delete(r, RockRenderer);
-		}
 	}
 
 	Rock::~Rock()

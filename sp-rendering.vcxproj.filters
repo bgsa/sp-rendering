@@ -144,9 +144,6 @@
     <ClInclude Include="src\RockRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DefaultRendererManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -166,6 +163,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\SpViewportData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpenGLRendererManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -6,6 +6,7 @@
 #include <SpArray.h>
 #include "ShaderAttribute.h"
 #include "ShaderUniform.h"
+#include "FileSystem.h"
 
 namespace NAMESPACE_RENDERING
 {

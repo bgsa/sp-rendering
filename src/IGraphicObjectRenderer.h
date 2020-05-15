@@ -1,5 +1,5 @@
-#ifndef I_RENDERER_HEADER
-#define I_RENDERER_HEADER
+#ifndef I_GRAPHIC_OBJECT_RENDERER_HEADER
+#define I_GRAPHIC_OBJECT_RENDERER_HEADER
 
 #include "SpectrumRendering.h"
 #include "RenderData.h"
@@ -7,12 +7,10 @@
 namespace NAMESPACE_RENDERING
 {
 	template<class T>
-	class IRenderer
+	class IGraphicObjectRenderer
 		: public Object
 	{
 	public:
-
-		API_INTERFACE virtual void setObjects(T* objects, sp_uint length) = 0;
 
 		API_INTERFACE virtual void update() = 0;
 
@@ -21,4 +19,4 @@ namespace NAMESPACE_RENDERING
 	};
 }
 
-#endif // !I_RENDERER_HEADER
+#endif // I_GRAPHIC_OBJECT_RENDERER_HEADER

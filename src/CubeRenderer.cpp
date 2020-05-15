@@ -159,10 +159,10 @@ namespace NAMESPACE_RENDERING
 
 		cubes[1].rotate((sp_float) degreesToRadians(3), 0.0f, 0.0f, 1.0f);
 
-		float* modelMatrixes = ALLOC_ARRAY(float, cubesCount * MAT4_SIZE);
+		float* modelMatrixes = ALLOC_ARRAY(float, cubesCount * MAT4_LENGTH);
 		for (size_t index = 0; index < cubesCount; index++)
-			for (size_t i = 0; i < MAT4_SIZE; i++)
-				modelMatrixes[(index * MAT4_SIZE) + i] = cubes[index].transform[i];
+			for (size_t i = 0; i < MAT4_LENGTH; i++)
+				modelMatrixes[(index * MAT4_LENGTH) + i] = cubes[index].transform[i];
 
 		glBindBuffer(GL_TEXTURE_BUFFER, modelBufferObject);
 		glBufferData(GL_TEXTURE_BUFFER, sizeof(Mat4f) * cubesCount, modelMatrixes, GL_DYNAMIC_DRAW);

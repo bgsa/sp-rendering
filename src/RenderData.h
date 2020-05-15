@@ -3,6 +3,7 @@
 
 #include "SpectrumRendering.h"
 #include "SpViewportData.h"
+#include "SpVector.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -13,6 +14,7 @@ namespace NAMESPACE_RENDERING
 		Mat4f viewMatrix;
 		SpViewportData* viewport;
 
+		SpVector<void*> customProperties = SpVector<void*>();
 	};
 }
 

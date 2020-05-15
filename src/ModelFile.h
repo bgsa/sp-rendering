@@ -104,7 +104,7 @@ namespace NAMESPACE_RENDERING
 				//cout << content->bonesWeight[0] << '\n';
 				//cout << content->bonesWeight[header->VertexCount / 3 * 4 - 1] << '\n';
 
-				newFile.write((char*)content->bonesOffset, header->BonesCount * MAT4_SIZE * sizeof(float)); //write bones offset matrix4x4
+				newFile.write((char*)content->bonesOffset, header->BonesCount * MAT4_LENGTH * sizeof(float)); //write bones offset matrix4x4
 				newFile.write((char*)content->bonesIndex, (header->VertexCount / 3) * 4 * sizeof(int)); //write bones indexes (max 4 bones per vertex)
 				newFile.write((char*)content->bonesWeight, (header->VertexCount / 3) * 4 * sizeof(float)); //write bones weight (max 4 bones per vertex)
 			}

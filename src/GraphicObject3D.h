@@ -8,7 +8,7 @@
 #include <vector>
 #include "ContentAlignment.h"
 #include <BoundingVolume.h>
-#include "IRenderer.h"
+#include "IGraphicObjectRenderer.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -17,7 +17,7 @@ namespace NAMESPACE_RENDERING
 		public GraphicObject
 	{
 	protected:
-		IRenderer<GameObjectType>* renderer = NULL;
+		IGraphicObjectRenderer<GameObjectType>* renderer = NULL;
 		ColorRGBAf * color = new ColorRGBAf{ 1.0f, 1.0f, 1.0f, 1.0f };
 
 	public:
@@ -29,7 +29,7 @@ namespace NAMESPACE_RENDERING
 			boundingVolume = sp_mem_new(BoundingVolumeType)();
 		}
 
-		API_INTERFACE virtual void setRenderer(IRenderer<GameObjectType>* renderer)
+		API_INTERFACE virtual void setRenderer(IGraphicObjectRenderer<GameObjectType>* renderer)
 		{
 			this->renderer = renderer;
 		}

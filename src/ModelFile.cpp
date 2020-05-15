@@ -136,13 +136,13 @@ namespace NAMESPACE_RENDERING
 
 		file.seek(offset);
 
-		GLfloat* temp = new GLfloat[header.BonesCount * MAT4_SIZE];
-		file.read((char*)&temp[0], header.BonesCount * MAT4_SIZE * sizeof(GLfloat));
+		GLfloat* temp = new GLfloat[header.BonesCount * MAT4_LENGTH];
+		file.read((char*)&temp[0], header.BonesCount * MAT4_LENGTH * sizeof(GLfloat));
 
 		Mat4f* result = new Mat4f[header.BonesCount];
 		for (size_t i = 0; i < header.BonesCount; i++)
-			for (size_t j = 0; j < MAT4_SIZE; j++)
-				result[i][j] = temp[(i * MAT4_SIZE) + j];
+			for (size_t j = 0; j < MAT4_LENGTH; j++)
+				result[i][j] = temp[(i * MAT4_LENGTH) + j];
 
 		return result;
 	}
@@ -177,7 +177,7 @@ namespace NAMESPACE_RENDERING
 		offset += sizeof(size_t);     // + bones name total size offset
 		offset += getBonesNameSize(); // + bones name offset
 
-		offset += header.BonesCount * MAT4_SIZE * sizeof(GLfloat); // + (bones matrixes) offset
+		offset += header.BonesCount * MAT4_LENGTH * sizeof(GLfloat); // + (bones matrixes) offset
 
 		file.seek(offset);
 
@@ -203,7 +203,7 @@ namespace NAMESPACE_RENDERING
 		offset += sizeof(size_t);     // + bones name total size offset
 		offset += getBonesNameSize(); // + bones name offset
 
-		offset += header.BonesCount * MAT4_SIZE * sizeof(GLfloat); // + (bones matrixes) offset
+		offset += header.BonesCount * MAT4_LENGTH * sizeof(GLfloat); // + (bones matrixes) offset
 		offset += getBonesIndexesSize(); // + bones indexes
 
 		file.seek(offset);
@@ -231,7 +231,7 @@ namespace NAMESPACE_RENDERING
 		offset += sizeof(size_t);     // + bones name total size offset
 		offset += getBonesNameSize(); // + bones name offset
 
-		offset += header.BonesCount * MAT4_SIZE * sizeof(GLfloat); // + (bones matrixes) offset
+		offset += header.BonesCount * MAT4_LENGTH * sizeof(GLfloat); // + (bones matrixes) offset
 
 		file.seek(offset);
 

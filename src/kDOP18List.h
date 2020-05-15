@@ -3,24 +3,22 @@
 
 #include "SpectrumRendering.h"
 #include <DOP18.h>
-#include "IRenderer.h"
-#include "GraphicObject3D.h"
+#include "GraphicObject3DList.h"
 
 namespace NAMESPACE_RENDERING
 {
-	class kDOP18
-		: public GraphicObject3D<kDOP18, DOP18>
+	class kDOP18List
+		: public GraphicObject3DList<DOP18>
 	{
-	private:
-		IRenderer<kDOP18>* renderer;
-
 	public:
 
-		API_INTERFACE kDOP18();
+		API_INTERFACE kDOP18List();
 
-		API_INTERFACE void init(IRenderer<kDOP18>* renderer);
+		API_INTERFACE void init() override;
 
 		API_INTERFACE void render(const RenderData& renderData) override;
+
+		API_INTERFACE void dispose() override;
 
 		API_INTERFACE const sp_char* toString() override
 		{
@@ -30,4 +28,4 @@ namespace NAMESPACE_RENDERING
 	};
 }
 
-#endif // !K_DOP_18_HEADER
+#endif // K_DOP_18_HEADER

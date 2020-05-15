@@ -1,56 +1,13 @@
-#include "kDOP18Renderer.h"
+#include "kDOP18List.h"
 
-#define FLOAT_COUNT_PER_18DOP 96 /* (32 * 3) */
-#define FLOAT_SIZE_PER_18DOP (SIZEOF_FLOAT * FLOAT_COUNT_PER_18DOP)
-#define VERTEXES_PER_18DOP 32
+#define INDEXES_COUNT_PER_18DOP (96) /* (32 * 3) */
+#define SIZE_PER_18DOP (SIZEOF_UINT * INDEXES_COUNT_PER_18DOP)
+#define VERTEXES_PER_18DOP (INDEXES_COUNT_PER_18DOP * 3)
 
 namespace NAMESPACE_RENDERING
 {
-	void kDOP18Renderer::init()
-	{
-		const char* vertexShaderSource = "#version 300 es \n"
-			"uniform mat4 projectionMatrix; \n"
-			"uniform mat4 viewMatrix; \n"
-			"uniform mat4 modelMatrix; \n"
-
-			"in  vec3 Position; \n"
-
-			"void main() \n"
-			"{											\n"
-			"	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(Position, 1.0); \n"
-			"}											\n";
-
-		const char* fragmentShaderSource = "#version 300 es \n"
-			"precision mediump float; \n"
-
-			"out vec4 FragColor; \n"
-
-			"void main() \n"
-			"{\n"
-			"	FragColor = vec4(1.0, 0.0, 0.0, 1.0); \n"
-			"}";
-
-		programShader = Shader::loadShaderProgram(vertexShaderSource, fragmentShaderSource);
-
-		initVBO();
-	}
-
-	void kDOP18Renderer::setUpPositionAttribute()
-	{
-		glVertexAttribPointer(positionAttribute,
-			3,
-			GL_FLOAT,
-			GL_FALSE,
-			0,
-			0);
-
-		glEnableVertexAttribArray(positionAttribute); //habilita atributo de coordenadas
-	}
-
 	/*
-	const int vertexCount = 96;
-	float points[vertexCount * 3] = {
-
+	static sp_float points[VERTEXES_PER_18DOP] = {
 		//front face
 		0.0f, 0.0f, 0.0f,
 		0.0f, 10.0f, 0.0f,
@@ -209,7 +166,12 @@ namespace NAMESPACE_RENDERING
 	};
 	*/
 
-	void updatePoints(float* points, size_t& index, const Plane3D& plane1, const Plane3D& plane2, const Plane3D& plane3)
+	kDOP18List::kDOP18List()
+		: GraphicObject3DList()
+	{
+	}
+
+	void updatePoints(sp_float* points, sp_size& index, const Plane3D& plane1, const Plane3D& plane2, const Plane3D& plane3)
 	{
 		Line3D* line = plane1.findIntersection(plane2);
 		Vec3f* point = line->findIntersectionOnRay(plane3);
@@ -220,7 +182,8 @@ namespace NAMESPACE_RENDERING
 
 		ALLOC_RELEASE(line);
 	}
-	void updatePoints(float* points, size_t& index,
+
+	void updatePoints(sp_float* points, sp_size& index,
 		const Plane3D& plane1, const Plane3D& plane2,
 		const Plane3D& plane3, const Plane3D& plane4)
 	{
@@ -237,7 +200,8 @@ namespace NAMESPACE_RENDERING
 
 		ALLOC_RELEASE(line);
 	}
-	void updatePoints(DOP18* dop, float* points, size_t pointIndex)
+
+	void updatePoints(DOP18* dop, sp_float* points, sp_size pointIndex)
 	{
 		Plane3D* planes = dop->planes();
 
@@ -294,81 +258,52 @@ namespace NAMESPACE_RENDERING
 		updatePoints(points, pointIndex, downDepthPlane, rightDepthPlane, downRightPlane);
 	}
 
-	void kDOP18Renderer::setObjects(kDOP18* kdops, sp_uint kdopsCount)
+	void kDOP18List::init()
 	{
-		this->kdops = kdops;
-		this->kdopsCount = kdopsCount;
-
-		float* points = ALLOC_ARRAY(float, FLOAT_COUNT_PER_18DOP * kdopsCount);
-		size_t pointIndex = 0;
-
-		for (size_t i = 0; i < kdopsCount; i++, pointIndex += FLOAT_COUNT_PER_18DOP)
-			updatePoints((DOP18*)kdops[i].boundingVolume, points, pointIndex);
-
-		glGenBuffers(1, &vertexBufferObject);  //aloca o buffr
-		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject); //associa o bufffer ao ponteiro
-		glBufferData(GL_ARRAY_BUFFER, FLOAT_SIZE_PER_18DOP * kdopsCount, points, GL_STATIC_DRAW);  //insere os dados no buffer para usar glDraw*
-
-		ALLOC_RELEASE(points);
-	}
-
-	void kDOP18Renderer::initVBO()
-	{
-		projectionMatrixLocation = glGetUniformLocation(programShader, "projectionMatrix");
-		viewMatrixLocation = glGetUniformLocation(programShader, "viewMatrix");
-		modelMatrixLocation = glGetUniformLocation(programShader, "modelMatrix");
-
-		positionAttribute = glGetAttribLocation(programShader, "Position");
-
-		setUpPositionAttribute();
-	}
-
-	void kDOP18Renderer::render(const RenderData& renderData)
-	{
-		glUseProgram(programShader);
-
-		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-
-		setUpPositionAttribute();
-
-		Mat4f modelView = Mat4f::identity();
-		//kdops[0].modelView *= Mat4f::createRotate(degreesToRadians(2), 0.0f, 1.0f, 0.0f);
-
-		glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, renderData.projectionMatrix);
-		glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, renderData.viewMatrix);
-		glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, modelView);
-
-
-		GLuint indicesPerKdop[FLOAT_COUNT_PER_18DOP] = {
-								0, 1, 2, 3, 0, 2, 1, 3, //front
-								4, 5, 6, 7, 4, 6, 5, 7, // depth
-								8, 9, 10, 11, 8, 10, 9, 11, // left
-								12, 13, 14, 15, 12, 14, 13, 15, // right
-								16, 17, 18, 19, 16, 18, 17, 19, // up
-								20, 21, 22, 23, 20, 22, 21, 23, // down
-								24, 0, 24, 8, 24, 16, // up-left
-								25, 2, 25, 12, 25, 18,
-								26, 4, 26, 10, 26, 17,
-								27, 6, 27, 14, 27, 19,
-								28, 1, 28, 9, 28, 20,
-								29, 3, 29, 13, 29, 22,
-								30, 5, 30, 11, 30, 21,
-								31, 7, 31, 15, 31, 23
+		const static sp_uint indexesPerKdop[INDEXES_COUNT_PER_18DOP] = {
+						0, 1, 2, 3, 0, 2, 1, 3, //front
+						4, 5, 6, 7, 4, 6, 5, 7, // depth
+						8, 9, 10, 11, 8, 10, 9, 11, // left
+						12, 13, 14, 15, 12, 14, 13, 15, // right
+						16, 17, 18, 19, 16, 18, 17, 19, // up
+						20, 21, 22, 23, 20, 22, 21, 23, // down
+						24, 0, 24, 8, 24, 16, // up-left
+						25, 2, 25, 12, 25, 18,
+						26, 4, 26, 10, 26, 17,
+						27, 6, 27, 14, 27, 19,
+						28, 1, 28, 9, 28, 20,
+						29, 3, 29, 13, 29, 22,
+						30, 5, 30, 11, 30, 21,
+						31, 7, 31, 15, 31, 23
 		};
 
-		GLuint* indices = ALLOC_ARRAY(GLuint, FLOAT_COUNT_PER_18DOP * kdopsCount);
+		_indexes = sp_mem_new(SpArray<sp_uint>)(INDEXES_COUNT_PER_18DOP, INDEXES_COUNT_PER_18DOP);
+		std::memcpy(_indexes->data(), indexesPerKdop, SIZE_PER_18DOP);
 
-		for (size_t i = 0; i < kdopsCount; i++)
+		sp_float* points = ALLOC_ARRAY(sp_float, INDEXES_COUNT_PER_18DOP);
+		DOP18 dop;
+		updatePoints(&dop, points, ZERO_SIZE);
+		_buffer = sp_mem_new(OpenGLBuffer)(INDEXES_COUNT_PER_18DOP * SIZEOF_FLOAT, points);
+		ALLOC_RELEASE(points);
+
+		_transformsAsTexture = sp_mem_new(OpenGLTextureBuffer)();
+		_transformsAsTexture->setBuffer(sizeof(Mat4f) * _length, _transforms, GL_DYNAMIC_DRAW);
+	}
+
+	void kDOP18List::render(const RenderData& renderData)
+	{
+		GraphicObject3DList<DOP18>::render(renderData);
+	}
+
+	void kDOP18List::dispose()
+	{
+		if (_indexes != nullptr)
 		{
-			ALLOC_COPY_TO(indicesPerKdop, &indices[i*FLOAT_COUNT_PER_18DOP], GLuint, FLOAT_COUNT_PER_18DOP);
-
-			for (size_t j = 0; j < FLOAT_COUNT_PER_18DOP; j++)
-				indicesPerKdop[j] += VERTEXES_PER_18DOP;
+			sp_mem_delete(_indexes, SpArray<sp_uint>);
+			_indexes = nullptr;
 		}
 
-		glDrawElements(GL_LINES, FLOAT_COUNT_PER_18DOP * kdopsCount, GL_UNSIGNED_INT, indices);
-
-		ALLOC_RELEASE(indices);
+		GraphicObject3DList<DOP18>::dispose();
 	}
 }
 

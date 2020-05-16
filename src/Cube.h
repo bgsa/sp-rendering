@@ -8,7 +8,7 @@
 namespace NAMESPACE_RENDERING
 {
 	class Cube
-		: public GraphicObject3D<Cube, OBB>
+		: public GraphicObject3D
 	{
 	private:
 		CubeRenderer* renderer;

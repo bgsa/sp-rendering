@@ -8,9 +8,8 @@
 
 namespace NAMESPACE_RENDERING
 {
-	template <class GameObjectType>
 	class RendererList
-		: public IGraphicObjectRenderer<GameObjectType>
+		: public IGraphicObjectRenderer
 	{
 	private:
 		OpenGLShader* shader;
@@ -23,7 +22,7 @@ namespace NAMESPACE_RENDERING
 
 		GLint positionAttribute = -1;
 
-		GraphicObject3DList<GameObjectType>* _list;
+		GraphicObject3DList* _list;
 
 		inline void setUpPositionAttribute()
 		{
@@ -39,7 +38,7 @@ namespace NAMESPACE_RENDERING
 
 	public:
 
-		API_INTERFACE void setList(GraphicObject3DList<GameObjectType>* list)
+		API_INTERFACE void setList(GraphicObject3DList* list)
 		{
 			this->_list = list;
 		}

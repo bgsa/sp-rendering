@@ -7,7 +7,7 @@
 namespace NAMESPACE_RENDERING
 {
 	class BSPEditor3D
-		: public GraphicObject3D<BSPEditor3D, AABB>
+		: public GraphicObject3D
 	{
 	private:
 		BSPTree * bspTree;

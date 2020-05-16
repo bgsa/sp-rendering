@@ -29,7 +29,7 @@ namespace NAMESPACE_RENDERING
 		shader
 			->setUniform<Mat4f>(projectionMatrixLocation, renderData.projectionMatrix)
 			->setUniform<Mat4f>(viewMatrixLocation, renderData.viewMatrix)
-			->setUniform<Mat4f>(transformMatrixLocation, transform);
+			->setUniform<Mat4f>(transformMatrixLocation, transform.toMat4());
 
 		glDrawElements(GL_TRIANGLES, model.sizeOfFaces(), GL_UNSIGNED_INT, model.faces->data());
 		//renderer->render(renderData);

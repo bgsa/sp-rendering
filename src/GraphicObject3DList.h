@@ -7,17 +7,16 @@
 #include "SpArray.h"
 #include "OpenGLBuffer.h"
 #include "OpenGLTextureBuffer.h"
+#include "SpTransform.h"
 
 namespace NAMESPACE_RENDERING
 {
-	template <class GameObjectType>
 	class GraphicObject3DList : 
 		public GraphicObject
 	{
 	protected:
-		IGraphicObjectRenderer<GameObjectType>* renderer;
-		Mat4f* _transforms;
-		sp_uint _length;
+		IGraphicObjectRenderer* renderer;
+		SpArray<SpTransform>* _transforms;
 		SpArray<sp_uint>* _indexes;
 		OpenGLBuffer* _buffer;
 		OpenGLTextureBuffer* _transformsAsTexture;
@@ -28,12 +27,11 @@ namespace NAMESPACE_RENDERING
 		{
 			renderer = nullptr;
 			_transforms = nullptr;
-			_length = ZERO_UINT;
 		}
 
 		API_INTERFACE sp_uint length()
 		{
-			return _length;
+			return _transforms->length();
 		}
 
 		API_INTERFACE virtual SpArray<sp_uint>* indexes()
@@ -51,18 +49,17 @@ namespace NAMESPACE_RENDERING
 			return _transformsAsTexture;
 		}
 
-		API_INTERFACE Mat4f* transforms()
+		API_INTERFACE virtual SpTransform& transforms(const sp_uint index)
 		{
-			return _transforms;
+			return _transforms->data()[index];
 		}
 
 		API_INTERFACE void setLength(sp_uint length)
 		{
-			_length = length;
-			_transforms = sp_mem_new_array(Mat4f, length);
+			_transforms = sp_mem_new(SpArray<SpTransform>)(length, length);
 		}
 
-		API_INTERFACE void setRenderer(IGraphicObjectRenderer<GameObjectType>* renderer)
+		API_INTERFACE void setRenderer(IGraphicObjectRenderer* renderer)
 		{
 			this->renderer = renderer;
 		}
@@ -81,7 +78,7 @@ namespace NAMESPACE_RENDERING
 		{
 			if (_transforms != nullptr)
 			{
-				sp_mem_release(_transforms);
+				sp_mem_delete(_transforms, SpArray<SpTransform>);
 				_transforms = nullptr;
 			}
 

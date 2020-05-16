@@ -10,11 +10,13 @@
 #include "OpenGLShader.h"
 #include "OpenGLTexture.h"
 #include "ImageBMP.h"
+#include "SpPhysicObject.h"
 
 namespace NAMESPACE_RENDERING
 {
 	class Rock
-		: public GraphicObject3D<Rock, DOP18>
+		: public GraphicObject3D
+		, public SpPhysicObject
 	{
 	private:
 		OpenGLBuffer* buffer;
@@ -28,12 +30,19 @@ namespace NAMESPACE_RENDERING
 
 		sp_int textureAttribute;
 
+		DOP18* _boundingVolume;
+
 	public:
 
 		API_INTERFACE void init() override;
 
 		API_INTERFACE void update(long long elapsedTime) override
 		{
+		}
+
+		API_INTERFACE BoundingVolume* boundingVolume() const override
+		{
+			return _boundingVolume;
 		}
 
 		API_INTERFACE void render(const RenderData& renderData) override;

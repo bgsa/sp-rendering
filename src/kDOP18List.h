@@ -8,8 +8,11 @@
 namespace NAMESPACE_RENDERING
 {
 	class kDOP18List
-		: public GraphicObject3DList<DOP18>
+		: public GraphicObject3DList
 	{
+	private:
+		void updateTransformations() const;
+
 	public:
 
 		API_INTERFACE kDOP18List();

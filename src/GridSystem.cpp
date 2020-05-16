@@ -102,7 +102,7 @@ namespace NAMESPACE_RENDERING
 
 		glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, renderData.projectionMatrix);
 		glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, renderData.viewMatrix);
-		glUniformMatrix4fv(transformMatrixLocation, 1, GL_FALSE, transform);
+		glUniformMatrix4fv(transformMatrixLocation, 1, GL_FALSE, transform.toMat4());
 
 		glUniform4f(colorLocation, color->Red, color->Green, color->Blue, color->Alpha);
 
@@ -121,7 +121,7 @@ namespace NAMESPACE_RENDERING
 			//draw lines on Z axis
 			Mat4f matrixTranslatedX = Mat4f::createTranslate(i, 0.0f, 0.0f);
 
-			Mat4f result = transform * matrixTranslatedX;
+			Mat4f result = matrixTranslatedX;
 
 			glUniformMatrix4fv(transformMatrixLocation, 1, GL_FALSE, result);
 			glDrawArrays(GL_LINES, 0, 2);
@@ -129,7 +129,7 @@ namespace NAMESPACE_RENDERING
 			//draw lines on X axis		
 			Mat4f matrixTranslatedZ = Mat4f::createTranslate(0.0f, 0.0f, i);
 
-			result = matrixRotate * transform;
+			result = matrixRotate;
 
 			Mat4f result2 = matrixTranslatedZ * result;
 

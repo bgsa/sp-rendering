@@ -6,166 +6,6 @@
 
 namespace NAMESPACE_RENDERING
 {
-	/*
-	static sp_float points[VERTEXES_PER_18DOP] = {
-		//front face
-		0.0f, 0.0f, 0.0f,
-		0.0f, 10.0f, 0.0f,
-
-		10.0f, 10.0f, 0.0f,
-		10.0f, 0.0f, 0.0f,
-
-		0.0f, 10.0f, 0.0f,
-		10.0f, 10.0f, 0.0f,
-
-		0.0f, 0.0f, 0.0f,
-		10.0f, 0.0f, 0.0f,
-
-		//front-face and front-back-face connection
-		0.0f, 0.0f, 0.0f,
-		-3.0f, -3.0f, 3.0f,
-
-		0.0f, 10.0f, 0.0f,
-		-3.0f, 13.0f, 3.0f,
-
-		10.0f, 0.0f, 0.0f,
-		13.0f, -3.0f, 3.0f,
-
-		10.0f, 10.0f, 0.0f,
-		13.0f, 13.0f, 3.0f,
-
-		//back face
-		0.0f, 0.0f, 13.0f,
-		0.0f, 10.0f, 13.0f,
-
-		10.0f, 10.0f, 13.0f,
-		10.0f, 0.0f, 13.0f,
-
-		0.0f, 10.0f, 13.0f,
-		10.0f, 10.0f, 13.0f,
-
-		0.0f, 0.0f, 13.0f,
-		10.0f, 0.0f, 13.0f,
-
-		//back-face and back-back-face connection
-		0.0f, 0.0f, 13.0f,
-		-3.0f, -3.0f, 10.0f,
-
-		0.0f, 10.0f, 13.0f,
-		-3.0f, 13.0f, 10.0f,
-
-		10.0f, 0.0f, 13.0f,
-		13.0f, -3.0f, 10.0f,
-
-		10.0f, 10.0f, 13.0f,
-		13.0f, 13.0f, 10.0f,
-
-		//left-front face
-		16.0f, 10.0f, 6.0f,
-		16.0f, 0.0f, 6.0f,
-
-		16.0f, 10.0f, 7.0f,
-		16.0f, 0.0f, 7.0f,
-
-		16.0f, 10.0f, 6.0f,
-		16.0f, 10.0f, 7.0f,
-
-		16.0f, 0.0f, 6.0f,
-		16.0f, 0.0f, 7.0f,
-
-		//connection left-front face with back-faces
-		16.0f, 0.0f, 6.0f,
-		13.0f, -3.0f, 3.0f,
-
-		16.0f, 10.0f, 6.0f,
-		13.0f, 13.0f, 3.0f,
-
-		16.0f, 10.0f, 7.0f,
-		13.0f, 13.0f, 10.0f,
-
-		16.0f, 0.0f, 7.0f,
-		13.0f, -3.0f, 10.0f,
-
-		//right-front face
-		-6.0f, 10.0f, 6.0f,
-		-6.0f, 0.0f, 6.0f,
-
-		-6.0f, 10.0f, 7.0f,
-		-6.0f, 0.0f, 7.0f,
-
-		-6.0f, 10.0f, 6.0f,
-		-6.0f, 10.0f, 7.0f,
-
-		-6.0f, 0.0f, 6.0f,
-		-6.0f, 0.0f, 7.0f,
-
-		//connection right-front face with back-faces
-		-6.0f, 0.0f, 6.0f,
-		-3.0f, -3.0f, 3.0f,
-
-		-6.0f, 10.0f, 6.0f,
-		-3.0f, 13.0f, 3.0f,
-
-		-6.0f, 10.0f, 7.0f,
-		-3.0f, 13.0f, 10.0f,
-
-		-6.0f, 0.0f, 7.0f,
-		-3.0f, -3.0f, 10.0f,
-
-		//up-front face
-		10.0f, 16.0f, 6.0f,
-		10.0f, 16.0f, 7.0f,
-
-		0.0f, 16.0f, 6.0f,
-		0.0f, 16.0f, 7.0f,
-
-		10.0f, 16.0f, 6.0f,
-		0.0f, 16.0f, 6.0f,
-
-		10.0f, 16.0f, 7.0f,
-		0.0f, 16.0f, 7.0f,
-
-		//connection up-face with back-up-faces
-		13.0f, 13.0f, 3.0f,
-		10.0f, 16.0f, 6.0f,
-
-		13.0f, 13.0f, 10.0f,
-		10.0f, 16.0f, 7.0f,
-
-		-3.0f, 13.0f, 10.0f,
-		0.0f, 16.0f, 7.0f,
-
-		-3.0f, 13.0f, 3.0f,
-		0.0f, 16.0f, 6.0f,
-
-		//down-front face
-		10.0f, -6.0f, 6.0f,
-		10.0f, -6.0f, 7.0f,
-
-		0.0f, -6.0f, 6.0f,
-		0.0f, -6.0f, 7.0f,
-
-		10.0f, -6.0f, 6.0f,
-		0.0f, -6.0f, 6.0f,
-
-		10.0f, -6.0f, 7.0f,
-		0.0f, -6.0f, 7.0f,
-
-		//connection down-face with back-down-faces
-		13.0f, -3.0f, 3.0f,
-		10.0f, -6.0f, 6.0f,
-
-		13.0f, -3.0f, 10.0f,
-		10.0f, -6.0f, 7.0f,
-
-		-3.0f, -3.0f, 10.0f,
-		0.0f, -6.0f, 7.0f,
-
-		-3.0f, -3.0f, 3.0f,
-		0.0f, -6.0f, 6.0f
-	};
-	*/
-
 	kDOP18List::kDOP18List()
 		: GraphicObject3DList()
 	{
@@ -287,12 +127,26 @@ namespace NAMESPACE_RENDERING
 		ALLOC_RELEASE(points);
 
 		_transformsAsTexture = sp_mem_new(OpenGLTextureBuffer)();
-		_transformsAsTexture->setBuffer(sizeof(Mat4f) * _length, _transforms, GL_DYNAMIC_DRAW);
+	}
+
+	void kDOP18List::updateTransformations() const
+	{
+		const sp_size size = MAT4_FLOAT_SIZE * _transforms->length();
+
+		sp_float* transformations = (sp_float*)ALLOC_SIZE(size);
+
+		for (sp_uint i = 0; i < _transforms->length(); i++)
+			std::memcpy(&transformations[i * MAT4_LENGTH], _transforms->data()[i].toMat4(), MAT4_FLOAT_SIZE);
+
+		_transformsAsTexture->setBuffer(size, transformations, GL_DYNAMIC_DRAW);
+
+		ALLOC_RELEASE(transformations);
 	}
 
 	void kDOP18List::render(const RenderData& renderData)
-	{
-		GraphicObject3DList<DOP18>::render(renderData);
+	{	
+		updateTransformations();
+		GraphicObject3DList::render(renderData);
 	}
 
 	void kDOP18List::dispose()
@@ -303,7 +157,7 @@ namespace NAMESPACE_RENDERING
 			_indexes = nullptr;
 		}
 
-		GraphicObject3DList<DOP18>::dispose();
+		GraphicObject3DList::dispose();
 	}
 }
 

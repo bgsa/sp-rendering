@@ -8,7 +8,7 @@
 namespace NAMESPACE_RENDERING
 {
 	class RockRenderer
-		: public IGraphicObjectRenderer<Rock>
+		: public IGraphicObjectRenderer
 	{
 	public:
 

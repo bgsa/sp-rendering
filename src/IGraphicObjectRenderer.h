@@ -6,7 +6,6 @@
 
 namespace NAMESPACE_RENDERING
 {
-	template<class T>
 	class IGraphicObjectRenderer
 		: public Object
 	{

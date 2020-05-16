@@ -1,9 +1,10 @@
-#ifndef GRAPHIC_OBJECT
-#define GRAPHIC_OBJECT
+#ifndef GRAPHIC_OBJECT_HEADER
+#define GRAPHIC_OBJECT_HEADER
 
 #include "SpectrumRendering.h"
 #include <Object.h>
 #include "RenderData.h"
+#include "SpTransform.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -16,37 +17,25 @@ namespace NAMESPACE_RENDERING
 	class GraphicObject
 		: public Object
 	{
-	private:
-		sp_char* tag;
-
 	protected:
+		sp_uint programShader;
+		sp_uint vertexBufferObject;
 
-		GLuint programShader;
-		GLuint vertexBufferObject;
+		sp_int projectionMatrixLocation;
+		sp_int viewMatrixLocation;
+		sp_int transformMatrixLocation;
 
-		GLint projectionMatrixLocation;
-		GLint viewMatrixLocation;
-		GLint transformMatrixLocation;
-
-		GLint positionAttribute = -1;
-		GLint colorLocation = -1;
+		sp_int positionAttribute = -1;
+		sp_int colorLocation = -1;
 
 	public:
-		Mat4f transform;
+		SpTransform transform;
 
 		API_INTERFACE GraphicObject()
 		{
-			transform = Mat4f::identity();
 		}
 
 		API_INTERFACE virtual void init() = 0;
-
-		API_INTERFACE void setTag(sp_char* tag) {
-			this->tag = tag;
-		}
-		API_INTERFACE sp_char* getTag() {
-			return tag;
-		}
 
 		API_INTERFACE virtual void update(sp_longlong elapsedTime) { };
 
@@ -75,4 +64,4 @@ namespace NAMESPACE_RENDERING
 	};
 }
 
-#endif // GRAPHIC_OBJECT
+#endif // GRAPHIC_OBJECT_HEADER

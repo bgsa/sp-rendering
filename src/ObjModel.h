@@ -44,7 +44,7 @@ namespace NAMESPACE_RENDERING
 		/// </summary>
 		API_INTERFACE virtual void load(const SpString& filename)
 		{
-			sp_assert(filename.length() != ZERO_UINT);
+			sp_assert(filename.length() != ZERO_UINT, "InvalidArgumentException");
 
 			SP_FILE file;
 			file.open(filename, std::ios_base::in);

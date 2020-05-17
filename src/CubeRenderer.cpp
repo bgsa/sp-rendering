@@ -159,10 +159,14 @@ namespace NAMESPACE_RENDERING
 
 		//cubes[1].rotate((sp_float) degreesToRadians(3), 0.0f, 0.0f, 1.0f);
 
-		float* modelMatrixes = ALLOC_ARRAY(float, cubesCount * MAT4_LENGTH);
-		for (size_t index = 0; index < cubesCount; index++)
-			for (size_t i = 0; i < MAT4_LENGTH; i++)
-				modelMatrixes[(index * MAT4_LENGTH) + i] = cubes[index].transform.toMat4()[i];
+		sp_float* modelMatrixes = ALLOC_ARRAY(sp_float, cubesCount * MAT4_LENGTH);
+		for (sp_uint index = 0; index < cubesCount; index++)
+		{
+			Mat4 model = cubes[index].transformation();
+
+			for (sp_uint i = 0; i < MAT4_LENGTH; i++)
+				modelMatrixes[(index * MAT4_LENGTH) + i] = model[i];
+		}
 		// TODO: update above (slow copy one by one)
 
 		glBindBuffer(GL_TEXTURE_BUFFER, modelBufferObject);

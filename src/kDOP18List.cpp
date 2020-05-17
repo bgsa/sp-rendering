@@ -96,6 +96,8 @@ namespace NAMESPACE_RENDERING
 		updatePoints(points, pointIndex, downDepthPlane, leftDepthPlane, downLeftPlane);
 		//down-right-depth vertex
 		updatePoints(points, pointIndex, downDepthPlane, rightDepthPlane, downRightPlane);
+
+		sp_mem_delete(planes, Plane3D);
 	}
 
 	void kDOP18List::init()

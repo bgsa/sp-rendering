@@ -45,6 +45,10 @@ namespace NAMESPACE_RENDERING
 			return _boundingVolume;
 		}
 
+		API_INTERFACE inline Rock* translate(const Vec3& translation) override;
+
+		API_INTERFACE inline Rock* scale(const Vec3& scaleVector) override;
+
 		API_INTERFACE void render(const RenderData& renderData) override;
 
 		API_INTERFACE inline const sp_char* toString() override

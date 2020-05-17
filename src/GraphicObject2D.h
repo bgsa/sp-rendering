@@ -47,12 +47,12 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE virtual void setBotomMargin(sp_float bottomMargin)
 		{
-			sp_assert(bottomMargin > 0.0f);
+			sp_assert(bottomMargin > 0.0f, "InvalidArgumentException");
 			margin[1] = bottomMargin;
 		}
 		API_INTERFACE virtual void setLeftMargin(sp_float leftMargin)
 		{
-			sp_assert(leftMargin > 0.0f);
+			sp_assert(leftMargin > 0.0f, "InvalidArgumentException");
 			margin[0] = leftMargin;
 		}
 

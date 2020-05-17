@@ -29,7 +29,6 @@ namespace NAMESPACE_RENDERING
 		void render(const RenderData& renderData) override
 		{
 			renderer->geometry = &geometry;
-			renderer->transform = this->transform;
 			renderer->setColor(*this->color);
 
 			renderer->render(renderData);

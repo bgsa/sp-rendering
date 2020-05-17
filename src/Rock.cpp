@@ -73,6 +73,28 @@ namespace NAMESPACE_RENDERING
 			->setProperty(GL_TEXTURE_MAG_FILTER, GL_LINEAR)
 			->setData(image->data(), SpSize<sp_int>(image->width(), image->height()), image->getColorFormat());
 		sp_mem_delete(image, ImageBMP);
+
+		_boundingVolume = sp_mem_new(DOP18)();
+		_boundingVolume->scale({ 2.8f, 2.9f, 2.6f });
+		_boundingVolume->translate(0.2f, 1.0f, 1.3f);
+	}
+
+	Rock* Rock::translate(const Vec3& translation)
+	{
+		GraphicObject3D::translate(translation);
+
+		boundingVolume()->translate(translation);
+
+		return this;
+	}
+
+	Rock* Rock::scale(const Vec3& scaleVector)
+	{
+		GraphicObject3D::scale(scaleVector);
+
+		boundingVolume()->scale(scaleVector);
+
+		return this;
 	}
 
 	void Rock::dispose()

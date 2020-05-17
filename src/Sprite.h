@@ -35,7 +35,7 @@ namespace NAMESPACE_RENDERING
 	class Sprite
 	{
 	private:
-		Mat4f model = {
+		Mat4 model = {
 			1.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, 1.0f, 0.0f,
@@ -77,7 +77,7 @@ namespace NAMESPACE_RENDERING
 		inline void scale(float xScale, float yScale, float zScale);
 		inline void rotate(float angle, float x, float y, float z);
 		inline void rotateByCenter(float angle, float x, float y, float z);
-		void render(Mat4f projectionViewMatrix);
+		void render(Mat4 projectionViewMatrix);
 	};
 }
 

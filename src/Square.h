@@ -13,7 +13,7 @@ namespace NAMESPACE_RENDERING
 	class Square
 	{
 	private:
-		Mat4f model = {
+		Mat4 model = {
 			//model matrix (translate, scale and rotate) here
 			1.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f, 0.0f,
@@ -44,7 +44,7 @@ namespace NAMESPACE_RENDERING
 
 		void init();
 
-		void render(Mat4f projectionViewMatrix);
+		void render(Mat4 projectionViewMatrix);
 	};
 }
 

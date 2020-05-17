@@ -50,7 +50,7 @@ namespace NAMESPACE_RENDERING
 
 		aiMatrix4x4 mat4 = scene->mRootNode->mTransformation;
 		mat4.Inverse();
-		Mat4f boneGlobalInverseTransform = Mat4f(
+		Mat4 boneGlobalInverseTransform = Mat4(
 			mat4.a1, mat4.b1, mat4.c1, mat4.d1,
 			mat4.a2, mat4.b2, mat4.c2, mat4.d2,
 			mat4.a3, mat4.b3, mat4.c3, mat4.d3,
@@ -80,7 +80,7 @@ namespace NAMESPACE_RENDERING
 	}
 
 
-	void CompositeModel::render(Mat4f projectionViewMatrix)
+	void CompositeModel::render(Mat4 projectionViewMatrix)
 	{
 		//primeiro mesh corpo, rabo, parte da cabeça, patas ...
 		//segundo mesh sao os olhos apenas - index == 1

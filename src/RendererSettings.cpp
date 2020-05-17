@@ -16,21 +16,21 @@ namespace NAMESPACE_RENDERING
 		return instanceRendererSettings;
 	}
 
-	Rectangle2Df RendererSettings::getScreenBound()
+	Rectangle2D RendererSettings::getScreenBound()
 	{
-		return Rectangle2Df(
-			Vec2f(0.0f, 0.0f),
-			Vec2f(float(width), 0.0f),
-			Vec2f(float(width), float(height)),
-			Vec2f(0.0f, float(height))
+		return Rectangle2D(
+			Vec2(0.0f, 0.0f),
+			Vec2(float(width), 0.0f),
+			Vec2(float(width), float(height)),
+			Vec2(0.0f, float(height))
 		);
 	}
 
-	Vec2f& RendererSettings::getRendererPosition()
+	Vec2& RendererSettings::getRendererPosition()
 	{
 		return rendererPosition;
 	}
-	void RendererSettings::setRendererPosition(const Vec2f& position)
+	void RendererSettings::setRendererPosition(const Vec2& position)
 	{
 		rendererPosition = position;
 	}
@@ -53,9 +53,9 @@ namespace NAMESPACE_RENDERING
 		this->height = height;
 	}
 
-	Vec2f RendererSettings::getSize()
+	Vec2 RendererSettings::getSize()
 	{
-		return Vec2f(width, height);
+		return Vec2(width, height);
 	}
 	void RendererSettings::setSize(sp_float width, sp_float height)
 	{

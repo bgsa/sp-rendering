@@ -13,7 +13,7 @@ namespace NAMESPACE_RENDERING
 	class Point
 	{
 	private:
-		Mat4f modelView = {
+		Mat4 modelView = {
 			1.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, 1.0f, 0.0f,
@@ -44,7 +44,7 @@ namespace NAMESPACE_RENDERING
 
 		void setPointSize(float newPointSize);
 
-		void render(Mat4f projectionViewMatrix);
+		void render(Mat4 projectionViewMatrix);
 	};
 }
 

@@ -2,6 +2,7 @@
 #define MODEL_HEADER
 
 #include "SpectrumRendering.h"
+#include <SpPoint3.h>
 #include <SpArray.h>
 #include <SpString.h>
 
@@ -12,10 +13,10 @@ namespace NAMESPACE_RENDERING
 	{
 	public:
 		SpString* name;
-		SpArray<Vec3f>* vertexes;
-		SpArray<Vec3f>* normals;
-		SpArray<Vec3ui>* faces;
-		SpArray<Vec2f>* textureCoordinates;
+		SpArray<Vec3>* vertexes;
+		SpArray<Vec3>* normals;
+		SpArray<SpPoint3<sp_uint>>* faces;
+		SpArray<Vec2>* textureCoordinates;
 
 		API_INTERFACE Model()
 		{
@@ -28,19 +29,19 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE inline sp_size sizeOfVertexes()
 		{
-			return vertexes->length() * sizeof(Vec3f);
+			return vertexes->length() * sizeof(Vec3);
 		}
 		API_INTERFACE inline sp_size sizeOfFaces()
 		{
-			return faces->length() * sizeof(Vec3ui);
+			return faces->length() * sizeof(SpPoint3<sp_uint>);
 		}
 		API_INTERFACE inline sp_size sizeOfNormals()
 		{
-			return normals->length() * sizeof(Vec3f);
+			return normals->length() * sizeof(Vec3);
 		}
 		API_INTERFACE inline sp_size sizeOfTextures()
 		{
-			return textureCoordinates->length() * sizeof(Vec2f);
+			return textureCoordinates->length() * sizeof(Vec2);
 		}
 
 		API_INTERFACE virtual void load(const SpString& filename) = 0;
@@ -65,17 +66,17 @@ namespace NAMESPACE_RENDERING
 		{
 			if (normals != NULL)
 			{
-				sp_mem_delete(normals, SpArray<Vec3f>);
+				sp_mem_delete(normals, SpArray<Vec3>);
 			}
 
-			normals = sp_mem_new(SpArray<Vec3f>)(vertexes->length());
+			normals = sp_mem_new(SpArray<Vec3>)(vertexes->length());
 
 			for (sp_uint i = ZERO_UINT; i < vertexes->length(); i++)
-				normals->data()[i] = Vec3f(ZERO_FLOAT);
+				normals->data()[i] = Vec3(ZERO_FLOAT);
 
 			for (sp_uint i = ZERO_UINT; i < faces->length(); i++)
 			{
-				const Vec3ui indexes = faces->data()[i];
+				const SpPoint3<sp_uint> indexes = faces->data()[i];
 
 				const Plane3D plane(
 					vertexes->data()[indexes[0]],

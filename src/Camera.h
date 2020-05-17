@@ -13,22 +13,22 @@ namespace NAMESPACE_RENDERING
 	class Camera
 	{
 	protected:
-		Mat4f projectionMatrix;
-		Mat4f viewMatrix;
+		Mat4 projectionMatrix;
+		Mat4 viewMatrix;
 
-		Vec3f position;
-		Vec3f target;
-		Vec3f _up;
-		Vec3f _direction;
-		Vec3f _right;
+		Vec3 position;
+		Vec3 target;
+		Vec3 _up;
+		Vec3 _direction;
+		Vec3 _right;
 		
 		sp_float fieldOfView;
 		sp_float aspectRatio;
 		sp_float nearFrustum;
 		sp_float farFrustum ;
 
-		Vec4f nearUpperLeft, nearLowerLeft, nearUpperRight, nearLowerRight;
-		Vec4f farUpperLeft, farLowerLeft, farUpperRright, farLowerRight;
+		Vec4 nearUpperLeft, nearLowerLeft, nearUpperRight, nearLowerRight;
+		Vec4 farUpperLeft, farLowerLeft, farUpperRright, farLowerRight;
 
 		void updateViewMatrix();
 
@@ -37,8 +37,8 @@ namespace NAMESPACE_RENDERING
 		sp_float invertY;
 		sp_float velocity;
 		
-		API_INTERFACE inline void init(const Vec3f& position, const Vec3f& target, const Vec3f& up = Vec3f(ZERO_FLOAT, ONE_FLOAT, ZERO_FLOAT));
-		API_INTERFACE inline void initProjectionPerspective(const Vec3f& position, const Vec3f& target, sp_float aspectRatio);
+		API_INTERFACE inline void init(const Vec3& position, const Vec3& target, const Vec3& up = Vec3(ZERO_FLOAT, ONE_FLOAT, ZERO_FLOAT));
+		API_INTERFACE inline void initProjectionPerspective(const Vec3& position, const Vec3& target, sp_float aspectRatio);
 
 		API_INTERFACE inline sp_float getFieldOfView() const;
 
@@ -53,16 +53,16 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE virtual void rotateY(sp_float angle) = 0;
 		API_INTERFACE virtual void rotateZ(sp_float angle) = 0;
 
-		API_INTERFACE inline Mat4f& getProjectionMatrix() noexcept;
-		API_INTERFACE inline Mat4f& getViewMatrix() noexcept;
-		API_INTERFACE inline Mat4f getHUDProjectionMatrix(sp_float width, sp_float height) const;
+		API_INTERFACE inline Mat4& getProjectionMatrix() noexcept;
+		API_INTERFACE inline Mat4& getViewMatrix() noexcept;
+		API_INTERFACE inline Mat4 getHUDProjectionMatrix(sp_float width, sp_float height) const;
 
 		API_INTERFACE void setProjectionPerspective(sp_float fieldOfView, sp_float aspect, sp_float near, sp_float far);
 		API_INTERFACE void setProjectionOrthographic(sp_float xMin, sp_float xMax, sp_float yMin, sp_float yMax, sp_float zMin, sp_float zMax);
 
 		API_INTERFACE inline void updateProjectionPerspectiveAspect(sp_float aspectRatio);
 
-		API_INTERFACE Vec3f getFromWorldToScreen(const Vec3f& vertex, const Mat4f& modelViewMatrix, const SpViewportData* viewport);
+		API_INTERFACE Vec3 getFromWorldToScreen(const Vec3& vertex, const Mat4& modelViewMatrix, const SpViewportData* viewport);
 	};
 }
 

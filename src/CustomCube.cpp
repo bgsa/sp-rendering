@@ -174,9 +174,9 @@ namespace NAMESPACE_RENDERING
 		delete image;
 	}
 
-	void CustomCube::render(Mat4f projectionViewMatrix)
+	void CustomCube::render(Mat4 projectionViewMatrix)
 	{
-		Mat3f normalMatrix = model.toMat3();
+		Mat3 normalMatrix = model.toMat3();
 
 		glUseProgram(programShader);
 

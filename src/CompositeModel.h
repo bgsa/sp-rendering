@@ -16,7 +16,7 @@ public:
 
 	void init(string modelName);
 
-	void render(Mat4f projectionViewMatrix);
+	void render(Mat4 projectionViewMatrix);
 };
 
 */

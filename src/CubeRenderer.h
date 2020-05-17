@@ -80,14 +80,14 @@ namespace NAMESPACE_RENDERING
 
 		GLint lightShininessFactorLocation;
 
-		Vec3f materialAmbient = { 1.0f, 0.0f, 0.0f };
-		Vec3f materialDiffuse = { 1.0f, 1.0f, 1.0f };
-		Vec3f materialSpecular = { 1.0f, 1.0f, 1.0f };
+		Vec3 materialAmbient = { 1.0f, 0.0f, 0.0f };
+		Vec3 materialDiffuse = { 1.0f, 1.0f, 1.0f };
+		Vec3 materialSpecular = { 1.0f, 1.0f, 1.0f };
 
-		Vec3f lightPosition = { -300.0f, 1000.0f, 300.0f };
-		Vec3f lightAmbient = { 1.0f, 1.0f, 1.0f };
-		Vec3f lightDiffuse = { 1.0f, 1.0f, 1.0f };
-		Vec3f lightSpecular = { 1.0f, 1.0f, 1.0f };
+		Vec3 lightPosition = { -300.0f, 1000.0f, 300.0f };
+		Vec3 lightAmbient = { 1.0f, 1.0f, 1.0f };
+		Vec3 lightDiffuse = { 1.0f, 1.0f, 1.0f };
+		Vec3 lightSpecular = { 1.0f, 1.0f, 1.0f };
 		float shininessFactor = 1000.0f;
 
 		void initVBO();

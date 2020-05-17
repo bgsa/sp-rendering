@@ -27,9 +27,9 @@ namespace NAMESPACE_RENDERING
 		shader->enableAttributes();
 
 		shader
-			->setUniform<Mat4f>(projectionMatrixLocation, renderData.projectionMatrix)
-			->setUniform<Mat4f>(viewMatrixLocation, renderData.viewMatrix)
-			->setUniform<Mat4f>(transformMatrixLocation, transform.toMat4());
+			->setUniform<Mat4>(projectionMatrixLocation, renderData.projectionMatrix)
+			->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix)
+			->setUniform<Mat4>(transformMatrixLocation, transform.toMat4());
 
 		glDrawElements(GL_TRIANGLES, model.sizeOfFaces(), GL_UNSIGNED_INT, model.faces->data());
 		//renderer->render(renderData);
@@ -71,7 +71,7 @@ namespace NAMESPACE_RENDERING
 			->use()
 			->setProperty(GL_TEXTURE_MIN_FILTER, GL_LINEAR)
 			->setProperty(GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-			->setData(image->data(), Vec2i(image->width(), image->height()), image->getColorFormat());
+			->setData(image->data(), SpSize<sp_int>(image->width(), image->height()), image->getColorFormat());
 		sp_mem_delete(image, ImageBMP);
 	}
 

@@ -77,19 +77,19 @@ namespace NAMESPACE_RENDERING
 
 	void Sprite::translate(float x, float y, float z)
 	{
-		Mat4f translateMatrix = Mat4f::createTranslate(x, y, z);
+		Mat4 translateMatrix = Mat4::createTranslate(x, y, z);
 		model = translateMatrix * model;
 	}
 
 	void Sprite::scale(float xScale, float yScale, float zScale = 0)
 	{
-		Mat4f scaleMatrix = Mat4f::createScale(xScale, yScale, zScale);
+		Mat4 scaleMatrix = Mat4::createScale(xScale, yScale, zScale);
 		model = scaleMatrix * model;
 	}
 
 	void Sprite::rotate(float angle, float x, float y, float z)
 	{
-		Mat4f rotationMatrix = Mat4f::createRotate(angle, x, y, z);
+		Mat4 rotationMatrix = Mat4::createRotate(angle, x, y, z);
 		model = rotationMatrix * model;
 	}
 
@@ -285,7 +285,7 @@ namespace NAMESPACE_RENDERING
 		attributes.texture[7] = spriteData.frames[frameIndex].positionY + spriteData.frames[frameIndex].height;
 	}
 
-	void Sprite::render(Mat4f projectionViewMatrix)
+	void Sprite::render(Mat4 projectionViewMatrix)
 	{
 		glUseProgram(programShader);
 

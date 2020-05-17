@@ -2,7 +2,7 @@
 
 namespace NAMESPACE_RENDERING
 {
-	void Camera::init(const Vec3f& position, const Vec3f& target, const Vec3f& up)
+	void Camera::init(const Vec3& position, const Vec3& target, const Vec3& up)
 	{
 		this->position = position;
 		this->target = target;
@@ -22,7 +22,7 @@ namespace NAMESPACE_RENDERING
 	{
 		_direction = (position - target).normalize();   //zAxis
 		_right = _up.cross(_direction).normalize();     //xAxis
-		Vec3f cameraUp = _direction.cross(_right);      //yAxis
+		Vec3 cameraUp = _direction.cross(_right);      //yAxis
 
 		viewMatrix = {
 			_right[0], cameraUp[0], _direction[0], ZERO_FLOAT,
@@ -31,10 +31,10 @@ namespace NAMESPACE_RENDERING
 			ZERO_FLOAT, ZERO_FLOAT, ZERO_FLOAT, ONE_FLOAT
 		};
 
-		viewMatrix *= Mat4f::createTranslate(-position[0], -position[1], -position[2]);
+		viewMatrix *= Mat4::createTranslate(-position[0], -position[1], -position[2]);
 	}
 
-	void Camera::initProjectionPerspective(const Vec3f& position, const Vec3f& target, sp_float aspectRatio)
+	void Camera::initProjectionPerspective(const Vec3& position, const Vec3& target, sp_float aspectRatio)
 	{
 		init(position, target);
 		updateProjectionPerspectiveAspect(aspectRatio);
@@ -51,12 +51,12 @@ namespace NAMESPACE_RENDERING
 		return fieldOfView;
 	}
 
-	Mat4f& Camera::getProjectionMatrix() noexcept
+	Mat4& Camera::getProjectionMatrix() noexcept
 	{
 		return projectionMatrix;
 	}
 
-	Mat4f& Camera::getViewMatrix() noexcept
+	Mat4& Camera::getViewMatrix() noexcept
 	{
 		return viewMatrix;
 	}
@@ -78,7 +78,7 @@ namespace NAMESPACE_RENDERING
 		xmax = -xmin;
 
 		// Construct the projection matrix
-		projectionMatrix = Mat4f::identity();
+		projectionMatrix = Mat4::identity();
 		projectionMatrix[0] = (TWO_FLOAT * near) / (xmax - xmin);
 		projectionMatrix[5] = (TWO_FLOAT * near) / (ymax - ymin);
 		projectionMatrix[8] = (xmax + xmin) / (xmax - xmin);
@@ -146,7 +146,7 @@ namespace NAMESPACE_RENDERING
 
 	void Camera::setProjectionOrthographic(sp_float xMin, sp_float xMax, sp_float yMin, sp_float yMax, sp_float zMin, sp_float zMax)
 	{
-		projectionMatrix = Mat4f::createOrthographicMatrix(xMin, xMax, yMin, yMax, zMin, zMax);
+		projectionMatrix = Mat4::createOrthographicMatrix(xMin, xMax, yMin, yMax, zMin, zMax);
 
 		// Fill in values for untransformed Frustum corners	// Near Upper Left
 		nearUpperLeft[0] = xMin;
@@ -197,23 +197,23 @@ namespace NAMESPACE_RENDERING
 		farLowerRight[3] = ONE_FLOAT;
 	}
 
-	Mat4f Camera::getHUDProjectionMatrix(sp_float width, sp_float height) const
+	Mat4 Camera::getHUDProjectionMatrix(sp_float width, sp_float height) const
 	{
-		return Mat4f::createOrthographicMatrix(ZERO_FLOAT, width, ZERO_FLOAT, height, -ONE_FLOAT, ONE_FLOAT);
+		return Mat4::createOrthographicMatrix(ZERO_FLOAT, width, ZERO_FLOAT, height, -ONE_FLOAT, ONE_FLOAT);
 	}
 
-	Vec3f Camera::getFromWorldToScreen(const Vec3f& vertex, const Mat4f& modelViewMatrix, const SpViewportData* viewport)
+	Vec3 Camera::getFromWorldToScreen(const Vec3& vertex, const Mat4& modelViewMatrix, const SpViewportData* viewport)
 	{
 		sp_float halhWidth = viewport->width * HALF_FLOAT;
 		sp_float halhHeight = viewport->height * HALF_FLOAT;
 
-		//Vec4f vertex4D = Vec4f(vertex, 1.0f) * modelViewMatrix * viewMatrix * projectionMatrix;
-		Vec4f vertex4D = projectionMatrix * viewMatrix * modelViewMatrix * Vec4f(vertex, ONE_FLOAT);
+		//Vec4 vertex4D = Vec4(vertex, 1.0f) * modelViewMatrix * viewMatrix * projectionMatrix;
+		Vec4 vertex4D = projectionMatrix * viewMatrix * modelViewMatrix * Vec4(vertex, ONE_FLOAT);
 		vertex4D /= vertex4D[3];
 
-		Vec3f vertexOnDeviceSpace = vertex4D.toVec3();
+		Vec3 vertexOnDeviceSpace = vertex4D.toVec3();
 
-		return Vec3f(
+		return Vec3(
 			(vertexOnDeviceSpace[0] + ONE_FLOAT) * halhWidth,
 			(vertexOnDeviceSpace[1] + ONE_FLOAT) * halhHeight,
 			vertex4D[3]

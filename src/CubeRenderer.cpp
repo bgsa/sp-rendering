@@ -166,7 +166,7 @@ namespace NAMESPACE_RENDERING
 		// TODO: update above (slow copy one by one)
 
 		glBindBuffer(GL_TEXTURE_BUFFER, modelBufferObject);
-		glBufferData(GL_TEXTURE_BUFFER, sizeof(Mat4f) * cubesCount, modelMatrixes, GL_DYNAMIC_DRAW);
+		glBufferData(GL_TEXTURE_BUFFER, sizeof(Mat4) * cubesCount, modelMatrixes, GL_DYNAMIC_DRAW);
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_BUFFER, modelMatrixTBO);

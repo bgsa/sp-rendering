@@ -13,7 +13,7 @@ namespace NAMESPACE_RENDERING
 		RendererSettings();
 
 		sp_float width = ZERO_FLOAT, height = ZERO_FLOAT;
-		Vec2f rendererPosition = Vec2f(ZERO_FLOAT);
+		Vec2 rendererPosition = Vec2(ZERO_FLOAT);
 		ColorRGBAc backgroundColor = { 128, 128, 128, 255 }; //gray backgtound color
 
 	public:
@@ -23,13 +23,13 @@ namespace NAMESPACE_RENDERING
 		/// <summary>
 		/// Get the position of the renderer on the window/screen
 		/// </summary>
-		API_INTERFACE Vec2f& getRendererPosition();
+		API_INTERFACE Vec2& getRendererPosition();
 		/// <summary>
 		/// Set the position of the renderer on the window/screen
 		/// </summary>
-		API_INTERFACE void setRendererPosition(const Vec2f& rendererPosition);
+		API_INTERFACE void setRendererPosition(const Vec2& rendererPosition);
 
-		API_INTERFACE Rectangle2Df getScreenBound();
+		API_INTERFACE Rectangle2D getScreenBound();
 
 		API_INTERFACE sp_float getWidth();
 		API_INTERFACE void setWidth(sp_float width);
@@ -37,7 +37,7 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE sp_float getHeight();
 		API_INTERFACE void setHeight(sp_float height);
 
-		API_INTERFACE Vec2f getSize();
+		API_INTERFACE Vec2 getSize();
 		API_INTERFACE void setSize(sp_float width, sp_float height);
 
 		API_INTERFACE sp_float getAspectRatio();

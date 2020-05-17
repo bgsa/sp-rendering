@@ -32,7 +32,7 @@ namespace NAMESPACE_RENDERING
 		void setUpImage(std::string filename);
 
 	public:
-		Vec3List<float> vertexes;
+		Vec3List vertexes;
 		GLubyte* faces;
 		size_t facesSize = 0;
 

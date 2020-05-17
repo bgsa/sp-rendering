@@ -19,7 +19,7 @@ namespace NAMESPACE_RENDERING
 		GraphicObject2D* parentObject2D = nullptr;
 		std::vector<GraphicObject2D*> childrenObject2D;
 		ContentAlignment alignment;
-		Vec2f margin;
+		Vec2 margin;
 
 	public:
 

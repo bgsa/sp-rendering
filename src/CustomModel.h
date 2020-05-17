@@ -23,8 +23,8 @@ namespace NAMESPACE_RENDERING
 	struct BoneInfo
 	{
 		std::string Name;
-		Mat4f BoneOffset = Mat4f();
-		Mat4f FinalTransformation = Mat4f();
+		Mat4 BoneOffset = Mat4();
+		Mat4 FinalTransformation = Mat4();
 	};
 
 	class CustomModel
@@ -32,7 +32,7 @@ namespace NAMESPACE_RENDERING
 	private:
 		GLushort* faces;
 
-		Mat4f model = {
+		Mat4 model = {
 			1.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, 1.0f, 0.0f,
@@ -49,7 +49,7 @@ namespace NAMESPACE_RENDERING
 		GLint normalMatrixLocation;
 		GLint bonesOffsetLocation[MAX_BONES_PER_MODEL];
 
-		Mat4f* bonesTransform;
+		Mat4* bonesTransform;
 
 		GLint positionAttribute;
 		GLint normalAttribute;
@@ -73,15 +73,15 @@ namespace NAMESPACE_RENDERING
 
 		GLint hasTextureLocation;
 
-		Vec3f materialAmbient;
-		Vec3f materialDiffuse;
-		Vec3f materialSpecular;
+		Vec3 materialAmbient;
+		Vec3 materialDiffuse;
+		Vec3 materialSpecular;
 		float shininessFactor;
 
-		Vec3f lightPosition = { -300.0f, 1000.0f, 300.0f };
-		Vec3f lightAmbient = { 0.5f, 0.5f, 0.5f };
-		Vec3f lightDiffuse = { 1.0f, 1.0f, 1.0f };
-		Vec3f lightSpecular = { 1.0f, 1.0f, 1.0f };
+		Vec3 lightPosition = { -300.0f, 1000.0f, 300.0f };
+		Vec3 lightAmbient = { 0.5f, 0.5f, 0.5f };
+		Vec3 lightDiffuse = { 1.0f, 1.0f, 1.0f };
+		Vec3 lightSpecular = { 1.0f, 1.0f, 1.0f };
 
 		unsigned int vertexCount;
 		unsigned int textureCount;
@@ -107,22 +107,22 @@ namespace NAMESPACE_RENDERING
 		void CalcInterpolatedPosition(aiVector3D& Out, float AnimationTime, const aiNodeAnim* pNodeAnim);
 		void CalcInterpolatedRotation(aiQuaternion& Out, float AnimationTime, const aiNodeAnim* pNodeAnim);
 		void CalcInterpolatedScaling(aiVector3D& Out, float AnimationTime, const aiNodeAnim* pNodeAnim);
-		void ReadNodeHeirarchy(float AnimationTime, const aiNode* pNode, Mat4f ParentTransform, const aiScene* m_pscene);
-		Mat4f* getBonesTransform(const aiScene* scene);
+		void ReadNodeHeirarchy(float AnimationTime, const aiNode* pNode, Mat4 ParentTransform, const aiScene* m_pscene);
+		Mat4* getBonesTransform(const aiScene* scene);
 
 	public:
-		Mat4f boneGlobalInverseTransform;
+		Mat4 boneGlobalInverseTransform;
 
 		void translate(float x, float y, float z);
 		void scale(float scaleFactorUniform);
 		void scale(float scaleX, float scaleY, float scaleZ);
 		void rotate(float angleInRadians, float x, float y, float z);
 
-		void setLightAmbient(Vec3f color);
+		void setLightAmbient(Vec3 color);
 
 		void init(std::string filename);
 
-		void render(Mat4f projectionViewMatrix, const aiScene* scene);
+		void render(Mat4 projectionViewMatrix, const aiScene* scene);
 
 		~CustomModel();
 	};

@@ -17,11 +17,11 @@ namespace NAMESPACE_RENDERING
 		void setUpPositionAttribute();
 
 	public:
-		Vec3f point1;
-		Vec3f point2;
+		Vec3 point1;
+		Vec3 point2;
 
 		Line();
-		Line(Vec3f point1, Vec3f point2);
+		Line(Vec3 point1, Vec3 point2);
 
 		void init();
 

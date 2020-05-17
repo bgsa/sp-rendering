@@ -119,7 +119,7 @@ namespace NAMESPACE_RENDERING
 		return names;
 	}
 
-	Mat4f* ModelFile::getBonesOffset()
+	Mat4* ModelFile::getBonesOffset()
 	{
 		if (header.BonesCount == 0)
 			return nullptr;
@@ -139,7 +139,7 @@ namespace NAMESPACE_RENDERING
 		GLfloat* temp = new GLfloat[header.BonesCount * MAT4_LENGTH];
 		file.read((char*)&temp[0], header.BonesCount * MAT4_LENGTH * sizeof(GLfloat));
 
-		Mat4f* result = new Mat4f[header.BonesCount];
+		Mat4* result = new Mat4[header.BonesCount];
 		for (size_t i = 0; i < header.BonesCount; i++)
 			for (size_t j = 0; j < MAT4_LENGTH; j++)
 				result[i][j] = temp[(i * MAT4_LENGTH) + j];

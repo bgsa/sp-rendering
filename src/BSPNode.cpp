@@ -4,32 +4,32 @@
 
 namespace NAMESPACE_RENDERING
 {
-	void BSPNode::split(NAMESPACE_PHYSICS::Line2Df line)
+	void BSPNode::split(NAMESPACE_PHYSICS::Line2D line)
 	{
 		/*
 		TODO: REDO!
 
-		this->line = new OpenML::Line2Df(line);
+		this->line = new OpenML::Line2D(line);
 
-		OpenML::Rectangle2Df screenBound = RendererSettings::getInstance()->getScreenBound();
-		Vec2f point1 = line.point1;
-		Vec2f point2 = line.point2;
+		OpenML::Rectangle2D screenBound = RendererSettings::getInstance()->getScreenBound();
+		Vec2 point1 = line.point1;
+		Vec2 point2 = line.point2;
 
 		if (point1 == point2)
 			return;
 
-		vector<OpenML::Line2Df> polygonLines = polygon->getLines();
+		vector<OpenML::Line2D> polygonLines = polygon->getLines();
 
-		OpenML::Vec2f* intersectionPoint1 = nullptr;
-		OpenML::Vec2f* intersectionPoint2 = nullptr;
+		OpenML::Vec2* intersectionPoint1 = nullptr;
+		OpenML::Vec2* intersectionPoint2 = nullptr;
 
 		Polygon2D* polygon1 = new Polygon2D;
 		Polygon2D* polygon2 = new Polygon2D;
 
-		for (OpenML::Line2Df polygonLine : polygonLines)
+		for (OpenML::Line2D polygonLine : polygonLines)
 		{
-			Vec2f line2Point1 = polygonLine.point1;
-			Vec2f line2Point2 = polygonLine.point2;
+			Vec2 line2Point1 = polygonLine.point1;
+			Vec2 line2Point2 = polygonLine.point2;
 
 			float determinant = (line2Point2[0] - line2Point1[0]) * (point2[1] - point1[1]) - (line2Point2[1] - line2Point1[1]) * (point2[0] - point1[0]);
 
@@ -51,7 +51,7 @@ namespace NAMESPACE_RENDERING
 
 			if (intersectionPoint1 == nullptr)
 			{
-				intersectionPoint1 = new Vec2f(
+				intersectionPoint1 = new Vec2(
 					OpenML::round<float>(point1[0] + (point2[0] - point1[0]) * t, 3),
 					OpenML::round<float>(point1[1] + (point2[1] - point1[1]) * t, 3)
 				);
@@ -74,7 +74,7 @@ namespace NAMESPACE_RENDERING
 			}
 			else if (intersectionPoint2 == nullptr)
 			{
-				intersectionPoint2 = new Vec2f(
+				intersectionPoint2 = new Vec2(
 					OpenML::round<float>(point1[0] + (point2[0] - point1[0]) * t, 3),
 					OpenML::round<float>(point1[1] + (point2[1] - point1[1]) * t, 3)
 				);
@@ -116,7 +116,7 @@ namespace NAMESPACE_RENDERING
 
 		for (int i = 0; i < polygon1->vertexes.size(); i++)
 		{
-			Vec2f vertex = polygon1->vertexes[i];
+			Vec2 vertex = polygon1->vertexes[i];
 
 			if (line.getOrientation(vertex) == OpenML::Orientation::NONE)
 				continue;
@@ -159,7 +159,7 @@ namespace NAMESPACE_RENDERING
 		*/
 	}
 
-	BSPNode* BSPNode::findLeaf(Vec2f point)
+	BSPNode* BSPNode::findLeaf(Vec2 point)
 	{
 		if (this->line == nullptr)
 			return this;
@@ -192,14 +192,14 @@ namespace NAMESPACE_RENDERING
 
 			if (child == leftNode)
 			{
-				for (Vec2f vertex : rightNode->polygon->vertexes)
+				for (Vec2 vertex : rightNode->polygon->vertexes)
 					this->polygon->vertexes.push_back(vertex);
 
 				this->polygon->setColor(*rightNode->polygon->getColor());
 			}
 			else
 			{
-				for (Vec2f vertex : leftNode->polygon->vertexes)
+				for (Vec2 vertex : leftNode->polygon->vertexes)
 					this->polygon->vertexes.push_back(vertex);
 
 				this->polygon->setColor(*leftNode->polygon->getColor());
@@ -257,15 +257,15 @@ namespace NAMESPACE_RENDERING
 		Polygon3D* polygon3D = new Polygon3D;
 		polygon3D->setColor({ color->Red, color->Green, color->Blue, color->Alpha });
 
-		polygon3D->vertexes = Vec3List<float>(new Vec3f[vertexesCount], vertexesCount);
+		polygon3D->vertexes = Vec3List(new Vec3[vertexesCount], vertexesCount);
 
-		for (Vec2f point2D : polygon2D->vertexes)
+		for (Vec2 point2D : polygon2D->vertexes)
 		{
 			polygon3D->vertexes.points[vertexIndex] = { -point2D[0], height, point2D[1] };
 			vertexIndex++;
 		}
 
-		for (Vec2f point2D : polygon2D->vertexes)
+		for (Vec2 point2D : polygon2D->vertexes)
 		{
 			polygon3D->vertexes.points[vertexIndex] = { -point2D[0],   0.0f, point2D[1] };
 			vertexIndex++;
@@ -342,16 +342,16 @@ namespace NAMESPACE_RENDERING
 		float width = (float)RendererSettings::getInstance()->getWidth();
 		float height = (float)RendererSettings::getInstance()->getHeight();
 
-		Vec2f point1 = { 0.0f, 0.0f };
+		Vec2 point1 = { 0.0f, 0.0f };
 		root->polygon->vertexes.push_back(point1);
 
-		Vec2f point2 = { width, 0.0f };
+		Vec2 point2 = { width, 0.0f };
 		root->polygon->vertexes.push_back(point2);
 
-		Vec2f point3 = { width, height };
+		Vec2 point3 = { width, height };
 		root->polygon->vertexes.push_back(point3);
 
-		Vec2f point4 = { 0.0f, height };
+		Vec2 point4 = { 0.0f, height };
 		root->polygon->vertexes.push_back(point4);
 
 		root->polygon3D = calculatePolygon3D(root->polygon, 100.0f);

@@ -7,7 +7,7 @@ namespace NAMESPACE_RENDERING
 		this->bspTree = bspTree;
 	}
 
-	BSPNode* BSPEditor2D::findLeaf(Vec2f point)
+	BSPNode* BSPEditor2D::findLeaf(Vec2 point)
 	{
 		if (bspTree->root == nullptr)
 			return nullptr;
@@ -15,7 +15,7 @@ namespace NAMESPACE_RENDERING
 		return bspTree->root->value.findLeaf(point);
 	}
 
-	void BSPEditor2D::removeLeaf(Vec2f point)
+	void BSPEditor2D::removeLeaf(Vec2 point)
 	{
 		if (bspTree->root == nullptr)
 			return;

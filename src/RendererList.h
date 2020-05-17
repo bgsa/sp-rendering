@@ -69,8 +69,8 @@ namespace NAMESPACE_RENDERING
 			shader->enableAttributes();
 
 			shader
-				->setUniform<Mat4f>(projectionMatrixLocation, renderData.projectionMatrix)
-				->setUniform<Mat4f>(viewMatrixLocation, renderData.viewMatrix);
+				->setUniform<Mat4>(projectionMatrixLocation, renderData.projectionMatrix)
+				->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix);
 
 			_list->trasnformAsTexture()->use();
 

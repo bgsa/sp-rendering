@@ -19,16 +19,16 @@ namespace NAMESPACE_RENDERING
 		//static Polygon3D* calculatePolygon3D(Polygon2D* polygon2D, float height);
 
 	public:
-		NAMESPACE_PHYSICS::Line2Df* line = nullptr;
+		NAMESPACE_PHYSICS::Line2D* line = nullptr;
 		//Polygon2D* polygon = nullptr;
 		Polygon3D* polygon3D = nullptr;
 		float height = 100.0f;
 
 		API_INTERFACE void init() override {}
 
-		void split(NAMESPACE_PHYSICS::Line2Df line);
+		void split(NAMESPACE_PHYSICS::Line2D line);
 
-		BSPNode* findLeaf(Vec2f point);
+		BSPNode* findLeaf(Vec2 point);
 		void removeChild(BSPNode* child);
 
 		static BSPNode* initRootNode();

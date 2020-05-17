@@ -10,8 +10,8 @@ namespace NAMESPACE_RENDERING
 	class RenderData
 	{
 	public:
-		Mat4f projectionMatrix;
-		Mat4f viewMatrix;
+		Mat4 projectionMatrix;
+		Mat4 viewMatrix;
 		SpViewportData* viewport;
 
 		SpVector<void*> customProperties = SpVector<void*>();

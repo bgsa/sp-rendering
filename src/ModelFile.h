@@ -17,9 +17,9 @@ namespace NAMESPACE_RENDERING
 		unsigned int TextureUVCount;
 		unsigned int FacesCount;
 		unsigned int BonesCount;
-		Vec3f MaterialAmbient;
-		Vec3f MaterialDiffuse;
-		Vec3f MaterialSpecular;
+		Vec3 MaterialAmbient;
+		Vec3 MaterialDiffuse;
+		Vec3 MaterialSpecular;
 		float ShininessFactor;
 	};
 
@@ -56,7 +56,7 @@ namespace NAMESPACE_RENDERING
 		GLfloat* getTexturesUV();
 		GLushort* getFaces();
 		GLfloat* getPositionNormalsTexture();
-		Mat4f* getBonesOffset();
+		Mat4* getBonesOffset();
 		std::vector<std::string> getBonesName();
 		size_t getBonesNameSize();
 		GLint* getBonesIndexes();

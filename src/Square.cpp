@@ -161,7 +161,7 @@ namespace NAMESPACE_RENDERING
 		setUpImage("resources/images/sprite.png");
 	}
 
-	void Square::render(Mat4f projectionViewMatrix)
+	void Square::render(Mat4 projectionViewMatrix)
 	{
 		glUseProgram(programShader);
 

@@ -24,15 +24,15 @@ namespace NAMESPACE_RENDERING
 
 	void CustomModel::rotate(float angleInRadians, float x, float y, float z)
 	{
-		model = model * Mat4f::createRotate(angleInRadians, x, y, z);
+		model = model * Mat4::createRotate(angleInRadians, x, y, z);
 	}
 
 	void CustomModel::translate(float x, float y, float z)
 	{
-		model = model * Mat4f::createTranslate(x, y, z);
+		model = model * Mat4::createTranslate(x, y, z);
 	}
 
-	void CustomModel::setLightAmbient(Vec3f color)
+	void CustomModel::setLightAmbient(Vec3 color)
 	{
 		lightAmbient = color;
 	}
@@ -271,7 +271,7 @@ namespace NAMESPACE_RENDERING
 		if (hasBones)
 		{
 			std::vector<std::string> bonesName = modelFile.getBonesName();
-			Mat4f* bonesOffset = modelFile.getBonesOffset();
+			Mat4* bonesOffset = modelFile.getBonesOffset();
 			m_BoneInfo.resize(bonesCount);
 			for (size_t i = 0; i < bonesCount; i++) {
 				m_BoneInfo[i].BoneOffset = bonesOffset[i];
@@ -460,13 +460,13 @@ namespace NAMESPACE_RENDERING
 		Out = Start + Factor * Delta;
 	}
 
-	void CustomModel::ReadNodeHeirarchy(float AnimationTime, const aiNode* pNode, Mat4f ParentTransform, const aiScene* m_pscene)
+	void CustomModel::ReadNodeHeirarchy(float AnimationTime, const aiNode* pNode, Mat4 ParentTransform, const aiScene* m_pscene)
 	{
 		std::string NodeName = std::string(pNode->mName.data);
 
 		const aiAnimation* pAnimation = m_pscene->mAnimations[0];
 
-		Mat4f NodeTransformation(
+		Mat4 NodeTransformation(
 			pNode->mTransformation.a1, pNode->mTransformation.b1, pNode->mTransformation.c1, pNode->mTransformation.d1,
 			pNode->mTransformation.a2, pNode->mTransformation.b2, pNode->mTransformation.c2, pNode->mTransformation.d2,
 			pNode->mTransformation.a3, pNode->mTransformation.b3, pNode->mTransformation.c3, pNode->mTransformation.d3,
@@ -480,14 +480,14 @@ namespace NAMESPACE_RENDERING
 			// Interpolate scaling and generate scaling transformation matrix
 			aiVector3D Scaling;
 			CalcInterpolatedScaling(Scaling, AnimationTime, pNodeAnim);
-			Mat4f ScalingM = Mat4f::createScale(Scaling.x, Scaling.y, Scaling.z);
+			Mat4 ScalingM = Mat4::createScale(Scaling.x, Scaling.y, Scaling.z);
 
 			// Interpolate rotation and generate rotation transformation matrix
 			aiQuaternion RotationQ;
 			CalcInterpolatedRotation(RotationQ, AnimationTime, pNodeAnim);
 			aiMatrix3x3 mat3x3 = RotationQ.GetMatrix();
 
-			Mat4f RotationM = Mat4f(
+			Mat4 RotationM = Mat4(
 				mat3x3.a1, mat3x3.b1, mat3x3.c1, 0.0f,
 				mat3x3.a2, mat3x3.b2, mat3x3.c2, 0.0f,
 				mat3x3.a3, mat3x3.b3, mat3x3.c3, 0.0f,
@@ -497,13 +497,13 @@ namespace NAMESPACE_RENDERING
 			// Interpolate translation and generate translation transformation matrix
 			aiVector3D Translation;
 			CalcInterpolatedPosition(Translation, AnimationTime, pNodeAnim);
-			Mat4f TranslationM = Mat4f::createTranslate(Translation.x, Translation.y, Translation.z);
+			Mat4 TranslationM = Mat4::createTranslate(Translation.x, Translation.y, Translation.z);
 
 			// Combine the above transformations
 			NodeTransformation = TranslationM * RotationM * ScalingM;
 		}
 
-		Mat4f GlobalTransformation = ParentTransform * NodeTransformation;
+		Mat4 GlobalTransformation = ParentTransform * NodeTransformation;
 
 		int boneIndex = FindBoneIndexByName(NodeName);
 		if (boneIndex != -1)
@@ -513,11 +513,11 @@ namespace NAMESPACE_RENDERING
 			ReadNodeHeirarchy(AnimationTime, pNode->mChildren[i], GlobalTransformation, m_pscene);
 	}
 
-	Mat4f* CustomModel::getBonesTransform(const aiScene* scene)
+	Mat4* CustomModel::getBonesTransform(const aiScene* scene)
 	{
 		// calcula as matrizes dos bones em função à animação atual
-		Mat4f* transforms = new Mat4f[bonesCount];
-		Mat4f identityMatrix = Mat4f::identity();
+		Mat4* transforms = new Mat4[bonesCount];
+		Mat4 identityMatrix = Mat4::identity();
 
 		//float elapsedTime = 30;
 		float elapsedTime = 50;
@@ -533,8 +533,8 @@ namespace NAMESPACE_RENDERING
 
 		for (unsigned int i = 0; i < bonesCount; i++) {
 			transforms[i] = m_BoneInfo[i].FinalTransformation;
-			//transforms[i] = Mat4f::identity();
-			//transforms[i] = Mat4f();
+			//transforms[i] = Mat4::identity();
+			//transforms[i] = Mat4();
 		}
 		//************************************************
 
@@ -542,9 +542,9 @@ namespace NAMESPACE_RENDERING
 	}
 
 
-	void CustomModel::render(Mat4f projectionViewMatrix, const aiScene* scene)
+	void CustomModel::render(Mat4 projectionViewMatrix, const aiScene* scene)
 	{
-		Mat3f normalMatrix = model.toMat3();
+		Mat3 normalMatrix = model.toMat3();
 
 		glUseProgram(programShader);
 

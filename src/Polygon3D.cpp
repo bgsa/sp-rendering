@@ -8,7 +8,7 @@ namespace NAMESPACE_RENDERING
 
 		glGenBuffers(1, &vertexBufferObject);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-		glBufferData(GL_ARRAY_BUFFER, vertexes.count * sizeof(Vec3f) + vertexes.count * sizeof(Vec2f), vertexBuffer, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, vertexes.count * sizeof(Vec3) + vertexes.count * sizeof(Vec2), vertexBuffer, GL_STATIC_DRAW);
 
 		projectionMatrixLocation = glGetUniformLocation(programShader, "projection");
 		viewMatrixLocation = glGetUniformLocation(programShader, "view");
@@ -49,12 +49,12 @@ namespace NAMESPACE_RENDERING
 	{
 		int* indexes = vertexes.findExtremePointsAlongAxisXYZ();
 
-		Vec3f minX = vertexes.points[indexes[0]];
-		Vec3f maxX = vertexes.points[indexes[1]];
-		Vec3f minY = vertexes.points[indexes[2]];
-		Vec3f maxY = vertexes.points[indexes[3]];
-		Vec3f minZ = vertexes.points[indexes[4]];
-		Vec3f maxZ = vertexes.points[indexes[5]];
+		Vec3 minX = vertexes.points[indexes[0]];
+		Vec3 maxX = vertexes.points[indexes[1]];
+		Vec3 minY = vertexes.points[indexes[2]];
+		Vec3 maxY = vertexes.points[indexes[3]];
+		Vec3 minZ = vertexes.points[indexes[4]];
+		Vec3 maxZ = vertexes.points[indexes[5]];
 
 		float deltaX = -(minX[0] - maxX[0]);
 		float deltaY = -(minY[1] - maxY[1]);
@@ -68,7 +68,7 @@ namespace NAMESPACE_RENDERING
 
 		for (sp_uint i = 0; i < vertexes.count; i++)
 		{
-			Vec3f point = vertexes.points[i];
+			Vec3 point = vertexes.points[i];
 
 			buffer[bufferIndex] = point[0];
 			buffer[bufferIndex + 1] = point[1];
@@ -81,7 +81,7 @@ namespace NAMESPACE_RENDERING
 
 		for (sp_uint i = 0; i < vertexes.count; i++)
 		{
-			Vec3f texturePoint = vertexes.points[i];
+			Vec3 texturePoint = vertexes.points[i];
 
 			if (texturePoint[0] - minX[0] == 0.0f)
 				buffer[bufferIndex] = 0.0f;

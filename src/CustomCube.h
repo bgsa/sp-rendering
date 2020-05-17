@@ -50,7 +50,7 @@ namespace NAMESPACE_RENDERING
 
 		GLubyte indices[36] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 0, 18, 1, 3, 19, 4, 6, 20, 7, 9, 21, 10, 12, 22, 13, 15, 23, 16 };
 
-		Mat4f model = {
+		Mat4 model = {
 			1.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, 1.0f, 0.0f,
@@ -80,15 +80,15 @@ namespace NAMESPACE_RENDERING
 
 		GLint lightShininessFactorLocation;
 
-		Vec3f materialAmbient = { 1.0f, 1.0f, 1.0f };
-		Vec3f materialDiffuse = { 0.171313f, 0.17322f, 0.64f };
-		Vec3f materialSpecular = { 0.518519f, 0.441559f, 0.427946f };
+		Vec3 materialAmbient = { 1.0f, 1.0f, 1.0f };
+		Vec3 materialDiffuse = { 0.171313f, 0.17322f, 0.64f };
+		Vec3 materialSpecular = { 0.518519f, 0.441559f, 0.427946f };
 		float shininessFactor = 96.0784f;
 
-		Vec3f lightPosition = { -300.0f, 1000.0f, 300.0f };
-		Vec3f lightAmbient = { 0.3f, 0.3f, 0.3f };
-		Vec3f lightDiffuse = { 1.0f, 1.0f, 1.0f };
-		Vec3f lightSpecular = { 1.0f, 1.0f, 1.0f };
+		Vec3 lightPosition = { -300.0f, 1000.0f, 300.0f };
+		Vec3 lightAmbient = { 0.3f, 0.3f, 0.3f };
+		Vec3 lightDiffuse = { 1.0f, 1.0f, 1.0f };
+		Vec3 lightSpecular = { 1.0f, 1.0f, 1.0f };
 
 		std::string textureFilename = "devops.png";
 
@@ -102,7 +102,7 @@ namespace NAMESPACE_RENDERING
 
 		void init();
 
-		void render(Mat4f projectionViewMatrix);
+		void render(Mat4 projectionViewMatrix);
 	};
 }
 

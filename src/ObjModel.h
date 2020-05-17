@@ -60,9 +60,9 @@ namespace NAMESPACE_RENDERING
 			sp_uint texturesCoordLength = text.countLinesStartWith(SP_TEXTURE_PREFIX);
 			sp_uint facesLength = countFaces(text);
 
-			vertexes = sp_mem_new(SpArray<Vec3f>)(vertexesLength);
-			textureCoordinates = sp_mem_new(SpArray<Vec2f>)(texturesCoordLength);
-			faces = sp_mem_new(SpArray<Vec3ui>)(facesLength);
+			vertexes = sp_mem_new(SpArray<Vec3>)(vertexesLength);
+			textureCoordinates = sp_mem_new(SpArray<Vec2>)(texturesCoordLength);
+			faces = sp_mem_new(SpArray<SpPoint3<sp_uint>>)(facesLength);
 
 			for (sp_uint i = ZERO_UINT; i < text.length(); i++)
 			{

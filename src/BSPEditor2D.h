@@ -18,8 +18,8 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE void enableTexture();
 		API_INTERFACE void disableTexture();
 
-		BSPNode * findLeaf(Vec2f point);
-		API_INTERFACE void removeLeaf(Vec2f point);
+		BSPNode * findLeaf(Vec2 point);
+		API_INTERFACE void removeLeaf(Vec2 point);
 
 		API_INTERFACE void init();
 		API_INTERFACE void render(const RenderData& renderData) override;

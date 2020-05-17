@@ -95,7 +95,7 @@ namespace NAMESPACE_RENDERING
 		setUpColorAttribute();
 	}
 
-	void Point::render(Mat4f projectionViewMatrix)
+	void Point::render(Mat4 projectionViewMatrix)
 	{
 		glUseProgram(programShader);
 

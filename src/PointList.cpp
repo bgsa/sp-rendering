@@ -146,7 +146,7 @@ namespace NAMESPACE_RENDERING
 		delete[] buffer;
 	}
 
-	void PointList::render(Mat4f projectionViewMatrix)
+	void PointList::render(Mat4 projectionViewMatrix)
 	{
 		glUseProgram(programShader);
 

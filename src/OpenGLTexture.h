@@ -5,6 +5,7 @@
 
 #include "SpectrumRendering.h"
 #include "Framebuffer.h"
+#include "SpSize.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -13,7 +14,7 @@ namespace NAMESPACE_RENDERING
 	{
 	private:
 		GLuint textureId = ZERO_UINT;
-		Vec2i size;
+		SpSize<sp_int> size;
 
 	public:
 
@@ -50,20 +51,20 @@ namespace NAMESPACE_RENDERING
 			texture->use()
 				->setProperty(GL_TEXTURE_MIN_FILTER, GL_LINEAR)
 				->setProperty(GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-				->setData(data, Vec2i(viewport[2], viewport[3]), GL_RGBA);
+				->setData(data, SpSize<sp_int>(viewport[2], viewport[3]), GL_RGBA);
 			
 			sp_mem_release(data);
 			return texture;
 		}
 
-		API_INTERFACE inline void setData(const sp_uchar* data, const Vec2i& size, GLint colorFormat)
+		API_INTERFACE inline void setData(const sp_uchar* data, const SpSize<sp_int>& size, GLint colorFormat)
 		{
 			this->size = size;
 			glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-			glTexImage2D(GL_TEXTURE_2D, 0, colorFormat, size.x, size.y, 0, colorFormat, GL_UNSIGNED_BYTE, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, colorFormat, size.width, size.height, 0, colorFormat, GL_UNSIGNED_BYTE, data);
 		}
 
-		API_INTERFACE inline void resize(const Vec2i& size)
+		API_INTERFACE inline void resize(const SpSize<sp_int>& size)
 		{
 			this->size = size;
 		}

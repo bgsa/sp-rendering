@@ -8,7 +8,7 @@ namespace NAMESPACE_RENDERING
 {
 	Line::Line() {
 	}
-	Line::Line(Vec3f point1, Vec3f point2) {
+	Line::Line(Vec3 point1, Vec3 point2) {
 		this->point1 = point1;
 		this->point2 = point2;
 	}

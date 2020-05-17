@@ -143,7 +143,7 @@ namespace NAMESPACE_RENDERING
 		delete[] buffer;
 	}
 
-	void LineList::render(Mat4f projectionViewMatrix)
+	void LineList::render(Mat4 projectionViewMatrix)
 	{
 		glUseProgram(programShader);
 

@@ -42,6 +42,8 @@ namespace NAMESPACE_RENDERING
 
 		glViewport(_viewport->x, _viewport->y, _viewport->width, _viewport->height);
 		glScissor(_viewport->x, _viewport->y, _viewport->width, _viewport->height);
+
+		IRendererManager::init(camera);
 	}
 
 	void OpenGLRendererManager::preRender()
@@ -87,8 +89,10 @@ namespace NAMESPACE_RENDERING
 		if (_camera != NULL)
 		{
 			sp_mem_delete(_camera, Camera);
-			_camera = NULL;
+			_camera = nullptr;
 		}
+
+		dop18Renderer.dispose();
 	}
 }
 

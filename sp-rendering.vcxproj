@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BoundingVolumeRenderer.h" />
     <ClInclude Include="src\BSPEditor2D.h" />
     <ClInclude Include="src\BSPEditor3D.h" />
     <ClInclude Include="src\BSPNode.h" />
@@ -31,6 +32,8 @@
     <ClInclude Include="src\CubeRenderer.h" />
     <ClInclude Include="src\CustomCube.h" />
     <ClInclude Include="src\CustomModel.h" />
+    <ClInclude Include="src\DOP18Renderer.h" />
+    <ClInclude Include="src\FakeBoundingVolumeRenderer.h" />
     <ClInclude Include="src\FontGenerator.h" />
     <ClInclude Include="src\Framebuffer.h" />
     <ClInclude Include="src\GLConfig.h" />

@@ -88,9 +88,10 @@ namespace NAMESPACE_RENDERING
 		/// <summary>
 		/// Set the OpenGL state to use this program
 		/// </summary>
-		API_INTERFACE inline void use()
+		API_INTERFACE inline OpenGLShader* enable()
 		{
 			glUseProgram(program);
+			return this;
 		}
 
 		/// <summary>
@@ -238,10 +239,12 @@ namespace NAMESPACE_RENDERING
 		/// <summary>
 		/// Eisable all attributes enabled. It is usually used at the begining of shader render
 		/// </summary>
-		API_INTERFACE inline void enableAttributes()
+		API_INTERFACE OpenGLShader* enableAttributes()
 		{
 			for (sp_uint i = 0; i < attributes->length(); i++)
 				glEnableVertexAttribArray(attributes->data()[i]->location);
+
+			return this;
 		}
 
 		/// <summary>
@@ -252,7 +255,15 @@ namespace NAMESPACE_RENDERING
 			for (sp_uint i = 0; i < attributes->length(); i++)
 				glDisableVertexAttribArray(attributes->data()[i]->location);
 		}
-		
+
+		/// <summary>
+		/// Disable the shader and all attributes enabled. It is usually used at the end of shader render
+		/// </summary>
+		API_INTERFACE inline void disable()
+		{
+			disableAttributes();
+			glUseProgram(ZERO_UINT);
+		}
 
 		/// <summary>
 		/// Destruct the shader

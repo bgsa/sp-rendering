@@ -19,14 +19,14 @@ namespace NAMESPACE_RENDERING
 		/// </summary>
 		API_INTERFACE inline OpenGLBuffer(GLenum bufferType = GL_ARRAY_BUFFER)
 		{
-			glGenBuffers(ONE_INT, &bufferId);
 			type = bufferType;
+			glGenBuffers(ONE_INT, &bufferId);
 		}
 
 		/// <summary>
 		/// Create a new OpenGL Buffer with data
 		/// </summary>
-		API_INTERFACE inline OpenGLBuffer(sp_size size, void* data, GLenum bufferType = GL_ARRAY_BUFFER, GLenum usageType = GL_STATIC_DRAW)
+		API_INTERFACE inline OpenGLBuffer(sp_size size, const void* data, GLenum bufferType = GL_ARRAY_BUFFER, GLenum usageType = GL_STATIC_DRAW)
 		{
 			type = bufferType;
 			glGenBuffers(ONE_INT, &bufferId);

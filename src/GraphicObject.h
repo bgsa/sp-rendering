@@ -5,6 +5,7 @@
 #include <Object.h>
 #include "RenderData.h"
 #include "SpTransform.h"
+#include "BoundingVolumeRenderer.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -29,11 +30,23 @@ namespace NAMESPACE_RENDERING
 		sp_int colorLocation = -1;
 
 		SpTransform transform;
+		BoundingVolumeRenderer* _boundingVolumeRenderer;
 
 	public:
 		
 		API_INTERFACE GraphicObject()
 		{
+			_boundingVolumeRenderer = nullptr;
+		}
+
+		API_INTERFACE BoundingVolumeRenderer* boundingVolumeRenderer()
+		{
+			return _boundingVolumeRenderer;
+		}
+
+		API_INTERFACE void setBoundingVolumeRenderer(BoundingVolumeRenderer* renderer)
+		{
+			this->_boundingVolumeRenderer = renderer;
 		}
 
 		API_INTERFACE virtual void init() = 0;

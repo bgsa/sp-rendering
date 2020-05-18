@@ -21,12 +21,12 @@ namespace NAMESPACE_RENDERING
 	private:
 		OpenGLBuffer* buffer;
 		OpenGLShader* shader;
-
-		ObjModel model; // teste only
+		OpenGLBuffer* indexesBuffer;
 		OpenGLTexture* texture = NULL;
 
-		sp_size sizeOfVertexes;
-		sp_size sizeOfNormals;
+		sp_uint sizeOfVertexes;
+		sp_uint sizeOfNormals;
+		sp_uint facesLength;
 
 		sp_int textureAttribute;
 

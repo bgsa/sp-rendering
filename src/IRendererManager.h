@@ -7,7 +7,8 @@
 #include "GraphicObject3D.h"
 #include "Camera.h"
 #include "SpViewportData.h"
-
+#include "SpPhysicObject.h"
+#include "DOP18Renderer.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -19,12 +20,18 @@ namespace NAMESPACE_RENDERING
 
 		std::vector<GraphicObject*> graphicObjects;
 
+		DOP18Renderer dop18Renderer;
+		
 		virtual void render3D(const RenderData& renderData)
 		{
-			for (GraphicObject* graph : graphicObjects) {
-
+			for (GraphicObject* graph : graphicObjects) 
+			{
 				if (graph->type() == GraphicObjectType::Type3D)
 					graph->render(renderData);
+
+				SpPhysicObject* physicObject = dynamic_cast<SpPhysicObject*>(graph);
+				if (physicObject != nullptr)
+					dop18Renderer.render(renderData, physicObject->boundingVolume());
 			}
 		}
 
@@ -54,7 +61,10 @@ namespace NAMESPACE_RENDERING
 			return _viewport;
 		}
 
-		API_INTERFACE virtual void init(Camera* camera) = 0;
+		API_INTERFACE virtual void init(Camera* camera)
+		{
+			dop18Renderer.init();
+		}
 
 		API_INTERFACE virtual void update(sp_longlong elapsedTime)
 		{

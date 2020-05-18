@@ -61,14 +61,13 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE void render(const RenderData& renderData) override
 		{
-			shader->use();
+			shader->enable();
 
 			_list->buffer()->use();
 			glVertexAttribPointer(positionAttribute, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-			shader->enableAttributes();
-
 			shader
+				->enableAttributes()
 				->setUniform<Mat4>(projectionMatrixLocation, renderData.projectionMatrix)
 				->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix);
 
@@ -76,7 +75,7 @@ namespace NAMESPACE_RENDERING
 
 			glDrawElementsInstanced(GL_LINES, _list->indexes()->length(), GL_UNSIGNED_INT, _list->indexes()->data(), _list->length());
 
-			shader->disableAttributes();
+			shader->disable();
 		}
 
 		API_INTERFACE virtual void update() override

@@ -5,9 +5,15 @@ namespace NAMESPACE_RENDERING
 {
 	void Rock::render(const RenderData& renderData)
 	{
-		shader->use();
+		shader->enable();
+		indexesBuffer->use();
 		buffer->use();
-		texture->use();
+
+		shader
+			->enableAttributes()
+			->setUniform<Mat4>(projectionMatrixLocation, renderData.projectionMatrix)
+			->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix)
+			->setUniform<Mat4>(transformMatrixLocation, transform.toMat4());
 
 		glVertexAttribPointer(positionAttribute,
 			3,
@@ -24,33 +30,33 @@ namespace NAMESPACE_RENDERING
 			(void*)(sizeOfVertexes + sizeOfNormals)
 		);
 
-		shader->enableAttributes();
+		texture->use();
 
-		shader
-			->setUniform<Mat4>(projectionMatrixLocation, renderData.projectionMatrix)
-			->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix)
-			->setUniform<Mat4>(transformMatrixLocation, transform.toMat4());
-
-		glDrawElements(GL_TRIANGLES, model.sizeOfFaces(), GL_UNSIGNED_INT, model.faces->data());
+		//glDrawElements(GL_TRIANGLES, model.sizeOfFaces(), GL_UNSIGNED_INT, model.faces->data());
+		glDrawElements(GL_TRIANGLES, facesLength*3, GL_UNSIGNED_INT, NULL);
 		//renderer->render(renderData);
 
-		shader->disableAttributes();
+		shader->disable();
 	}
 
 	void Rock::init()
 	{
+		ObjModel model;
 		model.load("resources\\models\\MyRock.OBJ");
 
 		//sizeOfVertexes = model.sizeOfVertexes();
 		//sizeOfNormals = model.sizeOfNormals();
 		sizeOfVertexes = model.vertexes->length();
 		sizeOfNormals = model.normals->length();
+		facesLength = model.faces->length();
 
 		const sp_size sizeAllBuffers = model.sizeOfAllBuffers();
 		sp_char* tempCpuBuffer = ALLOC_ARRAY(sp_char, sizeAllBuffers);
 		model.allBuffers(tempCpuBuffer);
 		buffer = sp_mem_new(OpenGLBuffer)(sizeAllBuffers, tempCpuBuffer);
 		ALLOC_RELEASE(tempCpuBuffer);
+
+		indexesBuffer = sp_mem_new(OpenGLBuffer)(facesLength * 3 * SIZEOF_UINT, model.faces->data(), GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 
 		shader = sp_mem_new(OpenGLShader)();
 		shader
@@ -73,9 +79,11 @@ namespace NAMESPACE_RENDERING
 			->setProperty(GL_TEXTURE_MAG_FILTER, GL_LINEAR)
 			->setData(image->data(), SpSize<sp_int>(image->width(), image->height()), image->getColorFormat());
 		sp_mem_delete(image, ImageBMP);
-
+		
 		_boundingVolume = sp_mem_new(DOP18)();
-		_boundingVolume->scale({ 2.8f, 2.9f, 2.6f });
+		_boundingVolume->scale({ 4.0f, 5.0f, 4.0f });
+		GraphicObject3D::scale(Vec3(0.01f));
+		//scale(Vec3(0.5f));
 		_boundingVolume->translate(0.2f, 1.0f, 1.3f);
 	}
 

@@ -80,11 +80,10 @@ namespace NAMESPACE_RENDERING
 			->setData(image->data(), SpSize<sp_int>(image->width(), image->height()), image->getColorFormat());
 		sp_mem_delete(image, ImageBMP);
 		
+		GraphicObject3D::scale(0.5f);
 		_boundingVolume = sp_mem_new(DOP18)();
-		_boundingVolume->scale({ 4.0f, 5.0f, 4.0f });
-		GraphicObject3D::scale(Vec3(0.01f));
-		//scale(Vec3(0.5f));
-		_boundingVolume->translate(0.2f, 1.0f, 1.3f);
+		_boundingVolume->scale({ 2.0f, 1.5f, 1.5f });
+		_boundingVolume->translate(0.2f, 0.6f, 0.6f);
 	}
 
 	Rock* Rock::translate(const Vec3& translation)

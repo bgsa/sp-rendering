@@ -18,18 +18,18 @@ namespace NAMESPACE_RENDERING
 		Camera* _camera = NULL;
 		SpViewportData* _viewport;
 
-		std::vector<GraphicObject*> graphicObjects;
+		SpVector<GraphicObject2D*> graphicObjects2D;
+		SpVector<GraphicObject3D*> graphicObjects3D;
 
 		DOP18Renderer dop18Renderer;
 		
 		virtual void render3D(const RenderData& renderData)
 		{
-			for (GraphicObject* graph : graphicObjects) 
+			for (SpVectorItem<GraphicObject3D*>* item = graphicObjects3D.begin(); item != nullptr; item = item->next())
 			{
-				if (graph->type() == GraphicObjectType::Type3D)
-					graph->render(renderData);
+				item->value()->render(renderData);
 
-				SpPhysicObject* physicObject = dynamic_cast<SpPhysicObject*>(graph);
+				SpPhysicObject* physicObject = dynamic_cast<SpPhysicObject*>(item->value());
 				if (physicObject != nullptr)
 					dop18Renderer.render(renderData, physicObject->boundingVolume());
 			}
@@ -37,11 +37,8 @@ namespace NAMESPACE_RENDERING
 
 		virtual void render2D(const RenderData& renderData)
 		{
-			for (GraphicObject* graph : graphicObjects) {
-
-				if (graph->type() == GraphicObjectType::Type2D)
-					graph->render(renderData);
-			}
+			for (SpVectorItem<GraphicObject2D*>* item = graphicObjects2D.begin(); item != nullptr; item = item->next())
+				item->value()->render(renderData);
 		}
 
 	public:
@@ -68,8 +65,11 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE virtual void update(sp_longlong elapsedTime)
 		{
-			for (GraphicObject* graph : graphicObjects)
-				graph->update(elapsedTime);
+			for (SpVectorItem<GraphicObject3D*>* item = graphicObjects3D.begin(); item != nullptr; item = item->next())
+				item->value()->update(elapsedTime);
+
+			for (SpVectorItem<GraphicObject2D*>* item = graphicObjects2D.begin(); item != nullptr; item = item->next())
+				item->value()->update(elapsedTime);
 		}
 
 		API_INTERFACE virtual void preRender() = 0;
@@ -80,23 +80,28 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE virtual void resize(sp_float width, sp_float height) = 0;
 
-		API_INTERFACE virtual void addGraphicObject(GraphicObject* graphicObject)
+		API_INTERFACE virtual void addGraphicObject(GraphicObject2D* graphicObject)
 		{
-			graphicObjects.push_back(graphicObject);
+			graphicObjects2D.add(graphicObject);
 		}
 
-		API_INTERFACE virtual sp_bool hasGraphicObject(GraphicObject* graphicObject)
+		API_INTERFACE virtual void addGraphicObject(GraphicObject3D* graphicObject)
 		{
-			std::vector<GraphicObject*>::iterator item = std::find(graphicObjects.begin(), graphicObjects.end(), graphicObject);
-			return item != graphicObjects.end();
+			graphicObjects3D.add(graphicObject);
 		}
 
-		API_INTERFACE virtual void removeGraphicObject(GraphicObject* graphicObject)
+		API_INTERFACE virtual sp_bool hasGraphicObject(GraphicObject3D* graphicObject)
 		{
-			std::vector<GraphicObject*>::iterator item = std::find(graphicObjects.begin(), graphicObjects.end(), graphicObject);
+			SpVectorItem<GraphicObject3D*>* item = graphicObjects3D.find(graphicObject);
+			return item != nullptr;
+		}
 
-			if (item != graphicObjects.end())
-				graphicObjects.erase(item);
+		API_INTERFACE virtual void removeGraphicObject(GraphicObject3D* graphicObject)
+		{
+			SpVectorItem<GraphicObject3D*>* item = graphicObjects3D.find(graphicObject);
+
+			if (item != nullptr)
+				graphicObjects3D.remove(item);
 		}
 
 	};

@@ -143,7 +143,8 @@ namespace NAMESPACE_RENDERING
 				}
 
 				glDeleteShader(shader);
-				return NULL;
+				sp_assert(false, "BuildShaderException");
+				return nullptr;
 			}
 
 			shadersId.add(shader);
@@ -181,6 +182,7 @@ namespace NAMESPACE_RENDERING
 				}
 
 				glDeleteProgram(program);
+				sp_assert(false, "LinkShaderException");
 			}
 
 			for (SpVectorItem<sp_uint>* item = shadersId.begin(); item != NULL; item = item->next())
@@ -228,10 +230,19 @@ namespace NAMESPACE_RENDERING
 		}
 
 		/// <summary>
-		/// Set the uniform value of shader. Use the template to Work! setUniform<Mat4>(matrix)
+		/// Set the uniform value of shader
 		/// </summary>
 		template <typename T>
 		API_INTERFACE inline OpenGLShader* setUniform(const GLint id, const T& value)
+		{
+			return this;
+		}
+
+		/// <summary>
+		/// Set the uniform array of shader
+		/// </summary>
+		template <typename T>
+		API_INTERFACE inline OpenGLShader* setUniformArray(const GLint id, const T* listOfT, sp_uint length)
 		{
 			return this;
 		}
@@ -283,6 +294,18 @@ namespace NAMESPACE_RENDERING
 		}
 	};
 
+	template <>
+	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniformArray(const GLint id, const Mat4* listOfMat4, sp_uint length)
+	{
+		glUniformMatrix4fv(id, length, GL_FALSE, (sp_float*)listOfMat4);
+		return this;
+	}
+	template <>
+	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniformArray(const GLint id, const sp_float* listOfFloat, sp_uint length)
+	{
+		glUniform1fv(id, length, listOfFloat);
+		return this;
+	}
 
 	/// <summary>
 	/// Set the uniform value of shader for Mat4 value

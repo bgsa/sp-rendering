@@ -49,6 +49,11 @@ namespace NAMESPACE_RENDERING
 			return this;
 		}
 
+		API_INTERFACE inline void disable()
+		{
+			glBindBuffer(type, NULL);
+		}
+
 		API_INTERFACE inline OpenGLBuffer* setData(sp_size size, void* data, GLenum usageType = GL_STATIC_DRAW)
 		{
 			glBufferData(type, size, data, usageType);

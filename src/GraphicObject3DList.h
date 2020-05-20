@@ -17,9 +17,11 @@ namespace NAMESPACE_RENDERING
 	protected:
 		IGraphicObjectRenderer* renderer;
 		SpArray<SpTransform>* _transforms;
-		SpArray<sp_uint>* _indexes;
+		OpenGLBuffer* _transformsBuffer;
+		OpenGLBuffer* _indexesBuffer;
 		OpenGLBuffer* _buffer;
-		OpenGLTextureBuffer* _transformsAsTexture;
+
+		sp_uint _length;
 
 	public:
 		
@@ -31,12 +33,23 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE sp_uint length()
 		{
-			return _transforms->length();
+			return _length;
 		}
 
-		API_INTERFACE virtual SpArray<sp_uint>* indexes()
+		API_INTERFACE virtual void setLength(sp_uint length)
 		{
-			return _indexes;
+			if (_transforms != nullptr)
+			{
+				sp_mem_delete(_transforms, SpArray<SpTransform>);
+			}
+
+			_transforms = sp_mem_new(SpArray<SpTransform>)(length, length);
+			this->_length = length;
+		}
+
+		API_INTERFACE virtual OpenGLBuffer* indexesBuffer()
+		{
+			return _indexesBuffer;
 		}
 
 		API_INTERFACE virtual OpenGLBuffer* buffer()
@@ -44,19 +57,13 @@ namespace NAMESPACE_RENDERING
 			return _buffer;
 		}
 
-		API_INTERFACE virtual OpenGLTextureBuffer* trasnformAsTexture()
-		{
-			return _transformsAsTexture;
-		}
+		API_INTERFACE virtual void translate(const sp_uint index, Vec3 translation) = 0;
 
-		API_INTERFACE virtual SpTransform& transforms(const sp_uint index)
-		{
-			return _transforms->data()[index];
-		}
+		API_INTERFACE virtual void scale(const sp_uint index, Vec3 factors) = 0;
 
-		API_INTERFACE void setLength(sp_uint length)
+		API_INTERFACE virtual OpenGLBuffer* transformsBuffer()
 		{
-			_transforms = sp_mem_new(SpArray<SpTransform>)(length, length);
+			return _transformsBuffer;
 		}
 
 		API_INTERFACE void setRenderer(IGraphicObjectRenderer* renderer)
@@ -72,17 +79,6 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE GraphicObjectType type() override
 		{
 			return GraphicObjectType::Type3D;
-		}
-
-		API_INTERFACE virtual void dispose() override
-		{
-			if (_transforms != nullptr)
-			{
-				sp_mem_delete(_transforms, SpArray<SpTransform>);
-				_transforms = nullptr;
-			}
-
-			GraphicObject::dispose();
 		}
 
 	};

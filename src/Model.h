@@ -27,31 +27,31 @@ namespace NAMESPACE_RENDERING
 			textureCoordinates = NULL;
 		}
 
-		API_INTERFACE inline sp_size sizeOfVertexes()
+		API_INTERFACE inline sp_size sizeOfVertexes() const
 		{
 			return vertexes->length() * sizeof(Vec3);
 		}
-		API_INTERFACE inline sp_size sizeOfFaces()
+		API_INTERFACE inline sp_size sizeOfFaces() const
 		{
 			return faces->length() * sizeof(SpPoint3<sp_uint>);
 		}
-		API_INTERFACE inline sp_size sizeOfNormals()
+		API_INTERFACE inline sp_size sizeOfNormals() const
 		{
 			return normals->length() * sizeof(Vec3);
 		}
-		API_INTERFACE inline sp_size sizeOfTextures()
+		API_INTERFACE inline sp_size sizeOfTextures() const
 		{
 			return textureCoordinates->length() * sizeof(Vec2);
 		}
 
 		API_INTERFACE virtual void load(const SpString& filename) = 0;
 
-		API_INTERFACE virtual sp_size sizeOfAllBuffers()
+		API_INTERFACE virtual sp_size sizeOfAllBuffers() const
 		{
 			return sizeOfVertexes() + sizeOfNormals() + sizeOfTextures();
 		}
 
-		API_INTERFACE virtual void allBuffers(sp_char* allocatedBuffer)
+		API_INTERFACE virtual void allBuffers(sp_char* allocatedBuffer) const
 		{
 			const sp_size sizeVertexes = sizeOfVertexes();
 			const sp_size sizeNormals = sizeOfNormals();

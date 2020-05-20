@@ -165,9 +165,6 @@
     <ClInclude Include="src\RendererList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\kDOP18List.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\IGraphicObjectRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -181,6 +178,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\FakeBoundingVolumeRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DOP18ListRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RockList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -272,13 +275,13 @@
     <ClCompile Include="src\RockRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\DefaultRendererManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\RendererList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\kDOP18List.cpp">
+    <ClCompile Include="src\DOP18ListRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpenGLRendererManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -21,6 +21,7 @@ namespace NAMESPACE_RENDERING
 		GLint viewMatrixLocation;
 
 		GLint positionAttribute = -1;
+		GLint transformLocation = -1;
 
 		GraphicObject3DList* _list;
 
@@ -53,27 +54,26 @@ namespace NAMESPACE_RENDERING
 
 			projectionMatrixLocation = shader->getUniform("projectionMatrix");
 			viewMatrixLocation = shader->getUniform("viewMatrix");
+			transformLocation = shader->getUniform("transformMatrix");
 
 			positionAttribute = shader->getAttribute("Position");
-
+			
 			setUpPositionAttribute();
 		}
 
 		API_INTERFACE void render(const RenderData& renderData) override
 		{
-			shader->enable();
-
 			_list->buffer()->use();
 			glVertexAttribPointer(positionAttribute, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
 			shader
-				->enableAttributes()
+				->enable()
 				->setUniform<Mat4>(projectionMatrixLocation, renderData.projectionMatrix)
 				->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix);
 
-			_list->trasnformAsTexture()->use();
+			_list->transformsBuffer()->use();
 
-			glDrawElementsInstanced(GL_LINES, _list->indexes()->length(), GL_UNSIGNED_INT, _list->indexes()->data(), _list->length());
+			//glDrawElementsInstanced(GL_LINES, _list->indexesBuffer()->length(), GL_UNSIGNED_INT, _list->indexes()->data(), _list->length());
 
 			shader->disable();
 		}

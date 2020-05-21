@@ -90,9 +90,12 @@ namespace NAMESPACE_RENDERING
 		{
 			initBuffers();
 
+			SpString includeShader(100);
+			includeShader.add("#define LIST_LENGTH ")->add(_length)->add(END_OF_LINE);
+			
 			shader = sp_mem_new(OpenGLShader)();
 			shader
-				->buildFromFile(GL_VERTEX_SHADER, "resources\\shaders\\opengl\\rock\\shader-list.vs")
+				->buildFromFile(GL_VERTEX_SHADER, "resources\\shaders\\opengl\\rock\\shader-list.vs", includeShader)
 				->buildFromFile(GL_FRAGMENT_SHADER, "resources\\shaders\\opengl\\rock\\shader-list.fs")
 				->link();
 

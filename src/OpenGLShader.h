@@ -10,6 +10,8 @@
 
 namespace NAMESPACE_RENDERING
 {
+#define SP_DEFAULT_SHADER_VERSION "#version 300 es\n\n"
+
 	class OpenGLShader
 	{
 	private:
@@ -97,10 +99,19 @@ namespace NAMESPACE_RENDERING
 		/// <summary>
 		/// Build/Compile the shader source from disk file
 		/// </summary>
-		API_INTERFACE OpenGLShader* buildFromFile(GLenum type, const sp_char* filename)
+		API_INTERFACE OpenGLShader* buildFromFile(GLenum type, const sp_char* filename, const sp_char* includeContent = nullptr)
 		{
 			SP_FILE file;
 			SpString* source = file.readTextFile(filename);
+
+			if (!source->startWith("#version "))
+				source->append(SP_DEFAULT_SHADER_VERSION);
+
+			if (includeContent != nullptr)
+			{
+				source->resize(source->allocatedLength() + std::strlen(includeContent));
+				source->append(includeContent, source->indexOf(END_OF_LINE) + 1);
+			}
 
 			build(type, source->data());
 

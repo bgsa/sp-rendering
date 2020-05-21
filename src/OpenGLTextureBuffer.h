@@ -22,7 +22,7 @@ namespace NAMESPACE_RENDERING
 			glGenBuffers(1, &dataBuffer);
 		}
 
-		API_INTERFACE inline void setBuffer(const sp_size size, const void* buffer, sp_uint usage = GL_DYNAMIC_DRAW)
+		API_INTERFACE inline void setData(const sp_size size, const void* buffer, sp_uint usage = GL_DYNAMIC_DRAW)
 		{
 			glBindBuffer(GL_TEXTURE_BUFFER, dataBuffer);
 			glBufferData(GL_TEXTURE_BUFFER, size, buffer, usage);
@@ -32,7 +32,6 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE inline OpenGLTextureBuffer* use()
 		{
 			glBindBuffer(GL_TEXTURE_BUFFER, dataBuffer);
-			glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, dataBuffer);
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_BUFFER, textureId);

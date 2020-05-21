@@ -17,7 +17,7 @@ namespace NAMESPACE_RENDERING
 	protected:
 		IGraphicObjectRenderer* renderer;
 		SpArray<SpTransform>* _transforms;
-		OpenGLBuffer* _transformsBuffer;
+		OpenGLTextureBuffer* _transformsBuffer;
 		OpenGLBuffer* _indexesBuffer;
 		OpenGLBuffer* _buffer;
 
@@ -61,7 +61,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE virtual void scale(const sp_uint index, Vec3 factors) = 0;
 
-		API_INTERFACE virtual OpenGLBuffer* transformsBuffer()
+		API_INTERFACE virtual OpenGLTextureBuffer* transformsBuffer()
 		{
 			return _transformsBuffer;
 		}

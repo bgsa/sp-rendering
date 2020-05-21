@@ -135,29 +135,32 @@ namespace NAMESPACE_RENDERING
 		_buffer = sp_mem_new(OpenGLBuffer)(GL_ARRAY_BUFFER);
 	}
 
+	sp_bool inited = false;
 	void DOP18ListRenderer::updateVertexBuffer(DOP18* listOfDOP18, sp_uint length)
 	{
-		DOP18 dop;
-		Vec3* points = ALLOC_ARRAY(Vec3, DOP18_VERTEX_LENGTH * length);
-
-		//_buffer
-		//	->use()
-			//->setData(DOP18_VERTEX_SIZE * length, points, GL_DYNAMIC_DRAW);
-
-		Vec3* lines = ALLOC_ARRAY(Vec3, DOP18_INDEXES_LENGTH * length);
-		sp_uint lineCount = 0u;
-		for (sp_uint i = ZERO_UINT; i < length; i++)
+		if (!inited)
 		{
-			updatePoints(&listOfDOP18[i], &points[i * DOP18_VERTEX_LENGTH]);
+			DOP18 dop;
+			Vec3* points = ALLOC_ARRAY(Vec3, DOP18_VERTEX_LENGTH * length);
+			Vec3* lines = ALLOC_ARRAY(Vec3, DOP18_INDEXES_LENGTH * length);
 
-			for (sp_uint j = 0u; j < DOP18_INDEXES_LENGTH; j ++)
-				lines[lineCount++] = points[ (i * DOP18_VERTEX_LENGTH) + indexesPerKdop[j]];
+			sp_uint lineCount = 0u;
+			for (sp_uint i = ZERO_UINT; i < length; i++)
+			{
+				updatePoints(&listOfDOP18[i], &points[i * DOP18_VERTEX_LENGTH]);
+
+				for (sp_uint j = 0u; j < DOP18_INDEXES_LENGTH; j++)
+					lines[lineCount++] = points[(i * DOP18_VERTEX_LENGTH) + indexesPerKdop[j]];
+			}
+			
+			_buffer
+				->use()
+				->setData(DOP18_INDEXES_LENGTH * VEC3_SIZE * length, lines, GL_DYNAMIC_DRAW);
+
+			ALLOC_RELEASE(points);
+
+			inited = true;
 		}
-		_buffer
-			->use()
-			->setData(DOP18_INDEXES_LENGTH * VEC3_SIZE * length, lines, GL_DYNAMIC_DRAW);
-
-		ALLOC_RELEASE(points);
 	}
 
 	void DOP18ListRenderer::init()
@@ -185,6 +188,7 @@ namespace NAMESPACE_RENDERING
 			->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix);
 
 		updateVertexBuffer(listOfDOP18, length);
+		_buffer->use();
 		glVertexAttribPointer(positionAttribute, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(positionAttribute);
 		

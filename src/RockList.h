@@ -31,6 +31,23 @@ namespace NAMESPACE_RENDERING
 			_indexesBuffer = sp_mem_new(OpenGLBuffer)(facesLength * 3 * SIZEOF_UINT, model->faces->data(), GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 		}
 
+		void initTransformBuffer()
+		{
+			_transformsBuffer = sp_mem_new(OpenGLTextureBuffer)();
+
+			Mat4* transformsAsMat4 = ALLOC_NEW_ARRAY(Mat4, MAT4_LENGTH * _length);
+			SpTransform* transforms = _transforms->data();
+
+			for (sp_uint i = 0; i < _length; i++)
+				std::memcpy(&transformsAsMat4[i], transforms[i].toMat4(), MAT4_SIZE);
+
+			_transformsBuffer
+				->use()
+				->setData(MAT4_SIZE * _length, transformsAsMat4, GL_DYNAMIC_DRAW);
+
+			ALLOC_RELEASE(transformsAsMat4);
+		}
+
 		void initVertexBuffer(const ObjModel* model)
 		{
 			const sp_size sizeAllBuffers = model->sizeOfAllBuffers();
@@ -47,6 +64,7 @@ namespace NAMESPACE_RENDERING
 
 			initVertexBuffer(&model);
 			initIndexBuffer(&model);
+			initTransformBuffer();
 		}
 
 	public:
@@ -90,12 +108,9 @@ namespace NAMESPACE_RENDERING
 		{
 			initBuffers();
 
-			SpString includeShader(100);
-			includeShader.add("#define LIST_LENGTH ")->add(_length)->add(END_OF_LINE);
-			
 			shader = sp_mem_new(OpenGLShader)();
 			shader
-				->buildFromFile(GL_VERTEX_SHADER, "resources\\shaders\\opengl\\rock\\shader-list.vs", includeShader)
+				->buildFromFile(GL_VERTEX_SHADER, "resources\\shaders\\opengl\\rock\\shader-list.vs")
 				->buildFromFile(GL_FRAGMENT_SHADER, "resources\\shaders\\opengl\\rock\\shader-list.fs")
 				->link();
 
@@ -112,23 +127,24 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE void render(const RenderData& renderData) override
 		{
-			Mat4* transformsAsMat4 = ALLOC_NEW_ARRAY(Mat4, MAT4_LENGTH * _length);
-			SpTransform* transforms = _transforms->data();
-
-			for (sp_uint i = 0; i < _length; i++)
-				std::memcpy(&transformsAsMat4[i], transforms[i].toMat4(), MAT4_SIZE);
-
 			shader
 				->enable()
 				->setUniform<Mat4>(projectionMatrixLocation, renderData.projectionMatrix)
-				->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix)
-				->setUniformArray<Mat4>(transformMatrixLocation, transformsAsMat4, _length);
+				->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix);
 
-			ALLOC_RELEASE(transformsAsMat4);
-			
 			_buffer->use();
 			glVertexAttribPointer(positionAttribute, 3, GL_FLOAT, GL_FALSE, 0, 0);
 			glEnableVertexAttribArray(positionAttribute);
+
+			/*
+			Mat4* transformsAsMat4 = ALLOC_NEW_ARRAY(Mat4, MAT4_LENGTH * _length);
+			SpTransform* transforms = _transforms->data();
+			for (sp_uint i = 0; i < _length; i++)
+				std::memcpy(&transformsAsMat4[i], transforms[i].toMat4(), MAT4_SIZE);
+			_transformsBuffer->use()->setBuffer(MAT4_SIZE * _length, transformsAsMat4, GL_DYNAMIC_DRAW);
+			ALLOC_RELEASE(transformsAsMat4);
+			*/
+			_transformsBuffer->use();
 			
 			_indexesBuffer->use();
 
@@ -139,6 +155,7 @@ namespace NAMESPACE_RENDERING
 			glBindVertexArray(NULL);
 			glBindBuffer(GL_ARRAY_BUFFER, NULL); // Unbind
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, NULL); // Unbind
+			glBindBuffer(GL_TEXTURE_BUFFER, NULL); // Unbind
 		}
 
 		API_INTERFACE inline const sp_char* toString() override

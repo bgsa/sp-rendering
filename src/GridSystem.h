@@ -8,10 +8,10 @@
 namespace NAMESPACE_RENDERING
 {
 	struct GridSystemShaderAttributes {
-		GLfloat point1[3];
-		GLfloat point2[3];
-		GLfloat pointColor1[4];
-		GLfloat pointColor2[4];
+		sp_float point1[3];
+		sp_float point2[3];
+		sp_float pointColor1[4];
+		sp_float pointColor2[4];
 	};
 
 	class GridSystem
@@ -21,21 +21,19 @@ namespace NAMESPACE_RENDERING
 
 		GridSystemShaderAttributes attributes;
 
-		float lineWidth = 3.0f;
+		sp_float lineWidth = 1.0f;
 
 		void initVBO();
 		void setUpPositionAttribute();
 
 	public:
-		void init();
+		API_INTERFACE void init();
 
-		void setLineWidth(float newLineWidth);
+		API_INTERFACE void setLineWidth(float newLineWidth);
 
-		void render(const RenderData& renderData) override;
+		API_INTERFACE void render(const RenderData& renderData) override;
 
-		API_INTERFACE const sp_char* toString() {
-			return "GridSystem";
-		}
+		API_INTERFACE const sp_char* toString() { return "GridSystem"; }
 	};
 }
 

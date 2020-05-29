@@ -108,15 +108,15 @@ namespace NAMESPACE_RENDERING
 
 		setUpPositionAttribute();
 
-		float currentLineWidth = GLConfig::getGLfloat(GL_LINE_WIDTH);
+		sp_float currentLineWidth = GLConfig::getGLfloat(GL_LINE_WIDTH);
 		glLineWidth(lineWidth);
 
-		float quantidade = 10.0f;
-		Mat4 matrixRotate = Mat4::createRotate((float)degreesToRadians(90), 0.0f, 1.0f, 0.0f);
+		sp_float quantidade = 10.0f;
+		Mat4 matrixRotate = Mat4::createRotate((sp_float)degreesToRadians(90), 0.0f, 1.0f, 0.0f);
 		//float spacing = 1.0f;
 		//Mat4 scaleMatrix = Mat4::createScale(spacing, 0.0f, spacing);
 
-		for (float i = -quantidade; i < quantidade + 1; i++)
+		for (sp_float i = -quantidade; i < quantidade + 1; i++)
 		{
 			//draw lines on Z axis
 			Mat4 matrixTranslatedX = Mat4::createTranslate(i, 0.0f, 0.0f);

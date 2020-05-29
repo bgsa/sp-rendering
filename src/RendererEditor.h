@@ -14,7 +14,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE virtual void init() = 0;
 
-		API_INTERFACE virtual void update(sp_longlong elapsedTime) = 0;
+		API_INTERFACE virtual void update(sp_float elapsedTime) = 0;
 
 		API_INTERFACE virtual void preRender() = 0;
 

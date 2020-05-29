@@ -22,7 +22,7 @@ namespace NAMESPACE_RENDERING
 			renderer = NULL;
 		}
 
-		void update(long long elapsedTime) override
+		void update(sp_float elapsedTime) override
 		{
 		}
 

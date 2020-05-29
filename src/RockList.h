@@ -20,8 +20,6 @@ namespace NAMESPACE_RENDERING
 		OpenGLShader* shader;
 		sp_uint facesLength;
 
-		DOP18* _boundingVolumes;
-
 		RockList* translate(const Vec3& translation) override { return nullptr; }
 		RockList* scale(const Vec3& scaleVector) override { return nullptr;  }
 		
@@ -69,39 +67,31 @@ namespace NAMESPACE_RENDERING
 
 	public:
 
-		API_INTERFACE BoundingVolume* boundingVolumes() const override
-		{
-			return _boundingVolumes;
-		}
-
-		API_INTERFACE void setLength(sp_uint length) override
+		API_INTERFACE RockList(const sp_uint length)
+			: SpPhysicObjectList::SpPhysicObjectList(length)
 		{
 			GraphicObject3DList::setLength(length);
-			_boundingVolumes = sp_mem_new_array(DOP18, length);
 
+			DOP18* bvs = (DOP18*) boundingVolumes();
 			for (sp_uint i = 0; i < length; i++)
 			{
-				_boundingVolumes[i].scale({ 2.8f, 3.0f, 3.0f });
-				_boundingVolumes[i].translate(0.2f, 1.0f, 1.3f);
+				bvs[i].scale({ 2.8f, 3.0f, 3.0f });
+				bvs[i].translate({ 0.2f, 1.0f, 1.3f });
 			}
-
 		}
 
-		API_INTERFACE sp_uint length() const override
-		{
-			return _length;
-		}
+		API_INTERFACE inline sp_uint length() const override { return _length; }
 
 		API_INTERFACE void translate(const sp_uint index, Vec3 translation) override
 		{
 			_transforms->data()[index].translate(translation);
-			_boundingVolumes[index].translate(translation);
+			boundingVolumes()[index].translate(translation);
 		}
 
 		API_INTERFACE void scale(const sp_uint index, Vec3 factors) override
 		{
 			_transforms->data()[index].scale(factors);
-			_boundingVolumes[index].scale(factors);
+			boundingVolumes()[index].scale(factors);
 		}
 
 		API_INTERFACE void init() override
@@ -121,8 +111,10 @@ namespace NAMESPACE_RENDERING
 			positionAttribute = shader->getAttribute("Position");
 		}
 
-		API_INTERFACE void update(long long elapsedTime) override
+		API_INTERFACE void update(sp_float elapsedTime) override
 		{
+			SpPhysicObjectList::update(elapsedTime);
+			GraphicObject3DList::update(elapsedTime);
 		}
 
 		API_INTERFACE void render(const RenderData& renderData) override
@@ -136,14 +128,14 @@ namespace NAMESPACE_RENDERING
 			glVertexAttribPointer(positionAttribute, 3, GL_FLOAT, GL_FALSE, 0, 0);
 			glEnableVertexAttribArray(positionAttribute);
 
-			/*
+			// update transfom matrixes data on GPU
 			Mat4* transformsAsMat4 = ALLOC_NEW_ARRAY(Mat4, MAT4_LENGTH * _length);
 			SpTransform* transforms = _transforms->data();
 			for (sp_uint i = 0; i < _length; i++)
 				std::memcpy(&transformsAsMat4[i], transforms[i].toMat4(), MAT4_SIZE);
-			_transformsBuffer->use()->setBuffer(MAT4_SIZE * _length, transformsAsMat4, GL_DYNAMIC_DRAW);
+			_transformsBuffer->use()->setData(MAT4_SIZE * _length, transformsAsMat4, GL_DYNAMIC_DRAW);
 			ALLOC_RELEASE(transformsAsMat4);
-			*/
+
 			_transformsBuffer->use();
 			
 			_indexesBuffer->use();
@@ -165,12 +157,6 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE inline void dispose() override
 		{
-			if (_boundingVolumes != nullptr)
-			{
-				sp_mem_release(_boundingVolumes);
-				_boundingVolumes = nullptr;
-			}
-
 			if (_transforms != nullptr)
 			{
 				sp_mem_delete(_transforms, SpArray<SpTransform>);
@@ -196,7 +182,7 @@ namespace NAMESPACE_RENDERING
 			}
 		}
 
-		API_INTERFACE ~RockList()
+		~RockList()
 		{
 			dispose();
 		}

@@ -25,14 +25,21 @@ namespace NAMESPACE_RENDERING
 	{
 		this->_camera = camera;
 
-		Log::info("OpenGL Vendor: " + GLConfig::getGLVendor());
-		Log::info("OpenGL Version: " + GLConfig::getGLVersion());
-		Log::info("OpenGLSL Version: " + GLConfig::getGLShadingLanguageVersion());
-		Log::info("OpenGL Renderer: " + GLConfig::getGLRenderer());
-		Log::info("OpenGL Extensions:");
+		Log::info("OpenGL Vendor: "); 
+		Log::info(GLConfig::getGLVendor().c_str());
 
+		Log::info("OpenGL Version: ");
+		Log::info(GLConfig::getGLVersion().c_str());
+
+		Log::info("OpenGLSL Version: "); 
+		Log::info(GLConfig::getGLShadingLanguageVersion().c_str());
+
+		Log::info("OpenGL Renderer: ");
+		Log::info(GLConfig::getGLRenderer().c_str());
+
+		Log::info("OpenGL Extensions:");
 		for (std::string extension : GLConfig::getGLExtensions())
-			Log::info(extension);
+			Log::info(extension.c_str());
 
 		glEnable(GL_SCISSOR_TEST);
 		glEnable(GL_DEPTH_TEST); //elimina os vértices que sobrepoem outros vértices quando estão no mesmo eixo Z.

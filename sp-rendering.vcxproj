@@ -189,7 +189,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>DEBUG;GLFW_ENABLED;MAJOR_COLUMN_ORDER;API_EXPORT;OPENGL_ENABLED;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG;GLFW_ENABLED;MAJOR_COLUMN_ORDER;API_EXPORT;OPENCL_ENABLED;OPENGL_ENABLED;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)vendor\include;$(SolutionDir)sp-foundation\src;$(SolutionDir)sp-physics\src</AdditionalIncludeDirectories>
@@ -205,7 +205,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>DEBUG;GLFW_ENABLED;MAJOR_COLUMN_ORDER;API_EXPORT;OPENGL_ENABLED;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG;GLFW_ENABLED;MAJOR_COLUMN_ORDER;API_EXPORT;OPENCL_ENABLED;OPENGL_ENABLED;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)vendor\include;$(SolutionDir)sp-foundation\src;$(SolutionDir)sp-physics\src</AdditionalIncludeDirectories>
@@ -223,7 +223,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLFW_ENABLED;MAJOR_COLUMN_ORDER;API_EXPORT;WINDOWS;OPENGL_ENABLED;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLFW_ENABLED;MAJOR_COLUMN_ORDER;API_EXPORT;WINDOWS;OPENCL_ENABLED;OPENGL_ENABLED;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)vendor\include;$(SolutionDir)sp-foundation\src;$(SolutionDir)sp-physics\src</AdditionalIncludeDirectories>
@@ -243,7 +243,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLFW_ENABLED;MAJOR_COLUMN_ORDER;API_EXPORT;OPENGL_ENABLED;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLFW_ENABLED;MAJOR_COLUMN_ORDER;API_EXPORT;OPENCL_ENABLED;OPENGL_ENABLED;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)vendor\include;$(SolutionDir)sp-foundation\src;$(SolutionDir)sp-physics\src</AdditionalIncludeDirectories>

@@ -43,7 +43,7 @@ namespace NAMESPACE_RENDERING
 				//char * lineAsString = (char *) &line;
 				//msg = "GL_" + errorMessage + " - " + file + ":" + to_string(line) + END_OF_LINE;
 				//Log::error(msg.c_str());
-				Log::error(errorMessage);
+				Log::error(errorMessage.c_str());
 
 				error = glGetError();
 			}

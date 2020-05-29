@@ -48,13 +48,13 @@ namespace NAMESPACE_RENDERING
 
 				if (infoLen > 1)
 				{
-					char *infoLog = (char*)malloc(sizeof(char) * infoLen);
+					sp_char* infoLog = ALLOC_ARRAY(sp_char, infoLen);
 
 					glGetProgramInfoLog(shaderProgram, infoLen, nullptr, infoLog);
 
-					Log::error(std::string(infoLog));
+					Log::error(infoLog);
 
-					free(infoLog);
+					ALLOC_RELEASE(infoLog);
 				}
 
 				glDeleteProgram(shaderProgram);
@@ -106,13 +106,13 @@ namespace NAMESPACE_RENDERING
 
 				if (infoLen > 1)
 				{
-					char *infoLog = (char*)malloc(sizeof(char) * infoLen);
+					sp_char* infoLog = ALLOC_ARRAY(sp_char, infoLen);
 
 					glGetProgramInfoLog(shaderProgram, infoLen, nullptr, infoLog);
 
-					Log::error(std::string(infoLog));
+					Log::error(infoLog);
 
-					free(infoLog);
+					ALLOC_RELEASE(infoLog);
 				}
 
 				glDeleteProgram(shaderProgram);
@@ -157,15 +157,15 @@ namespace NAMESPACE_RENDERING
 
 				if (infoLen > 1)
 				{
-					char *infoLog = (char*)malloc(sizeof(char) * infoLen);
+					sp_char* infoLog = ALLOC_ARRAY(sp_char, infoLen);
 
 					glGetShaderInfoLog(shader, infoLen, nullptr, infoLog);
 
-					Log::error(std::string(infoLog));
+					Log::error(infoLog);
 					Log::error("Shader Source: ");
-					Log::error(std::string(source));
+					Log::error(source);
 
-					free(infoLog);
+					ALLOC_RELEASE(infoLog);
 				}
 
 				glDeleteShader(shader);

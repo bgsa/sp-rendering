@@ -74,7 +74,7 @@ namespace NAMESPACE_RENDERING
 			dop18ListRenderer.init();
 		}
 
-		API_INTERFACE virtual void update(sp_longlong elapsedTime)
+		API_INTERFACE virtual void update(sp_float elapsedTime)
 		{
 			for (SpVectorItem<GraphicObject*>* item = graphicObjects3D.begin(); item != nullptr; item = item->next())
 				item->value()->update(elapsedTime);

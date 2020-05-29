@@ -36,7 +36,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE void init() override;
 
-		API_INTERFACE void update(long long elapsedTime) override
+		API_INTERFACE void update(sp_float elapsedTime) override
 		{
 		}
 

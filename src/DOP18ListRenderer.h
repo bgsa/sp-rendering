@@ -26,9 +26,9 @@ namespace NAMESPACE_RENDERING
 		
 		API_INTERFACE void init() override;
 
-		API_INTERFACE void translate(const sp_uint index, Vec3 translation) override { }
+		API_INTERFACE void translate(const sp_uint index, const Vec3& translation) override { }
 
-		API_INTERFACE void scale(const sp_uint index, Vec3 factors) override { }
+		API_INTERFACE void scale(const sp_uint index, const Vec3& factors) override { }
 
 		API_INTERFACE void render(const RenderData& renderData, DOP18* listOfDOP18, sp_uint length);
 

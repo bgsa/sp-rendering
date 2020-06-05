@@ -72,26 +72,33 @@ namespace NAMESPACE_RENDERING
 		{
 			GraphicObject3DList::setLength(length);
 
-			DOP18* bvs = (DOP18*) boundingVolumes();
+			SpPhysicProperties* physic = physicProperties(0u);
+
+			DOP18* bvs = (DOP18*) boundingVolumes(0u);
+
 			for (sp_uint i = 0; i < length; i++)
 			{
 				bvs[i].scale({ 2.8f, 3.0f, 3.0f });
 				bvs[i].translate({ 0.2f, 1.0f, 1.3f });
+				
+				physic[i].position({ 0.2f, 1.0f, 1.3f });
+				physic[i].mass(8.0f);
 			}
 		}
 
 		API_INTERFACE inline sp_uint length() const override { return _length; }
 
-		API_INTERFACE void translate(const sp_uint index, Vec3 translation) override
+		API_INTERFACE inline void translate(const sp_uint index, const Vec3& translation) override
 		{
 			_transforms->data()[index].translate(translation);
-			boundingVolumes()[index].translate(translation);
+			boundingVolumes(index)->translate(translation);
+			physicProperties(index)->position(translation);
 		}
 
-		API_INTERFACE void scale(const sp_uint index, Vec3 factors) override
+		API_INTERFACE inline void scale(const sp_uint index, const Vec3& factors) override
 		{
 			_transforms->data()[index].scale(factors);
-			boundingVolumes()[index].scale(factors);
+			boundingVolumes(index)->scale(factors);
 		}
 
 		API_INTERFACE void init() override
@@ -109,12 +116,6 @@ namespace NAMESPACE_RENDERING
 			transformMatrixLocation = shader->getUniform("transformMatrix");
 
 			positionAttribute = shader->getAttribute("Position");
-		}
-
-		API_INTERFACE void update(sp_float elapsedTime) override
-		{
-			SpPhysicObjectList::update(elapsedTime);
-			GraphicObject3DList::update(elapsedTime);
 		}
 
 		API_INTERFACE void render(const RenderData& renderData) override

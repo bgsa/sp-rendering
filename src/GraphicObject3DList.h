@@ -57,9 +57,9 @@ namespace NAMESPACE_RENDERING
 			return _buffer;
 		}
 
-		API_INTERFACE virtual void translate(const sp_uint index, Vec3 translation) = 0;
+		API_INTERFACE virtual void translate(const sp_uint index, const Vec3& translation) = 0;
 
-		API_INTERFACE virtual void scale(const sp_uint index, Vec3 factors) = 0;
+		API_INTERFACE virtual void scale(const sp_uint index, const Vec3& factors) = 0;
 
 		API_INTERFACE virtual OpenGLTextureBuffer* transformsBuffer()
 		{

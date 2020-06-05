@@ -22,10 +22,6 @@ namespace NAMESPACE_RENDERING
 			renderer = NULL;
 		}
 
-		void update(sp_float elapsedTime) override
-		{
-		}
-
 		void render(const RenderData& renderData) override
 		{
 			renderer->geometry = &geometry;

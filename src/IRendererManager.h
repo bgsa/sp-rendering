@@ -41,7 +41,7 @@ namespace NAMESPACE_RENDERING
 
 				SpPhysicObjectList* physicObjectList = dynamic_cast<SpPhysicObjectList*>(item->value());
 				if (physicObjectList != nullptr)
-					dop18ListRenderer.render(renderData, (DOP18*) physicObjectList->boundingVolumes(), physicObjectList->length());
+					dop18ListRenderer.render(renderData, (DOP18*) physicObjectList->boundingVolumes(0u), physicObjectList->length());
 			}
 		}
 
@@ -72,15 +72,6 @@ namespace NAMESPACE_RENDERING
 		{
 			dop18Renderer.init();
 			dop18ListRenderer.init();
-		}
-
-		API_INTERFACE virtual void update(sp_float elapsedTime)
-		{
-			for (SpVectorItem<GraphicObject*>* item = graphicObjects3D.begin(); item != nullptr; item = item->next())
-				item->value()->update(elapsedTime);
-
-			for (SpVectorItem<GraphicObject*>* item = graphicObjects2D.begin(); item != nullptr; item = item->next())
-				item->value()->update(elapsedTime);
 		}
 
 		API_INTERFACE virtual void preRender() = 0;

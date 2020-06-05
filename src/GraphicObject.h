@@ -51,8 +51,6 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE virtual void init() = 0;
 
-		API_INTERFACE virtual void update(sp_float elapsedTime) { };
-
 		API_INTERFACE virtual void render(const RenderData& renderData) = 0;
 
 		API_INTERFACE inline virtual GraphicObject* translate(const Vec3& translation)

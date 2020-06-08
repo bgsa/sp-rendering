@@ -27,32 +27,36 @@ namespace NAMESPACE_RENDERING
 
 		void updatePoints(sp_float* points, sp_size& index, const Plane3D& plane1, const Plane3D& plane2, const Plane3D& plane3)
 		{
-			Line3D* line = plane1.findIntersection(plane2);
-			Vec3* point = line->findIntersectionOnRay(plane3);
+			Line3D line;
+			plane1.intersection(plane2, &line);
 
-			points[index++] = point->x;
-			points[index++] = point->y;
-			points[index++] = point->z;
+			Vec3 point;
+			line.intersectionOnRay(plane3, &point);
 
-			ALLOC_RELEASE(line);
+			points[index++] = point.x;
+			points[index++] = point.y;
+			points[index++] = point.z;
 		}
 
 		void updatePoints(sp_float* points, sp_size& index,
 			const Plane3D& plane1, const Plane3D& plane2,
 			const Plane3D& plane3, const Plane3D& plane4)
 		{
-			Line3D* line = plane1.findIntersection(plane2);
-			Vec3* point1 = line->findIntersectionOnRay(plane3);
-			Vec3* point2 = line->findIntersectionOnRay(plane4);
+			Line3D line;
+			plane1.intersection(plane2, &line);
 
-			points[index++] = point1->x;
-			points[index++] = point1->y;
-			points[index++] = point1->z;
-			points[index++] = point2->x;
-			points[index++] = point2->y;
-			points[index++] = point2->z;
+			Vec3 point1;
+			line.intersectionOnRay(plane3, &point1);
 
-			ALLOC_RELEASE(line);
+			Vec3 point2;
+			line.intersectionOnRay(plane4, &point2);
+
+			points[index++] = point1.x;
+			points[index++] = point1.y;
+			points[index++] = point1.z;
+			points[index++] = point2.x;
+			points[index++] = point2.y;
+			points[index++] = point2.z;
 		}
 
 		void updatePoints(DOP18* dop, sp_float* points, sp_size pointIndex)

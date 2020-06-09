@@ -8,6 +8,7 @@
 #include "OpenGLBuffer.h"
 #include "OpenGLTextureBuffer.h"
 #include "SpTransform.h"
+#include "SpGraphicObjectManager.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -16,7 +17,7 @@ namespace NAMESPACE_RENDERING
 	{
 	protected:
 		IGraphicObjectRenderer* renderer;
-		SpArray<SpTransform>* _transforms;
+		sp_uint _transformIndex;
 		OpenGLTextureBuffer* _transformsBuffer;
 		OpenGLBuffer* _indexesBuffer;
 		OpenGLBuffer* _buffer;
@@ -28,7 +29,7 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE GraphicObject3DList()
 		{
 			renderer = nullptr;
-			_transforms = nullptr;
+			_transformIndex = ZERO_UINT;
 		}
 
 		API_INTERFACE sp_uint length()
@@ -38,13 +39,13 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE virtual void setLength(sp_uint length)
 		{
-			if (_transforms != nullptr)
-			{
-				sp_mem_delete(_transforms, SpArray<SpTransform>);
-			}
+			_transformIndex = SpGraphicObjectManager::instance()->alloc(length);
+			_length = length;
+		}
 
-			_transforms = sp_mem_new(SpArray<SpTransform>)(length, length);
-			this->_length = length;
+		API_INTERFACE inline SpTransform* transforms(const sp_uint index = ZERO_UINT) const
+		{
+			return SpGraphicObjectManager::instance()->transforms(_transformIndex + index);
 		}
 
 		API_INTERFACE virtual OpenGLBuffer* indexesBuffer()

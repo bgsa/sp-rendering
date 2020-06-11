@@ -9,6 +9,7 @@
 #include "OpenGLBuffer.h"
 #include "OpenGLShader.h"
 #include "SpPhysicObjectList.h"
+#include "SpLightManager.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -19,6 +20,12 @@ namespace NAMESPACE_RENDERING
 	private:
 		OpenGLShader* shader;
 		sp_uint facesLength;
+		sp_uint vertexesLength;
+		sp_int normalAttribute;
+
+		sp_int lightPositionLocation;
+		sp_int lightColorLocation;
+		sp_int shininessFactorLocation;
 
 		RockList* translate(const Vec3& translation) override { return nullptr; }
 		RockList* scale(const Vec3& scaleVector) override { return nullptr;  }
@@ -48,10 +55,10 @@ namespace NAMESPACE_RENDERING
 
 		void initVertexBuffer(const ObjModel* model)
 		{
-			const sp_size sizeAllBuffers = model->sizeOfAllBuffers();
-			sp_char* tempCpuBuffer = ALLOC_ARRAY(sp_char, sizeAllBuffers);
+			const sp_size allBuffersLen = model->allBuffersLength();
+			sp_float* tempCpuBuffer = ALLOC_ARRAY(sp_float, allBuffersLen);
 			model->allBuffers(tempCpuBuffer);
-			_buffer = sp_mem_new(OpenGLBuffer)(sizeAllBuffers, tempCpuBuffer);
+			_buffer = sp_mem_new(OpenGLBuffer)(allBuffersLen * SIZEOF_FLOAT, tempCpuBuffer);
 			ALLOC_RELEASE(tempCpuBuffer);
 		}
 
@@ -59,6 +66,8 @@ namespace NAMESPACE_RENDERING
 		{
 			ObjModel model;
 			model.load("resources\\models\\MyRock.OBJ");
+
+			vertexesLength = model.vertexes->length();
 
 			initVertexBuffer(&model);
 			initIndexBuffer(&model);
@@ -115,7 +124,12 @@ namespace NAMESPACE_RENDERING
 			viewMatrixLocation = shader->getUniform("viewMatrix");
 			transformMatrixLocation = shader->getUniform("transformMatrix");
 
+			lightColorLocation = shader->getUniform("LightColor");
+			lightPositionLocation = shader->getUniform("LightPosition");
+			shininessFactorLocation = shader->getUniform("ShininessFactor");
+
 			positionAttribute = shader->getAttribute("Position");
+			normalAttribute = shader->getAttribute("Normal");
 		}
 
 		API_INTERFACE void render(const RenderData& renderData) override
@@ -123,11 +137,16 @@ namespace NAMESPACE_RENDERING
 			shader
 				->enable()
 				->setUniform<Mat4>(projectionMatrixLocation, renderData.projectionMatrix)
-				->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix);
+				->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix)
+				->setUniform3<sp_float>(lightPositionLocation, SpLightManager::instance()->lights()->position())
+				->setUniform3<sp_float>(lightColorLocation, SpLightManager::instance()->lights()->color())
+				->setUniform<sp_float>(shininessFactorLocation, 1000.0f);
 
 			_buffer->use();
 			glVertexAttribPointer(positionAttribute, 3, GL_FLOAT, GL_FALSE, 0, 0);
 			glEnableVertexAttribArray(positionAttribute);
+			glVertexAttribPointer(normalAttribute, 3, GL_FLOAT, GL_FALSE, 0, (void*)(vertexesLength * VEC3_LENGTH * SIZEOF_FLOAT));
+			glEnableVertexAttribArray(normalAttribute);
 
 			// update transfom matrixes data on GPU
 			Mat4* transformsAsMat4 = ALLOC_NEW_ARRAY(Mat4, MAT4_LENGTH * _length);

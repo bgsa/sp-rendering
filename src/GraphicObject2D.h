@@ -13,8 +13,8 @@ namespace NAMESPACE_RENDERING
 	class GraphicObject2D : public GraphicObject
 	{
 	protected:
-		ColorRGBAf* color = new ColorRGBAf{ 1.0f, 1.0f, 1.0f, 1.0f };
-		ColorRGBAf* borderColor = new ColorRGBAf{ 1.0f, 0.0f, 1.0f, 1.0f };
+		ColorRGBA* color = new ColorRGBA{ 1.0f, 1.0f, 1.0f, 1.0f };
+		ColorRGBA* borderColor = new ColorRGBA{ 1.0f, 0.0f, 1.0f, 1.0f };
 		sp_float borderWidth = 0.0f;
 		GraphicObject2D* parentObject2D = nullptr;
 		std::vector<GraphicObject2D*> childrenObject2D;
@@ -35,10 +35,10 @@ namespace NAMESPACE_RENDERING
 			parentObject2D = parentObject;
 		}
 
-		API_INTERFACE virtual ColorRGBAf* getColor() {
+		API_INTERFACE virtual ColorRGBA* getColor() {
 			return color;
 		}
-		API_INTERFACE virtual void setColor(ColorRGBAf color) {
+		API_INTERFACE virtual void setColor(ColorRGBA color) {
 			this->color->Red = color.Red;
 			this->color->Green = color.Green;
 			this->color->Blue = color.Blue;
@@ -74,14 +74,14 @@ namespace NAMESPACE_RENDERING
 			this->borderWidth = borderWidth;
 		}
 
-		API_INTERFACE virtual void setBorderColor(ColorRGBAf color)
+		API_INTERFACE virtual void setBorderColor(ColorRGBA color)
 		{
 			borderColor->Red = color.Red;
 			borderColor->Green = color.Green;
 			borderColor->Blue = color.Blue;
 			borderColor->Alpha = color.Alpha;
 		}
-		API_INTERFACE virtual ColorRGBAf* getBorderColor()
+		API_INTERFACE virtual ColorRGBA* getBorderColor()
 		{
 			return borderColor;
 		}

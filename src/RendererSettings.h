@@ -14,7 +14,7 @@ namespace NAMESPACE_RENDERING
 
 		sp_float width = ZERO_FLOAT, height = ZERO_FLOAT;
 		Vec2 rendererPosition = Vec2(ZERO_FLOAT);
-		ColorRGBAc backgroundColor = { 128, 128, 128, 255 }; //gray backgtound color
+		ColorRGBA backgroundColor = { 0.5f, 0.5f, 0.5f, 1.0f }; //gray backgtound color
 
 	public:
 
@@ -45,17 +45,17 @@ namespace NAMESPACE_RENDERING
 		/// <summary>
 		/// Get the default screen backgound color
 		/// </summary>
-		API_INTERFACE ColorRGBAc getBackgroudColor();
+		API_INTERFACE ColorRGBA getBackgroudColor();
 
 		/// <summary>
 		/// Set the default screen backgound color
 		/// </summary>
-		API_INTERFACE void setBackgroudColor(ColorRGBAc color);
+		API_INTERFACE void setBackgroudColor(ColorRGBA color);
 
 		/// <summary>
 		/// Get the color of a screen pixel
 		/// </summary>
-		API_INTERFACE ColorRGBAf getPixelColor(int xPosition, int yPosition);
+		API_INTERFACE ColorRGBA getPixelColor(int xPosition, int yPosition);
 
 	};
 }

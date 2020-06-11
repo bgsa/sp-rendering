@@ -39,7 +39,9 @@ namespace NAMESPACE_RENDERING
 				ShaderAttribute* attr = sp_mem_new(ShaderAttribute)();
 				attr->name = sp_mem_new(SpString)(name);
 				attr->type = type;
-				attr->location = getAttribute(attr->name->data());
+
+				if (std::strcmp(name, "gl_InstanceID") != ZERO_INT) // ignore fake attribute of GLSL
+					attr->location = getAttribute(attr->name->data());
 
 				attributes->add(attr);
 
@@ -229,6 +231,7 @@ namespace NAMESPACE_RENDERING
 		/// </summary>
 		API_INTERFACE inline sp_int getUniform(const sp_char* name)
 		{
+			sp_assert(glGetUniformLocation(program, name) > -1, "InvalidArgumentException");
 			return glGetUniformLocation(program, name);
 		}
 
@@ -237,6 +240,7 @@ namespace NAMESPACE_RENDERING
 		/// </summary>
 		API_INTERFACE inline sp_int getAttribute(const sp_char* name)
 		{
+			sp_assert(glGetAttribLocation(program, name) > -1, "InvalidArgumentException");
 			return glGetAttribLocation(program, name);
 		}
 
@@ -250,10 +254,37 @@ namespace NAMESPACE_RENDERING
 		}
 
 		/// <summary>
+		/// Set the uniform value of shader
+		/// </summary>
+		template <typename T>
+		API_INTERFACE inline OpenGLShader* setUniform2(const GLint id, const T* values)
+		{
+			return this;
+		}
+
+		/// <summary>
+		/// Set the uniform value of shader
+		/// </summary>
+		template <typename T>
+		API_INTERFACE inline OpenGLShader* setUniform3(const GLint id, const T* values)
+		{
+			return this;
+		}
+
+		/// <summary>
+		/// Set the uniform value of shader
+		/// </summary>
+		template <typename T>
+		API_INTERFACE inline OpenGLShader* setUniform4(const GLint id, const T* values)
+		{
+			return this;
+		}
+
+		/// <summary>
 		/// Set the uniform array of shader
 		/// </summary>
 		template <typename T>
-		API_INTERFACE inline OpenGLShader* setUniformArray(const GLint id, const T* listOfT, sp_uint length)
+		API_INTERFACE inline OpenGLShader* setUniformArray(const GLint id, const T* listOfT, sp_size length)
 		{
 			return this;
 		}
@@ -306,13 +337,14 @@ namespace NAMESPACE_RENDERING
 	};
 
 	template <>
-	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniformArray(const GLint id, const Mat4* listOfMat4, sp_uint length)
+	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniformArray(const GLint id, const Mat4* listOfMat4, sp_size length)
 	{
 		glUniformMatrix4fv(id, length, GL_FALSE, (sp_float*)listOfMat4);
 		return this;
 	}
+
 	template <>
-	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniformArray(const GLint id, const sp_float* listOfFloat, sp_uint length)
+	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniformArray(const GLint id, const sp_float* listOfFloat, sp_size length)
 	{
 		glUniform1fv(id, length, listOfFloat);
 		return this;
@@ -377,6 +409,47 @@ namespace NAMESPACE_RENDERING
 		glUniform2fv(id, ONE_INT, value);
 		return this;
 	}
+
+	/// <summary>
+	/// Set the uniform value of shader for a single float value
+	/// </summary>
+	template <>
+	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const sp_float& value)
+	{
+		glUniform1f(id, value);
+		return this;
+	}
+
+	/// <summary>
+	/// Set the uniform value of shader
+	/// </summary>
+	template <>
+	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform2(const GLint id, const sp_float* values)
+	{
+		glUniform3fv(id, ONE_SIZE, values);
+		return this;
+	}
+
+	/// <summary>
+	/// Set the uniform value of shader
+	/// </summary>
+	template <>
+	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform3(const GLint id, const sp_float* values)
+	{
+		glUniform3fv(id, ONE_SIZE, values);
+		return this;
+	}
+
+	/// <summary>
+	/// Set the uniform value of shader
+	/// </summary>
+	template <>
+	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform4(const GLint id, const sp_float* values)
+	{
+		glUniform4fv(id, ONE_SIZE, values);
+		return this;
+	}
+
 }
 
 #endif // OPENGL_SHADER_HEADER

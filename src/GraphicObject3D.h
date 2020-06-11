@@ -17,7 +17,7 @@ namespace NAMESPACE_RENDERING
 	{
 	protected:
 		IGraphicObjectRenderer* renderer = NULL;
-		ColorRGBAf* color = new ColorRGBAf{ 1.0f, 1.0f, 1.0f, 1.0f };
+		ColorRGBA color = ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
 
 	public:
 
@@ -29,16 +29,6 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE virtual void setRenderer(IGraphicObjectRenderer* renderer)
 		{
 			this->renderer = renderer;
-		}
-
-		API_INTERFACE virtual ColorRGBAf* getColor() {
-			return color;
-		}
-		API_INTERFACE virtual void setColor(ColorRGBAf color) {
-			this->color->Red = color.Red;
-			this->color->Green = color.Green;
-			this->color->Blue = color.Blue;
-			this->color->Alpha = color.Alpha;
 		}
 
 		API_INTERFACE GraphicObjectType type() override

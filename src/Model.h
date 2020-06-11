@@ -29,7 +29,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE inline sp_size sizeOfVertexes() const
 		{
-			return vertexes->length() * sizeof(Vec3);
+			return vertexes->length() * VEC3_SIZE;
 		}
 		API_INTERFACE inline sp_size sizeOfFaces() const
 		{
@@ -37,7 +37,7 @@ namespace NAMESPACE_RENDERING
 		}
 		API_INTERFACE inline sp_size sizeOfNormals() const
 		{
-			return normals->length() * sizeof(Vec3);
+			return normals->length() * VEC3_SIZE;
 		}
 		API_INTERFACE inline sp_size sizeOfTextures() const
 		{
@@ -46,20 +46,22 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE virtual void load(const SpString& filename) = 0;
 
-		API_INTERFACE virtual sp_size sizeOfAllBuffers() const
+		API_INTERFACE virtual sp_size allBuffersLength() const
 		{
-			return sizeOfVertexes() + sizeOfNormals() + sizeOfTextures();
+			return vertexes->length() * VEC3_LENGTH
+				+ normals->length() * VEC3_LENGTH
+				+ textureCoordinates->length() * VEC2_LENGTH;
 		}
 
-		API_INTERFACE virtual void allBuffers(sp_char* allocatedBuffer) const
+		API_INTERFACE virtual void allBuffers(sp_float* allocatedBuffer) const
 		{
-			const sp_size sizeVertexes = sizeOfVertexes();
-			const sp_size sizeNormals = sizeOfNormals();
-			const sp_size sizeTextures = sizeOfTextures();
+			const sp_size vertexesLength = vertexes->length() * VEC3_LENGTH;
+			const sp_size normalsLength = normals->length() * VEC3_LENGTH;
+			const sp_size texturesLength = textureCoordinates->length() * VEC2_LENGTH;
 
-			std::memcpy(allocatedBuffer, (sp_char*) vertexes->data(), sizeVertexes);
-			std::memcpy(&allocatedBuffer[sizeVertexes], (sp_char*)normals->data(), sizeNormals);
-			std::memcpy(&allocatedBuffer[sizeVertexes + sizeNormals], (sp_char*)textureCoordinates->data(), sizeTextures);
+			std::memcpy(allocatedBuffer, (sp_float*) vertexes->data(), vertexesLength * SIZEOF_FLOAT);
+			std::memcpy(&allocatedBuffer[vertexesLength], (sp_float*)normals->data(), normalsLength * SIZEOF_FLOAT);
+			std::memcpy(&allocatedBuffer[vertexesLength + normalsLength], (sp_float*)textureCoordinates->data(), texturesLength * SIZEOF_FLOAT);
 		}
 
 		API_INTERFACE virtual void generateNormals()
@@ -69,10 +71,7 @@ namespace NAMESPACE_RENDERING
 				sp_mem_delete(normals, SpArray<Vec3>);
 			}
 
-			normals = sp_mem_new(SpArray<Vec3>)(vertexes->length());
-
-			for (sp_uint i = ZERO_UINT; i < vertexes->length(); i++)
-				normals->data()[i] = Vec3(ZERO_FLOAT);
+			normals = sp_mem_new(SpArray<Vec3>)(vertexes->length(), vertexes->length());
 
 			for (sp_uint i = ZERO_UINT; i < faces->length(); i++)
 			{

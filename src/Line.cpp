@@ -94,7 +94,7 @@ namespace NAMESPACE_RENDERING
 		glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, renderData.projectionMatrix);
 		glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, renderData.viewMatrix);
 		glUniformMatrix4fv(transformMatrixLocation, 1, GL_FALSE, transform.toMat4());
-		glUniform4f(colorLocation, color->Red, color->Green, color->Blue, color->Alpha);
+		glUniform4f(colorLocation, color.Red, color.Green, color.Blue, color.Alpha);
 
 		setUpPositionAttribute();
 

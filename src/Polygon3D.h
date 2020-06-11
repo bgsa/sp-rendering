@@ -37,7 +37,7 @@ namespace NAMESPACE_RENDERING
 		size_t facesSize = 0;
 
 		float borderWidth = 0.0f;
-		ColorRGBAf* borderColor = new ColorRGBAf(0.3f, 0.3f, 0.3f, 1.0f);
+		ColorRGBA* borderColor = new ColorRGBA(0.3f, 0.3f, 0.3f, 1.0f);
 
 		std::string API_INTERFACE getTexture();
 		void API_INTERFACE setTexture(std::string filename);

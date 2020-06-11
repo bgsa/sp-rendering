@@ -73,6 +73,9 @@
     <ClInclude Include="src\SpGraphicObjectManager.h" />
     <ClInclude Include="src\SphereRenderer.h" />
     <ClInclude Include="src\SphereX.h" />
+    <ClInclude Include="src\SpLightManager.h" />
+    <ClInclude Include="src\SpLightSource.h" />
+    <ClInclude Include="src\SpMaterial.h" />
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\SpViewportData.h" />
     <ClInclude Include="src\Square.h" />

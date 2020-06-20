@@ -22,7 +22,7 @@ namespace NAMESPACE_RENDERING
 		Vec3 _direction;
 		Vec3 _right;
 		
-		sp_float fieldOfView;
+		sp_float _fieldOfView;
 		sp_float aspectRatio;
 		sp_float nearFrustum;
 		sp_float farFrustum ;
@@ -30,17 +30,34 @@ namespace NAMESPACE_RENDERING
 		Vec4 nearUpperLeft, nearLowerLeft, nearUpperRight, nearLowerRight;
 		Vec4 farUpperLeft, farLowerLeft, farUpperRright, farLowerRight;
 
+		sp_float _invertY;
+		sp_float _velocity;
+
 		void updateViewMatrix();
 
 	public:
-
-		sp_float invertY;
-		sp_float velocity;
 		
-		API_INTERFACE inline void init(const Vec3& position, const Vec3& target, const Vec3& up = Vec3(ZERO_FLOAT, ONE_FLOAT, ZERO_FLOAT));
+		API_INTERFACE inline void init(const Vec3& position, const Vec3& target, const Vec3& up = Vec3(ZERO_FLOAT, ONE_FLOAT, ZERO_FLOAT), const sp_bool invertY = false);
 		API_INTERFACE inline void initProjectionPerspective(const Vec3& position, const Vec3& target, sp_float aspectRatio);
 
-		API_INTERFACE inline sp_float getFieldOfView() const;
+		API_INTERFACE inline sp_float fieldOfView() const
+		{
+			return _fieldOfView;
+		}
+
+		API_INTERFACE inline sp_float velocity() const
+		{
+			return _velocity;
+		}
+		API_INTERFACE inline void velocity(sp_float newVelocity)
+		{
+			_velocity = newVelocity;
+		}
+
+		API_INTERFACE inline sp_bool isYAxisInverted() const
+		{
+			return _invertY == -ONE_FLOAT;
+		}
 
 		API_INTERFACE virtual void zoom(sp_float scale) = 0;
 		API_INTERFACE virtual void moveForward(sp_float distance) = 0;
@@ -53,8 +70,16 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE virtual void rotateY(sp_float angle) = 0;
 		API_INTERFACE virtual void rotateZ(sp_float angle) = 0;
 
-		API_INTERFACE inline Mat4& getProjectionMatrix() noexcept;
-		API_INTERFACE inline Mat4& getViewMatrix() noexcept;
+		API_INTERFACE inline Mat4& getProjectionMatrix() noexcept
+		{
+			return projectionMatrix;
+		}
+
+		API_INTERFACE inline Mat4& getViewMatrix() noexcept
+		{
+			return viewMatrix;
+		}
+
 		API_INTERFACE inline Mat4 getHUDProjectionMatrix(sp_float width, sp_float height) const;
 
 		API_INTERFACE void setProjectionPerspective(sp_float fieldOfView, sp_float aspect, sp_float near, sp_float far);

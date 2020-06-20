@@ -2,16 +2,16 @@
 
 namespace NAMESPACE_RENDERING
 {
-	void Camera::init(const Vec3& position, const Vec3& target, const Vec3& up)
+	void Camera::init(const Vec3& position, const Vec3& target, const Vec3& up, const sp_bool invertY)
 	{
 		this->position = position;
 		this->target = target;
 		this->_up = up;
 
-		this->invertY = ONE_FLOAT;
-		this->velocity = 0.2f;
+		this->_invertY = invertY ? -ONE_FLOAT : ONE_FLOAT;
+		this->_velocity = 0.2f;
 
-		this->fieldOfView = SP_DEFAULT_FIELD_OF_VIEW;
+		this->_fieldOfView = SP_DEFAULT_FIELD_OF_VIEW;
 		this->nearFrustum = ONE_FLOAT;
 		this->farFrustum = 1000.0f;
 
@@ -43,27 +43,12 @@ namespace NAMESPACE_RENDERING
 	void Camera::updateProjectionPerspectiveAspect(sp_float aspectRatio)
 	{
 		this->aspectRatio = aspectRatio;
-		setProjectionPerspective(fieldOfView, aspectRatio, nearFrustum, farFrustum);
-	}
-
-	sp_float Camera::getFieldOfView() const
-	{
-		return fieldOfView;
-	}
-
-	Mat4& Camera::getProjectionMatrix() noexcept
-	{
-		return projectionMatrix;
-	}
-
-	Mat4& Camera::getViewMatrix() noexcept
-	{
-		return viewMatrix;
+		setProjectionPerspective(_fieldOfView, aspectRatio, nearFrustum, farFrustum);
 	}
 
 	void Camera::setProjectionPerspective(sp_float fieldOfView, sp_float aspectRatio, sp_float near, sp_float far)
 	{
-		this->fieldOfView = fieldOfView;
+		this->_fieldOfView = fieldOfView;
 		this->aspectRatio = aspectRatio;
 		this->nearFrustum = near;
 		this->farFrustum = far;

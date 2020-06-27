@@ -88,11 +88,11 @@ namespace NAMESPACE_RENDERING
 			for (sp_uint i = 0; i < length; i++)
 			{
 				bvs[i].scale({ 2.8f, 3.0f, 3.0f });
-				bvs[i].translate({ 0.2f, 1.1f, 1.3f });
-				bvs[i].min[DOP18_AXIS_LEFT_DEPTH] += 1.0f;
-				bvs[i].max[DOP18_AXIS_LEFT_DEPTH] -= 1.0f;
+				bvs[i].translate({ 0.0f, 1.1f, 1.3f });
+				bvs[i].min[DOP18_AXIS_UP_DEPTH] += 1.0f;
+				bvs[i].max[DOP18_AXIS_UP_DEPTH] -= 1.0f;
 				
-				physic[i].position({ 0.2f, 1.0f, 1.3f });
+				physic[i].position({ 0.0f, 1.0f, 0.0f });
 				physic[i].mass(8.0f);
 			}
 		}

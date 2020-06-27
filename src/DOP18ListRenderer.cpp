@@ -19,11 +19,7 @@ namespace NAMESPACE_RENDERING
 		plane1.intersection(plane2, &line);
 
 		Vec3 point;
-		line.intersectionOnRay(plane3, &point);
-
-		points[pointIndex].x = point.x;
-		points[pointIndex].y = point.y;
-		points[pointIndex].z = point.z;
+		line.intersectionOnRay(plane3, &points[pointIndex]);
 		pointIndex++;
 	}
 
@@ -34,20 +30,10 @@ namespace NAMESPACE_RENDERING
 		Line3D line;
 		plane1.intersection(plane2, &line);
 
-		Vec3 point1;
-		line.intersectionOnRay(plane3, &point1);
-		
-		Vec3 point2;
-		line.intersectionOnRay(plane4, &point2);
-
-		points[pointIndex].x = point1.x;
-		points[pointIndex].y = point1.y;
-		points[pointIndex].z = point1.z;
+		line.intersectionOnRay(plane3, &points[pointIndex]);
 		pointIndex++;
-
-		points[pointIndex].x = point2.x;
-		points[pointIndex].y = point2.y;
-		points[pointIndex].z = point2.z;
+		
+		line.intersectionOnRay(plane4, &points[pointIndex]);
 		pointIndex++;
 	}
 

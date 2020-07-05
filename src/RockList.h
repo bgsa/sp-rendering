@@ -27,6 +27,8 @@ namespace NAMESPACE_RENDERING
 		sp_int lightColorLocation;
 		sp_int shininessFactorLocation;
 
+		Vec3 modelInitialPosition;
+
 		RockList* translate(const Vec3& translation) override { return nullptr; }
 		RockList* scale(const Vec3& scaleVector) override { return nullptr;  }
 		
@@ -72,6 +74,24 @@ namespace NAMESPACE_RENDERING
 			initVertexBuffer(&model);
 			initIndexBuffer(&model);
 			initTransformBuffer();
+
+			for (sp_uint i = 0; i < _length; i++)
+				physicProperties(i)->buildInertialTensor(model.vertexes->data(), model.vertexes->length());
+		}
+		
+		void initObject(sp_uint index)
+		{
+			SpPhysicProperties* physic = physicProperties(0u);
+			DOP18* bvs = (DOP18*)boundingVolumes(0u);
+
+			modelInitialPosition = Vec3(0.0f, 1.1f, 1.3f);
+
+			physic[index].position(modelInitialPosition);
+			physic[index].mass(8.0f);
+
+			bvs[index].scale({ 2.8f, 3.0f, 3.0f });
+			bvs[index].min[DOP18_AXIS_UP_DEPTH] += 1.0f;
+			bvs[index].max[DOP18_AXIS_UP_DEPTH] -= 1.0f;
 		}
 
 	public:
@@ -81,20 +101,8 @@ namespace NAMESPACE_RENDERING
 		{
 			GraphicObject3DList::setLength(length);
 
-			SpPhysicProperties* physic = physicProperties(0u);
-
-			DOP18* bvs = (DOP18*) boundingVolumes(0u);
-
 			for (sp_uint i = 0; i < length; i++)
-			{
-				bvs[i].scale({ 2.8f, 3.0f, 3.0f });
-				bvs[i].translate({ 0.0f, 1.1f, 1.3f });
-				bvs[i].min[DOP18_AXIS_UP_DEPTH] += 1.0f;
-				bvs[i].max[DOP18_AXIS_UP_DEPTH] -= 1.0f;
-				
-				physic[i].position({ 0.0f, 1.0f, 0.0f });
-				physic[i].mass(8.0f);
-			}
+				initObject(i);
 		}
 
 		API_INTERFACE inline sp_uint length() const override { return _length; }
@@ -104,6 +112,14 @@ namespace NAMESPACE_RENDERING
 			GraphicObject3DList::transforms(index)->translate(translation);
 			boundingVolumes(index)->translate(translation);
 			physicProperties(index)->position(translation);
+		}
+
+		API_INTERFACE inline void rotate(const sp_uint index, const Quat& rotation)
+		{
+			Quat newOrientation = GraphicObject3DList::transforms(index)->orientation * rotation;
+
+			GraphicObject3DList::transforms(index)->orientation = newOrientation;
+			physicProperties(index)->orientation(newOrientation);
 		}
 
 		API_INTERFACE inline void scale(const sp_uint index, const Vec3& factors) override
@@ -154,7 +170,7 @@ namespace NAMESPACE_RENDERING
 			Mat4* transformsAsMat4 = ALLOC_NEW_ARRAY(Mat4, MAT4_LENGTH * _length);
 			SpTransform* transforms = GraphicObject3DList::transforms(0u);
 			for (sp_uint i = 0; i < _length; i++)
-				std::memcpy(&transformsAsMat4[i], transforms[i].toMat4(), MAT4_SIZE);
+				std::memcpy(&transformsAsMat4[i], transforms[i].toMat4(modelInitialPosition), MAT4_SIZE);
 			_transformsBuffer->use()->setData(MAT4_SIZE * _length, transformsAsMat4, GL_DYNAMIC_DRAW);
 			ALLOC_RELEASE(transformsAsMat4);
 

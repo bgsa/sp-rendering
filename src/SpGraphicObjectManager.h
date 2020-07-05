@@ -59,9 +59,10 @@ namespace NAMESPACE_RENDERING
 			return index;
 		}
 
-		API_INTERFACE void sync(const sp_uint objectIndex, const Vec3& translation) override
+		API_INTERFACE void sync(const sp_uint objectIndex, const Vec3& translation, const Quat& orientation) override
 		{
 			_transforms->data()[objectIndex].translate(translation);
+			_transforms->data()[objectIndex].orientation = orientation;
 		}
 
 	};

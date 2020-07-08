@@ -10,6 +10,7 @@
 #include "OpenGLShader.h"
 #include "SpPhysicObjectList.h"
 #include "SpLightManager.h"
+#include "SpInertiaTensor.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -75,8 +76,10 @@ namespace NAMESPACE_RENDERING
 			initIndexBuffer(&model);
 			initTransformBuffer();
 
+			const Mat3 tensor = SpInertiaTensor::sphere(2.0f, 1.0f / physicProperties(0u)->massInverse());
+
 			for (sp_uint i = 0; i < _length; i++)
-				physicProperties(i)->buildInertialTensor(model.vertexes->data(), model.vertexes->length());
+				physicProperties(i)->inertialTensor(tensor);
 		}
 		
 		void initObject(sp_uint index)

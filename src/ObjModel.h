@@ -47,7 +47,7 @@ namespace NAMESPACE_RENDERING
 			sp_assert(filename.length() != ZERO_UINT, "InvalidArgumentException");
 
 			SP_FILE file;
-			file.open(filename, std::ios_base::in);
+			file.open(filename, std::ios_base::in | std::ios_base::binary);
 			const sp_size fileSize = file.length();
 			sp_char* content = ALLOC_ARRAY(sp_char, fileSize);
 			file.read(content, fileSize);

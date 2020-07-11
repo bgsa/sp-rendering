@@ -37,6 +37,13 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE GraphicObject()
 		{
 			_boundingVolumeRenderer = nullptr;
+
+			projectionMatrixLocation = -1;
+			viewMatrixLocation = -1;
+			transformMatrixLocation = -1;
+
+			positionAttribute = -1;
+			colorLocation = -1;
 		}
 
 		API_INTERFACE BoundingVolumeRenderer* boundingVolumeRenderer()

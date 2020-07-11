@@ -19,6 +19,9 @@ namespace NAMESPACE_RENDERING
 
 		SpGraphicObjectManager()
 		{
+			_allocatedObjects = ZERO_UINT;
+			_maxLength = ZERO_UINT;
+			_transforms = nullptr;
 		}
 
 	public:

@@ -53,7 +53,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE inline sp_uint alloc(const sp_uint length)
 		{
-			sp_assert(length + _allocatedObjects < _maxLength, "InvalidArgumentException");
+			sp_assert(length + _allocatedObjects <= _maxLength, "InvalidArgumentException");
 
 			sp_uint index = _allocatedObjects;
 

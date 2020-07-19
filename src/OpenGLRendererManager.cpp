@@ -98,8 +98,6 @@ namespace NAMESPACE_RENDERING
 			sp_mem_delete(_camera, Camera);
 			_camera = nullptr;
 		}
-
-		dop18Renderer.dispose();
 	}
 }
 

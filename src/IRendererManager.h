@@ -24,8 +24,8 @@ namespace NAMESPACE_RENDERING
 		SpVector<GraphicObject*> graphicObjects2D;
 		SpVector<GraphicObject*> graphicObjects3D;
 
-		DOP18Renderer dop18Renderer;
-		DOP18ListRenderer dop18ListRenderer;
+		//DOP18Renderer dop18Renderer;
+		//DOP18ListRenderer dop18ListRenderer;
 		
 		virtual void render3D(const RenderData& renderData)
 		{
@@ -39,9 +39,12 @@ namespace NAMESPACE_RENDERING
 					dop18Renderer.render(renderData, physicObject->boundingVolume());
 				*/
 
-				SpPhysicObjectList* physicObjectList = dynamic_cast<SpPhysicObjectList*>(item->value());
+				//SpPhysicObjectList* physicObjectList = dynamic_castdate<SpPhysicObjectList*>(item->value());
+
+				/*
 				if (physicObjectList != nullptr)
 					dop18ListRenderer.render(renderData, (DOP18*) physicObjectList->boundingVolumes(0u), physicObjectList->length());
+				*/
 			}
 		}
 
@@ -70,8 +73,8 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE virtual void init(Camera* camera)
 		{
-			dop18Renderer.init();
-			dop18ListRenderer.init();
+			//dop18Renderer.init();
+			//dop18ListRenderer.init();
 		}
 
 		API_INTERFACE virtual void preRender() = 0;

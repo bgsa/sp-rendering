@@ -70,6 +70,7 @@
     <ClInclude Include="src\ShaderAttribute.h" />
     <ClInclude Include="src\ShaderUniform.h" />
     <ClInclude Include="src\SpectrumRendering.h" />
+    <ClInclude Include="src\SpGpuRenderingFactoryOpenGL.h" />
     <ClInclude Include="src\SpGraphicObjectManager.h" />
     <ClInclude Include="src\SphereRenderer.h" />
     <ClInclude Include="src\SphereX.h" />

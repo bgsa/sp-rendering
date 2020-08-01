@@ -17,35 +17,16 @@ namespace NAMESPACE_RENDERING
 	{
 	protected:
 		IGraphicObjectRenderer* renderer;
-		sp_uint _transformIndex;
-		OpenGLTextureBuffer* _transformsBuffer;
 		OpenGLBuffer* _indexesBuffer;
 		OpenGLBuffer* _buffer;
-
-		sp_uint _length;
 
 	public:
 		
 		API_INTERFACE GraphicObject3DList()
 		{
 			renderer = nullptr;
-			_transformIndex = ZERO_UINT;
-		}
-
-		API_INTERFACE sp_uint length()
-		{
-			return _length;
-		}
-
-		API_INTERFACE virtual void setLength(sp_uint length)
-		{
-			_transformIndex = SpGraphicObjectManager::instance()->alloc(length);
-			_length = length;
-		}
-
-		API_INTERFACE inline SpTransform* transforms(const sp_uint index = ZERO_UINT) const
-		{
-			return SpGraphicObjectManager::instance()->transforms(_transformIndex + index);
+			_indexesBuffer = nullptr;
+			_buffer = nullptr;
 		}
 
 		API_INTERFACE virtual OpenGLBuffer* indexesBuffer()
@@ -61,11 +42,6 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE virtual void translate(const sp_uint index, const Vec3& translation) = 0;
 
 		API_INTERFACE virtual void scale(const sp_uint index, const Vec3& factors) = 0;
-
-		API_INTERFACE virtual OpenGLTextureBuffer* transformsBuffer()
-		{
-			return _transformsBuffer;
-		}
 
 		API_INTERFACE void setRenderer(IGraphicObjectRenderer* renderer)
 		{

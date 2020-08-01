@@ -306,7 +306,8 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE inline void disableAttributes()
 		{
 			for (sp_uint i = 0; i < attributes->length(); i++)
-				glDisableVertexAttribArray(attributes->data()[i]->location);
+				if (attributes->data()[i]->type != 5124)
+					glDisableVertexAttribArray(attributes->data()[i]->location);
 		}
 
 		/// <summary>
@@ -417,6 +418,36 @@ namespace NAMESPACE_RENDERING
 	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const sp_float& value)
 	{
 		glUniform1f(id, value);
+		return this;
+	}
+
+	/// <summary>
+	/// Set the uniform value of shader for a single double value
+	/// </summary>
+	template <>
+	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const sp_double& value)
+	{
+		glUniform1d(id, value);
+		return this;
+	}
+
+	/// <summary>
+	/// Set the uniform value of shader for a single unsigned int value
+	/// </summary>
+	template <>
+	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const sp_uint& value)
+	{
+		glUniform1ui(id, value);
+		return this;
+	}
+
+	/// <summary>
+	/// Set the uniform value of shader for a single int value
+	/// </summary>
+	template <>
+	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const sp_int& value)
+	{
+		glUniform1i(id, value);
 		return this;
 	}
 

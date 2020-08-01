@@ -27,33 +27,14 @@ namespace NAMESPACE_RENDERING
 		sp_int lightPositionLocation;
 		sp_int lightColorLocation;
 		sp_int shininessFactorLocation;
+		sp_int transformOffsetLocation;
 
 		Vec3 modelInitialPosition;
 
-		RockList* translate(const Vec3& translation) override { return nullptr; }
-		RockList* scale(const Vec3& scaleVector) override { return nullptr;  }
-		
 		void initIndexBuffer(const ObjModel* model)
 		{
 			facesLength = model->faces->length();
 			_indexesBuffer = sp_mem_new(OpenGLBuffer)(facesLength * 3 * SIZEOF_UINT, model->faces->data(), GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
-		}
-
-		void initTransformBuffer()
-		{
-			_transformsBuffer = sp_mem_new(OpenGLTextureBuffer)();
-
-			Mat4* transformsAsMat4 = ALLOC_NEW_ARRAY(Mat4, MAT4_LENGTH * _length);
-			SpTransform* transforms = GraphicObject3DList::transforms(0u);
-
-			for (sp_uint i = 0; i < _length; i++)
-				std::memcpy(&transformsAsMat4[i], transforms[i].toMat4(), MAT4_SIZE);
-
-			_transformsBuffer
-				->use()
-				->setData(MAT4_SIZE * _length, transformsAsMat4, GL_DYNAMIC_DRAW);
-
-			ALLOC_RELEASE(transformsAsMat4);
 		}
 
 		void initVertexBuffer(const ObjModel* model)
@@ -74,11 +55,10 @@ namespace NAMESPACE_RENDERING
 
 			initVertexBuffer(&model);
 			initIndexBuffer(&model);
-			initTransformBuffer();
 
 			const Mat3 tensor = SpInertiaTensor::sphere(2.0f, 1.0f / physicProperties(0u)->massInverse());
 
-			for (sp_uint i = 0; i < _length; i++)
+			for (sp_uint i = 0; i < length(); i++)
 				physicProperties(i)->inertialTensor(tensor);
 		}
 		
@@ -102,32 +82,30 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE RockList(const sp_uint length)
 			: SpPhysicObjectList::SpPhysicObjectList(length)
 		{
-			GraphicObject3DList::setLength(length);
+			shader = nullptr;
 
 			for (sp_uint i = 0; i < length; i++)
 				initObject(i);
 		}
 
-		API_INTERFACE inline sp_uint length() const override { return _length; }
-
 		API_INTERFACE inline void translate(const sp_uint index, const Vec3& translation) override
 		{
-			GraphicObject3DList::transforms(index)->translate(translation);
+			transforms(index)->translate(translation);
 			boundingVolumes(index)->translate(translation);
 			physicProperties(index)->position(translation);
 		}
 
 		API_INTERFACE inline void rotate(const sp_uint index, const Quat& rotation)
 		{
-			Quat newOrientation = GraphicObject3DList::transforms(index)->orientation * rotation;
+			Quat newOrientation = transforms(index)->orientation * rotation;
 
-			GraphicObject3DList::transforms(index)->orientation = newOrientation;
+			transforms(index)->orientation = newOrientation;
 			physicProperties(index)->orientation(newOrientation);
 		}
 
 		API_INTERFACE inline void scale(const sp_uint index, const Vec3& factors) override
 		{
-			GraphicObject3DList::transforms(index)->scale(factors);
+			transforms(index)->scale(factors);
 			boundingVolumes(index)->scale(factors);
 		}
 
@@ -143,8 +121,8 @@ namespace NAMESPACE_RENDERING
 
 			projectionMatrixLocation = shader->getUniform("projectionMatrix");
 			viewMatrixLocation = shader->getUniform("viewMatrix");
-			transformMatrixLocation = shader->getUniform("transformMatrix");
-
+			transformOffsetLocation = shader->getUniform("transformOffset");
+			
 			lightColorLocation = shader->getUniform("LightColor");
 			lightPositionLocation = shader->getUniform("LightPosition");
 			shininessFactorLocation = shader->getUniform("ShininessFactor");
@@ -161,7 +139,8 @@ namespace NAMESPACE_RENDERING
 				->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix)
 				->setUniform3<sp_float>(lightPositionLocation, SpLightManager::instance()->lights()->position())
 				->setUniform3<sp_float>(lightColorLocation, SpLightManager::instance()->lights()->color())
-				->setUniform<sp_float>(shininessFactorLocation, 1000.0f);
+				->setUniform<sp_float>(shininessFactorLocation, 1000.0f)
+				->setUniform<sp_uint>(transformOffsetLocation, physicIndex);
 
 			_buffer->use();
 			glVertexAttribPointer(positionAttribute, 3, GL_FLOAT, GL_FALSE, 0, 0);
@@ -169,20 +148,11 @@ namespace NAMESPACE_RENDERING
 			glVertexAttribPointer(normalAttribute, 3, GL_FLOAT, GL_FALSE, 0, (void*)(vertexesLength * VEC3_LENGTH * SIZEOF_FLOAT));
 			glEnableVertexAttribArray(normalAttribute);
 
-			// update transfom matrixes data on GPU
-			Mat4* transformsAsMat4 = ALLOC_NEW_ARRAY(Mat4, MAT4_LENGTH * _length);
-			SpTransform* transforms = GraphicObject3DList::transforms(0u);
-			for (sp_uint i = 0; i < _length; i++)
-				std::memcpy(&transformsAsMat4[i], transforms[i].toMat4(modelInitialPosition), MAT4_SIZE);
-			_transformsBuffer->use()->setData(MAT4_SIZE * _length, transformsAsMat4, GL_DYNAMIC_DRAW);
-			ALLOC_RELEASE(transformsAsMat4);
-
-			_transformsBuffer->use();
-			
+			SpPhysicSimulator::instance()->transformsGPU()->use();
 			_indexesBuffer->use();
-
-			glDrawElementsInstanced(GL_TRIANGLES, facesLength * THREE_SIZE, GL_UNSIGNED_INT, NULL, _length);
-
+			
+			glDrawElementsInstanced(GL_TRIANGLES, facesLength * THREE_SIZE, GL_UNSIGNED_INT, NULL, length());
+			
 			shader->disable();
 
 			glBindVertexArray(NULL);

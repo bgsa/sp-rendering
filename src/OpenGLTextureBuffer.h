@@ -4,49 +4,42 @@
 #define OPENGL_TEXTURE_BUFFER_HEADER
 
 #include "SpectrumRendering.h"
+#include "SpGpuTextureBuffer.h"
 
 namespace NAMESPACE_RENDERING
 {
 	class OpenGLTextureBuffer
-		: Object
+		: public SpGpuTextureBuffer
 	{
-	private:
-		GLuint textureId = ZERO_UINT;
-		GLuint dataBuffer = ZERO_UINT;
-
 	public:
 
 		API_INTERFACE OpenGLTextureBuffer()
 		{
-			glGenTextures(1, &textureId);
-			glGenBuffers(1, &dataBuffer);
+			glGenTextures(1, &_textureId);
+			glGenBuffers(1, &_bufferId);
 		}
 
-		API_INTERFACE inline void setData(const sp_size size, const void* buffer, sp_uint usage = GL_DYNAMIC_DRAW)
+		API_INTERFACE inline void updateData(const sp_size size, const void* buffer, sp_uint usage = GL_DYNAMIC_DRAW) override
 		{
-			glBindBuffer(GL_TEXTURE_BUFFER, dataBuffer);
+			glBindBuffer(GL_TEXTURE_BUFFER, _bufferId);
 			glBufferData(GL_TEXTURE_BUFFER, size, buffer, usage);
-			glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, dataBuffer);
+			glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, _bufferId);
 		}
 
-		API_INTERFACE inline OpenGLTextureBuffer* use()
+		API_INTERFACE inline OpenGLTextureBuffer* use() override
 		{
-			glBindBuffer(GL_TEXTURE_BUFFER, dataBuffer);
+			glBindBuffer(GL_TEXTURE_BUFFER, _bufferId);
 
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_BUFFER, textureId);
+			glBindTexture(GL_TEXTURE_BUFFER, _textureId);
 
 			return this;
 		}
 
-		API_INTERFACE inline sp_uint getTextureId()
+		API_INTERFACE virtual void disable() override
 		{
-			return textureId;
-		}
-
-		API_INTERFACE inline sp_uint getBufferId()
-		{
-			return dataBuffer;
+			glBindBuffer(GL_TEXTURE_BUFFER, NULL);
+			glBindTexture(GL_TEXTURE_BUFFER, NULL);
 		}
 
 		API_INTERFACE const sp_char* toString() override
@@ -56,16 +49,16 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE void dispose() override
 		{
-			if (textureId != ZERO_UINT)
+			if (_textureId != ZERO_UINT)
 			{
-				glDeleteTextures(ONE_SIZE, &textureId);
-				textureId = ZERO_UINT;
+				glDeleteTextures(ONE_SIZE, &_textureId);
+				_textureId = ZERO_UINT;
 			}
 
-			if (dataBuffer != ZERO_UINT)
+			if (_bufferId != ZERO_UINT)
 			{
-				glDeleteBuffers(ONE_SIZE, &dataBuffer);
-				dataBuffer = ZERO_UINT;
+				glDeleteBuffers(ONE_SIZE, &_bufferId);
+				_bufferId = ZERO_UINT;
 			}
 		}
 

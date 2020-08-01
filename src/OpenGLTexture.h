@@ -10,31 +10,57 @@
 namespace NAMESPACE_RENDERING
 {
 	class OpenGLTexture
-		: Object
+		: public Object
 	{
 	private:
-		GLuint textureId = ZERO_UINT;
-		SpSize<sp_int> size;
+		sp_uint _id;
+		sp_uint _length;
+		SpSize<sp_int> _size;
 
 	public:
 
 		API_INTERFACE OpenGLTexture()
 		{
+			_id = ZERO_UINT;
+			_length = ZERO_UINT;
 		}
 
-		API_INTERFACE inline OpenGLTexture* init()
+		API_INTERFACE inline sp_uint id() const
 		{
-			glGenTextures(1, &textureId);
+			return _id;
+		}
+
+		API_INTERFACE inline SpSize<sp_int> size() const
+		{
+			return _size;
+		}
+
+		API_INTERFACE inline OpenGLTexture* init(const sp_uint length, const SpSize<sp_int>& size)
+		{
+			_length = length;
+			_size = size;
+			glGenTextures(length, &_id);
 			return this;
 		}
 
 		API_INTERFACE inline OpenGLTexture* use()
 		{
-			glBindTexture(GL_TEXTURE_2D, textureId);
+			glBindTexture(GL_TEXTURE_2D, _id);
 			return this;
 		}
 
-		API_INTERFACE inline OpenGLTexture* setProperty(GLenum name, GLint value)
+		API_INTERFACE inline OpenGLTexture* resize(const SpSize<sp_int>& size)
+		{
+			_size = size;
+			return this;
+		}
+
+		API_INTERFACE inline void disable()
+		{
+			glBindTexture(GL_TEXTURE_2D, NULL);
+		}
+
+		API_INTERFACE inline OpenGLTexture* property(sp_int name, sp_int value)
 		{
 			glTexParameteri(GL_TEXTURE_2D, name, value);
 			return this;
@@ -45,33 +71,32 @@ namespace NAMESPACE_RENDERING
 			GLint viewport[4];
 			glGetIntegerv(GL_VIEWPORT, viewport);
 
-			sp_uchar* data = Framebuffer::getFramebuffer(framebuffer);
+			sp_uchar* data = ALLOC_ARRAY(sp_uchar, FOUR_UINT * viewport[2] * viewport[3]);
+
+			Framebuffer::getFramebuffer(data, framebuffer);
 
 			OpenGLTexture* texture = sp_mem_new(OpenGLTexture)();
-			texture->use()
-				->setProperty(GL_TEXTURE_MIN_FILTER, GL_LINEAR)
-				->setProperty(GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-				->setData(data, SpSize<sp_int>(viewport[2], viewport[3]), GL_RGBA);
+			texture
+				->init(1u, SpSize<sp_int>(viewport[2], viewport[3]))
+				->use()
+				->property(GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+				->property(GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+				->updateData(data, GL_RGBA);
 			
-			sp_mem_release(data);
+			ALLOC_RELEASE(data);
 			return texture;
 		}
 
-		API_INTERFACE inline void setData(const sp_uchar* data, const SpSize<sp_int>& size, GLint colorFormat)
+		API_INTERFACE inline void updateData(const sp_uchar* data, const sp_int colorFormat)
 		{
-			this->size = size;
 			glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-			glTexImage2D(GL_TEXTURE_2D, 0, colorFormat, size.width, size.height, 0, colorFormat, GL_UNSIGNED_BYTE, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, colorFormat, _size.width, _size.height, 0, colorFormat, GL_UNSIGNED_BYTE, data);
 		}
 
-		API_INTERFACE inline void resize(const SpSize<sp_int>& size)
+		API_INTERFACE inline void readData(sp_uchar* data, sp_int outputFormat = GL_RGBA)
 		{
-			this->size = size;
-		}
-
-		API_INTERFACE inline sp_uint getId()
-		{
-			return textureId;
+			use();
+			glGetTexImage(GL_TEXTURE_2D, 0, outputFormat, GL_UNSIGNED_BYTE, data);
 		}
 
 		API_INTERFACE const sp_char* toString() override
@@ -81,10 +106,10 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE void dispose() override
 		{
-			if (textureId != ZERO_UINT)
+			if (_id != ZERO_UINT)
 			{
-				glDeleteTextures(ONE_SIZE, &textureId);
-				textureId = ZERO_UINT;
+				glDeleteTextures(_length, &_id);
+				_id = ZERO_UINT;
 			}
 		}
 

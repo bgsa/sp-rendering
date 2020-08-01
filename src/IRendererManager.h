@@ -12,6 +12,7 @@
 #include "SpPhysicObjectList.h"
 #include "DOP18Renderer.h"
 #include "DOP18ListRenderer.h"
+#include "LogGL.hpp"
 
 namespace NAMESPACE_RENDERING
 {
@@ -45,6 +46,8 @@ namespace NAMESPACE_RENDERING
 				if (physicObjectList != nullptr)
 					dop18ListRenderer.render(renderData, (DOP18*) physicObjectList->boundingVolumes(0u), physicObjectList->length());
 				*/
+
+				LogGL::glErrors(__FILE__, __LINE__);
 			}
 		}
 

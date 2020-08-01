@@ -2,16 +2,13 @@
 #define OPENGL_BUFFER_HEADER
 
 #include "SpectrumRendering.h"
+#include "SpGpuBuffer.h"
 
 namespace NAMESPACE_RENDERING
 {
 	class OpenGLBuffer
-		: public Object
+		: public SpGpuBuffer
 	{
-	private:
-		GLuint bufferId;
-		GLenum type = GL_ARRAY_BUFFER;
-
 	public:
 
 		/// <summary>
@@ -19,8 +16,8 @@ namespace NAMESPACE_RENDERING
 		/// </summary>
 		API_INTERFACE inline OpenGLBuffer(GLenum bufferType = GL_ARRAY_BUFFER)
 		{
-			type = bufferType;
-			glGenBuffers(ONE_INT, &bufferId);
+			_type = bufferType;
+			glGenBuffers(ONE_INT, &_id);
 		}
 
 		/// <summary>
@@ -28,35 +25,26 @@ namespace NAMESPACE_RENDERING
 		/// </summary>
 		API_INTERFACE inline OpenGLBuffer(sp_size size, const void* data, GLenum bufferType = GL_ARRAY_BUFFER, GLenum usageType = GL_STATIC_DRAW)
 		{
-			type = bufferType;
-			glGenBuffers(ONE_INT, &bufferId);
-			glBindBuffer(type, bufferId);
-			glBufferData(type, size, data, usageType);
+			_type = bufferType;
+			glGenBuffers(ONE_INT, &_id);
+			glBindBuffer(_type, _id);
+			glBufferData(_type, size, data, usageType);
 		}
 
-		/// <summary>
-		/// Set the type og buffer: GL_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER, GL_TEXTURE_COORD_ARRAY_BUFFER_BINDING
-		/// </summary>
-		API_INTERFACE inline OpenGLBuffer* setType(GLenum bufferType = GL_ARRAY_BUFFER)
+		API_INTERFACE inline OpenGLBuffer* use() override
 		{
-			type = bufferType;
+			glBindBuffer(_type, _id);
 			return this;
 		}
 
-		API_INTERFACE inline OpenGLBuffer* use()
+		API_INTERFACE inline void disable() override
 		{
-			glBindBuffer(type, bufferId);
-			return this;
+			glBindBuffer(_type, NULL);
 		}
 
-		API_INTERFACE inline void disable()
+		API_INTERFACE inline OpenGLBuffer* updateData(sp_size size, void* data, sp_int usageType = GL_STATIC_DRAW) override
 		{
-			glBindBuffer(type, NULL);
-		}
-
-		API_INTERFACE inline OpenGLBuffer* setData(sp_size size, void* data, GLenum usageType = GL_STATIC_DRAW)
-		{
-			glBufferData(type, size, data, usageType);
+			glBufferData(_type, size, data, usageType);
 			return this;
 		}
 
@@ -67,12 +55,12 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE inline void dispose() override
 		{
-			glDeleteBuffers(ONE_INT, &bufferId);
+			glDeleteBuffers(ONE_INT, &_id);
 		}
 
 		API_INTERFACE ~OpenGLBuffer()
 		{
-			glDeleteBuffers(ONE_INT, &bufferId);
+			dispose();
 		}
 
 	};

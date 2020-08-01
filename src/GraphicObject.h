@@ -29,7 +29,6 @@ namespace NAMESPACE_RENDERING
 		sp_int positionAttribute = -1;
 		sp_int colorLocation = -1;
 
-		SpTransform transform;
 		BoundingVolumeRenderer* _boundingVolumeRenderer;
 
 	public:
@@ -59,23 +58,6 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE virtual void init() = 0;
 
 		API_INTERFACE virtual void render(const RenderData& renderData) = 0;
-
-		API_INTERFACE inline virtual GraphicObject* translate(const Vec3& translation)
-		{
-			transform.translate(translation);
-			return this;
-		}
-
-		API_INTERFACE inline Mat4 transformation() const
-		{
-			return transform.toMat4();
-		}
-
-		API_INTERFACE inline virtual GraphicObject* scale(const Vec3& scaleVector)
-		{
-			transform.scale(scaleVector);
-			return this;
-		}
 
 		API_INTERFACE virtual GraphicObjectType type() = 0;
 

@@ -145,7 +145,7 @@ namespace NAMESPACE_RENDERING
 			
 		_buffer
 			->use()
-			->setData(DOP18_INDEXES_LENGTH * VEC3_SIZE * length, lines, GL_DYNAMIC_DRAW);
+			->updateData(DOP18_INDEXES_LENGTH * VEC3_SIZE * length, lines, GL_DYNAMIC_DRAW);
 
 		ALLOC_RELEASE(points);
 

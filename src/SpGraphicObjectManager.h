@@ -7,9 +7,10 @@
 #include "SpArray.h"
 #include "SpTransform.h"
 
+/*
 namespace NAMESPACE_RENDERING
 {
-	class SpGraphicObjectManager :
+	class xxx :
 		public SpPhysicSyncronizer
 	{
 	private:
@@ -17,7 +18,7 @@ namespace NAMESPACE_RENDERING
 		sp_uint _maxLength;
 		SpArray<SpTransform>* _transforms;
 
-		SpGraphicObjectManager()
+		xxx()
 		{
 			_allocatedObjects = ZERO_UINT;
 			_maxLength = ZERO_UINT;
@@ -70,5 +71,7 @@ namespace NAMESPACE_RENDERING
 
 	};
 }
+
+*/
 
 #endif SP_GRAPHIC_OBJECT_MANAGER_HEADER

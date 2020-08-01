@@ -177,7 +177,7 @@ namespace NAMESPACE_RENDERING
 			updatePoints(dop, points, ZERO_SIZE);
 			vertexBuffer
 				->use()
-				->setData(INDEXES_COUNT_PER_18DOP * SIZEOF_FLOAT, points, GL_DYNAMIC_DRAW);
+				->updateData(INDEXES_COUNT_PER_18DOP * SIZEOF_FLOAT, points, GL_DYNAMIC_DRAW);
 			
 			glVertexAttribPointer(positionAttribute, 3, GL_FLOAT, GL_FALSE, 0, 0);
 

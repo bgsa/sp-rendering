@@ -162,10 +162,11 @@ namespace NAMESPACE_RENDERING
 		sp_float* modelMatrixes = ALLOC_ARRAY(sp_float, cubesCount * MAT4_LENGTH);
 		for (sp_uint index = 0; index < cubesCount; index++)
 		{
-			Mat4 model = cubes[index].transformation();
+			/* Mat4 model = cubes[index].transformation(); // TODO: ENABLE !!!!
 
 			for (sp_uint i = 0; i < MAT4_LENGTH; i++)
 				modelMatrixes[(index * MAT4_LENGTH) + i] = model[i];
+			*/
 		}
 		// TODO: update above (slow copy one by one)
 

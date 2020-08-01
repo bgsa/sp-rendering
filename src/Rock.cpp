@@ -12,8 +12,8 @@ namespace NAMESPACE_RENDERING
 		shader
 			->enableAttributes()
 			->setUniform<Mat4>(projectionMatrixLocation, renderData.projectionMatrix)
-			->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix)
-			->setUniform<Mat4>(transformMatrixLocation, transform.toMat4());
+			->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix);
+			//->setUniform<Mat4>(transformMatrixLocation, transform.toMat4()); // TODO: ENABLE !!!
 
 		glVertexAttribPointer(positionAttribute,
 			3,
@@ -73,35 +73,16 @@ namespace NAMESPACE_RENDERING
 
 		texture = sp_mem_new(OpenGLTexture)();
 		ImageBMP* image = ImageBMP::load("resources\\models\\FreeRock\\FreeRock.bmp");
-		texture->init()
+		texture->init(1u, SpSize<sp_int>(image->width(), image->height()))
 			->use()
-			->setProperty(GL_TEXTURE_MIN_FILTER, GL_LINEAR)
-			->setProperty(GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-			->setData(image->data(), SpSize<sp_int>(image->width(), image->height()), image->getColorFormat());
+			->property(GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+			->property(GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+			->updateData(image->data(), image->getColorFormat());
 		sp_mem_delete(image, ImageBMP);
 		
-		GraphicObject3D::scale(0.5f);
 		_boundingVolume = sp_mem_new(DOP18)();
 		_boundingVolume->scale({ 2.0f, 1.5f, 1.5f });
 		_boundingVolume->translate(0.2f, 0.6f, 0.6f);
-	}
-
-	Rock* Rock::translate(const Vec3& translation)
-	{
-		GraphicObject3D::translate(translation);
-
-		boundingVolume()->translate(translation);
-
-		return this;
-	}
-
-	Rock* Rock::scale(const Vec3& scaleVector)
-	{
-		GraphicObject3D::scale(scaleVector);
-
-		boundingVolume()->scale(scaleVector);
-
-		return this;
 	}
 
 	void Rock::dispose()

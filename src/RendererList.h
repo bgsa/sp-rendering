@@ -71,7 +71,7 @@ namespace NAMESPACE_RENDERING
 				->setUniform<Mat4>(projectionMatrixLocation, renderData.projectionMatrix)
 				->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix);
 
-			_list->transformsBuffer()->use();
+			SpPhysicSimulator::instance()->transformsGPU()->use();
 
 			//glDrawElementsInstanced(GL_LINES, _list->indexesBuffer()->length(), GL_UNSIGNED_INT, _list->indexes()->data(), _list->length());
 

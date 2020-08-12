@@ -8,7 +8,6 @@
 #include "OpenGLBuffer.h"
 #include "OpenGLTextureBuffer.h"
 #include "SpTransform.h"
-#include "SpGraphicObjectManager.h"
 
 namespace NAMESPACE_RENDERING
 {

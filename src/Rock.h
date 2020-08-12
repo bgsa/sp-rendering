@@ -40,7 +40,7 @@ namespace NAMESPACE_RENDERING
 		{
 		}
 
-		API_INTERFACE BoundingVolume* boundingVolume() const override
+		API_INTERFACE DOP18* boundingVolume() const override
 		{
 			return _boundingVolume;
 		}

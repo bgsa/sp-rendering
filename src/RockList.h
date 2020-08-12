@@ -62,19 +62,19 @@ namespace NAMESPACE_RENDERING
 				physicProperties(i)->inertialTensor(tensor);
 		}
 		
-		void initObject(sp_uint index)
+		void initObject(const sp_uint index)
 		{
-			SpPhysicProperties* physic = physicProperties(0u);
-			DOP18* bvs = (DOP18*)boundingVolumes(0u);
+			SpPhysicProperties* physic = physicProperties(index);
+			DOP18* bvs = (DOP18*)boundingVolumes(index);
 
 			modelInitialPosition = Vec3(0.0f, 1.1f, 1.3f);
 
-			physic[index].position(modelInitialPosition);
-			physic[index].mass(8.0f);
+			physic->position(modelInitialPosition);
+			physic->mass(8.0f);
 
-			bvs[index].scale({ 2.8f, 3.0f, 3.0f });
-			bvs[index].min[DOP18_AXIS_UP_DEPTH] += 1.0f;
-			bvs[index].max[DOP18_AXIS_UP_DEPTH] -= 1.0f;
+			bvs->scale({ 2.8f, 3.0f, 3.0f });
+			bvs->min[DOP18_AXIS_UP_DEPTH] += 1.0f;
+			bvs->max[DOP18_AXIS_UP_DEPTH] -= 1.0f;
 		}
 
 	public:

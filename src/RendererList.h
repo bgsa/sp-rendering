@@ -5,6 +5,7 @@
 #include "GraphicObject3DList.h"
 #include "IGraphicObjectRenderer.h"
 #include "OpenGLShader.h"
+#include "SpPhysicSimulator.h"
 
 namespace NAMESPACE_RENDERING
 {

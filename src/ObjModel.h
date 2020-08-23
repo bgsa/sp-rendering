@@ -68,7 +68,7 @@ namespace NAMESPACE_RENDERING
 			{
 				if (text[i]->startWith(SP_OBJECT_PREFIX))
 				{
-					const SpArrayOfString* values = text[i]->split(' ');
+					SpArrayOfString* values = text[i]->split(' ');
 					sp_char* content = values->data()[1].data();
 
 					name = sp_mem_new(SpString)(content);
@@ -77,7 +77,7 @@ namespace NAMESPACE_RENDERING
 				}
 				else if (text[i]->startWith(SP_VERTEX_PREFIX))
 				{
-					const SpArrayOfString* values = text[i]->split(' ');
+					SpArrayOfString* values = text[i]->split(' ');
 					SpString* numbers = values->data();
 
 					vertexes->add({

@@ -11,6 +11,7 @@
 #include "SpPhysicObjectList.h"
 #include "SpLightManager.h"
 #include "SpInertiaTensor.h"
+#include "SpMesh.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -46,15 +47,37 @@ namespace NAMESPACE_RENDERING
 			ALLOC_RELEASE(tempCpuBuffer);
 		}
 
+		void initMesh(const ObjModel& model)
+		{
+			PoolMemoryAllocator::main()->enableMemoryAlignment();
+
+			SpMesh* mesh = sp_mem_new(SpMesh)();
+			mesh->vertexes = sp_mem_new(SpArray<Vec3>)(model.vertexes->length());
+			mesh->facesIndexes = sp_mem_new(SpArray<SpPoint3<sp_uint>>)(model.faces->length());
+
+			for (sp_uint i = 0; i < model.vertexes->length(); i++)
+				mesh->vertexes->add(model.vertexes->data()[i]);
+
+			for (sp_uint i = 0; i < model.faces->length(); i++)
+				mesh->facesIndexes->add(model.faces->data()[i]);
+
+			mesh->init();
+
+			SpPhysicSimulator::instance()->mesh(physicIndex, mesh);
+
+			PoolMemoryAllocator::main()->disableMemoryAlignment();
+		}
+
 		void initBuffers()
 		{
 			ObjModel model;
-			model.load("resources\\models\\MyRock.OBJ");
-
-			vertexesLength = model.vertexes->length();
+			model.load("resources\\models\\rocks\\obj.obj");
 
 			initVertexBuffer(&model);
 			initIndexBuffer(&model);
+			initMesh(model);
+
+			vertexesLength = model.vertexes->length();
 
 			const Mat3 tensor = SpInertiaTensor::sphere(2.0f, 1.0f / physicProperties(0u)->massInverse());
 
@@ -73,8 +96,8 @@ namespace NAMESPACE_RENDERING
 			physic->mass(8.0f);
 
 			bvs->scale({ 2.8f, 3.0f, 3.0f });
-			bvs->min[DOP18_AXIS_UP_DEPTH] += 1.0f;
-			bvs->max[DOP18_AXIS_UP_DEPTH] -= 1.0f;
+			//bvs->min[DOP18_AXIS_UP_DEPTH] += 1.0f;
+			//bvs->max[DOP18_AXIS_UP_DEPTH] -= 1.0f;
 		}
 
 	public:

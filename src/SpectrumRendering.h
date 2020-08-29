@@ -10,14 +10,7 @@
 #include <cstring>
 #include <Log.hpp>
 
-#ifdef OPENGL_ENABLED
-	#define GLEW_STATIC
-	#include <GL/glew.h>
-	#include <GLFW/glfw3.h>
-#endif
-#ifdef OPENGLES_ENABLED
-	#include <GLES3/gl3.h>
-#endif
+#include "SpOpenGL.h"
 
 using namespace NAMESPACE_PHYSICS;
 

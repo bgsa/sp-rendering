@@ -90,9 +90,6 @@ namespace NAMESPACE_RENDERING
 			SpPhysicProperties* physic = physicProperties(index);
 			DOP18* bvs = (DOP18*)boundingVolumes(index);
 
-			modelInitialPosition = Vec3(0.0f, 1.1f, 1.3f);
-
-			physic->position(modelInitialPosition);
 			physic->mass(8.0f);
 
 			bvs->scale({ 2.8f, 3.0f, 3.0f });
@@ -115,7 +112,7 @@ namespace NAMESPACE_RENDERING
 		{
 			transforms(index)->translate(translation);
 			boundingVolumes(index)->translate(translation);
-			physicProperties(index)->position(translation);
+			physicProperties(index)->translate(translation);
 		}
 
 		API_INTERFACE inline void rotate(const sp_uint index, const Quat& rotation)

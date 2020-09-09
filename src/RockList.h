@@ -52,14 +52,17 @@ namespace NAMESPACE_RENDERING
 			PoolMemoryAllocator::main()->enableMemoryAlignment();
 
 			SpMesh* mesh = sp_mem_new(SpMesh)();
-			mesh->vertexes = sp_mem_new(SpArray<Vec3>)(model.vertexes->length());
-			mesh->facesIndexes = sp_mem_new(SpArray<SpPoint3<sp_uint>>)(model.faces->length());
+			mesh->vertexesMesh = sp_mem_new(SpArray<SpVertexMesh*>)(model.vertexes->length());
+			mesh->faces = sp_mem_new(SpArray<SpFaceMesh*>)(model.faces->length());
 
 			for (sp_uint i = 0; i < model.vertexes->length(); i++)
-				mesh->vertexes->add(model.vertexes->data()[i]);
+				mesh->vertexesMesh->add(sp_mem_new(SpVertexMesh)(mesh, i, model.vertexes->data()[i]));
 
 			for (sp_uint i = 0; i < model.faces->length(); i++)
-				mesh->facesIndexes->add(model.faces->data()[i]);
+			{
+				SpPoint3<sp_uint> indexes = model.faces->data()[i];
+				mesh->faces->add(sp_mem_new(SpFaceMesh)(mesh, i, indexes.x, indexes.y, indexes.z));
+			}
 
 			mesh->init();
 
@@ -112,7 +115,7 @@ namespace NAMESPACE_RENDERING
 		{
 			transforms(index)->translate(translation);
 			boundingVolumes(index)->translate(translation);
-			physicProperties(index)->translate(translation);
+			physicProperties(index)->currentState.translate(translation);
 		}
 
 		API_INTERFACE inline void rotate(const sp_uint index, const Quat& rotation)
@@ -120,7 +123,7 @@ namespace NAMESPACE_RENDERING
 			Quat newOrientation = transforms(index)->orientation * rotation;
 
 			transforms(index)->orientation = newOrientation;
-			physicProperties(index)->orientation(newOrientation);
+			physicProperties(index)->currentState.orientation(newOrientation);
 		}
 
 		API_INTERFACE inline void scale(const sp_uint index, const Vec3& factors) override

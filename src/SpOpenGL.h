@@ -1,7 +1,7 @@
 #ifndef SP_OPENGL_HEADER
 
 #include "SpectrumFoundation.h"
-#include "Log.hpp"
+#include "SpLogger.h"
 
 #ifdef OPENGL_ENABLED
 	#define GLEW_STATIC
@@ -26,7 +26,7 @@ namespace NAMESPACE_RENDERING
 			if (glewinit != GLEW_OK)
 			{
 				const sp_char* errorMessage = reinterpret_cast<sp_char*>(((GLubyte*)glewGetErrorString(glewinit)));
-				NAMESPACE_FOUNDATION::Log::error(errorMessage);
+				sp_log_error1s(errorMessage); sp_log_newline();
 			}
 		}
 
@@ -37,7 +37,7 @@ namespace NAMESPACE_RENDERING
 
 			if (!glfwInit())
 			{
-				NAMESPACE_FOUNDATION::Log::error("Failed to init GLFW");
+				sp_log_error1s("Failed to init GLFW"); sp_log_newline();
 				return;
 			}
 
@@ -53,7 +53,7 @@ namespace NAMESPACE_RENDERING
 
 			if (window == nullptr) 
 			{
-				NAMESPACE_FOUNDATION::Log::error("Failed to create GLFW Window");
+				sp_log_error1s("Failed to create GLFW Window"); sp_log_newline();
 				glfwTerminate();
 				return;
 			}

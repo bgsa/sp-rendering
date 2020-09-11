@@ -1,6 +1,7 @@
 #ifdef OPENGL_ENABLED
 
 #include "OpenGLRendererManager.h"
+#include "SpLogger.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -25,21 +26,24 @@ namespace NAMESPACE_RENDERING
 	{
 		this->_camera = camera;
 
-		Log::info("OpenGL Vendor: "); 
-		Log::info(GLConfig::getGLVendor().c_str());
+		sp_log_error1s("OpenGL Vendor: "); sp_log_newline();
+		sp_log_error1s(GLConfig::getGLVendor().c_str()); sp_log_newline();
 
-		Log::info("OpenGL Version: ");
-		Log::info(GLConfig::getGLVersion().c_str());
+		sp_log_error1s("OpenGL Version: "); sp_log_newline();
+		sp_log_error1s(GLConfig::getGLVersion().c_str()); sp_log_newline();
 
-		Log::info("OpenGLSL Version: "); 
-		Log::info(GLConfig::getGLShadingLanguageVersion().c_str());
+		sp_log_error1s("OpenGLSL Version: "); sp_log_newline();
+		sp_log_error1s(GLConfig::getGLShadingLanguageVersion().c_str()); sp_log_newline();
 
-		Log::info("OpenGL Renderer: ");
-		Log::info(GLConfig::getGLRenderer().c_str());
+		sp_log_error1s("OpenGL Renderer: "); sp_log_newline();
+		sp_log_error1s(GLConfig::getGLRenderer().c_str()); sp_log_newline();
 
-		Log::info("OpenGL Extensions:");
+		sp_log_error1s("OpenGL Extensions: "); sp_log_newline();
 		for (std::string extension : GLConfig::getGLExtensions())
-			Log::info(extension.c_str());
+		{
+			sp_log_error1s(extension.c_str());
+			sp_log_newline();
+		}
 
 		glEnable(GL_SCISSOR_TEST);
 		glEnable(GL_DEPTH_TEST); //elimina os vértices que sobrepoem outros vértices quando estão no mesmo eixo Z.

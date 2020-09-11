@@ -2,6 +2,7 @@
 #define SHADER_HEADER
 
 #include "SpectrumRendering.h"
+#include "SpLogger.h"
 #include <cstdlib>
 
 namespace NAMESPACE_RENDERING
@@ -52,7 +53,7 @@ namespace NAMESPACE_RENDERING
 
 					glGetProgramInfoLog(shaderProgram, infoLen, nullptr, infoLog);
 
-					Log::error(infoLog);
+					sp_log_error1s(infoLog); sp_log_newline();
 
 					ALLOC_RELEASE(infoLog);
 				}
@@ -110,7 +111,7 @@ namespace NAMESPACE_RENDERING
 
 					glGetProgramInfoLog(shaderProgram, infoLen, nullptr, infoLog);
 
-					Log::error(infoLog);
+					sp_log_error1s(infoLog); sp_log_newline();
 
 					ALLOC_RELEASE(infoLog);
 				}
@@ -161,9 +162,9 @@ namespace NAMESPACE_RENDERING
 
 					glGetShaderInfoLog(shader, infoLen, nullptr, infoLog);
 
-					Log::error(infoLog);
-					Log::error("Shader Source: ");
-					Log::error(source);
+					sp_log_error1s(infoLog); sp_log_newline();
+					sp_log_error1s("Shader Source: "); sp_log_newline();
+					sp_log_error1s(source); sp_log_newline();
 
 					ALLOC_RELEASE(infoLog);
 				}

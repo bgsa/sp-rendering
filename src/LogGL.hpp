@@ -2,6 +2,7 @@
 #define LOG_GL_HEADER
 
 #include "SpectrumRendering.h"
+#include "SpLogger.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -40,10 +41,7 @@ namespace NAMESPACE_RENDERING
 					break;
 				}
 
-				//char * lineAsString = (char *) &line;
-				//msg = "GL_" + errorMessage + " - " + file + ":" + to_string(line) + END_OF_LINE;
-				//Log::error(msg.c_str());
-				Log::error(errorMessage.c_str());
+				sp_log_info1s(errorMessage.c_str());
 
 				error = glGetError();
 			}

@@ -7,6 +7,7 @@
 #include "ShaderAttribute.h"
 #include "ShaderUniform.h"
 #include "FileSystem.h"
+#include "SpLogger.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -86,7 +87,10 @@ namespace NAMESPACE_RENDERING
 			program = glCreateProgram();
 
 			if (program == ZERO_UINT)
-				Log::error("glCreateProgram was not able to create a new shader program");
+			{
+				sp_log_error1s("glCreateProgram was not able to create a new shader program"); 
+				sp_log_newline();
+			}
 		}
 
 		/// <summary>
@@ -148,9 +152,9 @@ namespace NAMESPACE_RENDERING
 					sp_char* infoLog = ALLOC_ARRAY(sp_char, SIZEOF_CHAR * infoLen);
 					glGetShaderInfoLog(shader, infoLen, nullptr, infoLog);
 
-					Log::error(infoLog);
-					Log::error("Shader Source: ");
-					Log::error(source);
+					sp_log_error1s(infoLog); sp_log_newline();
+					sp_log_error1s("Shader Source: "); sp_log_newline();
+					sp_log_error1s(source); sp_log_newline();
 
 					ALLOC_RELEASE(infoLog);
 				}
@@ -189,7 +193,7 @@ namespace NAMESPACE_RENDERING
 					sp_char *infoLog = ALLOC_ARRAY(sp_char, SIZEOF_CHAR * infoLen);
 					glGetProgramInfoLog(program, infoLen, nullptr, infoLog);
 
-					Log::error(infoLog);
+					sp_log_error1s(infoLog); sp_log_newline();
 
 					ALLOC_RELEASE(infoLog);
 				}

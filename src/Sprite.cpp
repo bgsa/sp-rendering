@@ -36,7 +36,10 @@ namespace NAMESPACE_RENDERING
 		pugi::xml_parse_result result = doc.load_string(spriteXml);
 
 		if (result.status != pugi::status_ok)
-			Log::error("Error loading XML file!");
+		{
+			sp_log_info1s("Error loading XML file!");
+			sp_log_newline();
+		}
 
 		pugi::xml_node spriteAnimationsNode = doc.root().child("SpriteAnimation");;
 		pugi::xml_node framesNode = spriteAnimationsNode.child("Frames");

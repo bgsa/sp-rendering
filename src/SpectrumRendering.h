@@ -6,10 +6,7 @@
 #endif // NAMESPACE_RENDERING
 
 #include <SpectrumPhysics.h>
-#include <vector>
 #include <cstring>
-#include <Log.hpp>
-
 #include "SpOpenGL.h"
 
 using namespace NAMESPACE_PHYSICS;

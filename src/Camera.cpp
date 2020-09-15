@@ -21,8 +21,12 @@ namespace NAMESPACE_RENDERING
 	void Camera::updateViewMatrix()
 	{
 		_direction = (position - target).normalize();   //zAxis
-		_right = _up.cross(_direction).normalize();     //xAxis
-		Vec3 cameraUp = _direction.cross(_right);      //yAxis
+
+		cross(_up, _direction, &_right);
+		normalize(&_right);     //xAxis
+
+		Vec3 cameraUp;
+		cross(_direction, _right, &cameraUp);      //yAxis
 
 		viewMatrix = {
 			_right[0], cameraUp[0], _direction[0], ZERO_FLOAT,

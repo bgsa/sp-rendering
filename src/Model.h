@@ -89,7 +89,7 @@ namespace NAMESPACE_RENDERING
 			}
 
 			for (sp_uint i = ZERO_UINT; i < vertexes->length(); i++)
-				normals->data()[i] = normals->data()[i].normalize();
+				normalize(&normals->data()[i]);
 		}
 
 		API_INTERFACE virtual void dispose() override

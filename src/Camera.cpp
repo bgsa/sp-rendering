@@ -20,7 +20,7 @@ namespace NAMESPACE_RENDERING
 
 	void Camera::updateViewMatrix()
 	{
-		_direction = (position - target).normalize();   //zAxis
+		normalize(position - target, &_direction);   //zAxis
 
 		cross(_up, _direction, &_right);
 		normalize(&_right);     //xAxis

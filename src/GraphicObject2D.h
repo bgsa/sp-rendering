@@ -39,10 +39,10 @@ namespace NAMESPACE_RENDERING
 			return color;
 		}
 		API_INTERFACE virtual void setColor(ColorRGBA color) {
-			this->color->Red = color.Red;
-			this->color->Green = color.Green;
-			this->color->Blue = color.Blue;
-			this->color->Alpha = color.Alpha;
+			this->color->red = color.red;
+			this->color->green = color.green;
+			this->color->blue = color.blue;
+			this->color->alpha = color.alpha;
 		}
 
 		API_INTERFACE virtual void setBotomMargin(sp_float bottomMargin)
@@ -76,10 +76,10 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE virtual void setBorderColor(ColorRGBA color)
 		{
-			borderColor->Red = color.Red;
-			borderColor->Green = color.Green;
-			borderColor->Blue = color.Blue;
-			borderColor->Alpha = color.Alpha;
+			borderColor->red = color.red;
+			borderColor->green = color.green;
+			borderColor->blue = color.blue;
+			borderColor->alpha = color.alpha;
 		}
 		API_INTERFACE virtual ColorRGBA* getBorderColor()
 		{
@@ -91,7 +91,7 @@ namespace NAMESPACE_RENDERING
 			if (borderWidth == 0.0f)
 				return;
 
-			glUniform4f(colorLocation, borderColor->Red, borderColor->Green, borderColor->Blue, borderColor->Alpha);
+			glUniform4f(colorLocation, borderColor->red, borderColor->green, borderColor->blue, borderColor->alpha);
 
 			sp_float currentLineWidth = GLConfig::getGLfloat(GL_LINE_WIDTH);
 			glLineWidth(borderWidth);

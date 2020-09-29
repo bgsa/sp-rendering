@@ -25,6 +25,7 @@ namespace NAMESPACE_RENDERING
 		sp_uint vertexesLength;
 		sp_int normalAttribute;
 
+		sp_int lightEnvironmentLocation;
 		sp_int lightPositionLocation;
 		sp_int lightColorLocation;
 		sp_int shininessFactorLocation;
@@ -93,7 +94,7 @@ namespace NAMESPACE_RENDERING
 			SpPhysicProperties* physic = physicProperties(index);
 			DOP18* bvs = (DOP18*)boundingVolumes(index);
 
-			physic->mass(8.0f);
+			physic->mass(5.0f);
 
 			bvs->scale({ 2.8f, 3.0f, 3.0f });
 			//bvs->min[DOP18_AXIS_UP_DEPTH] += 1.0f;
@@ -120,7 +121,8 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE inline void rotate(const sp_uint index, const Quat& rotation)
 		{
-			Quat newOrientation = transforms(index)->orientation * rotation;
+			Quat newOrientation;
+			multiply(transforms(index)->orientation, rotation, &newOrientation);
 
 			transforms(index)->orientation = newOrientation;
 			physicProperties(index)->currentState.orientation(newOrientation);
@@ -145,7 +147,8 @@ namespace NAMESPACE_RENDERING
 			projectionMatrixLocation = shader->getUniform("projectionMatrix");
 			viewMatrixLocation = shader->getUniform("viewMatrix");
 			transformOffsetLocation = shader->getUniform("transformOffset");
-			
+
+			lightEnvironmentLocation = shader->getUniform("EnvironmentLightColor");
 			lightColorLocation = shader->getUniform("LightColor");
 			lightPositionLocation = shader->getUniform("LightPosition");
 			shininessFactorLocation = shader->getUniform("ShininessFactor");
@@ -160,8 +163,9 @@ namespace NAMESPACE_RENDERING
 				->enable()
 				->setUniform<Mat4>(projectionMatrixLocation, renderData.projectionMatrix)
 				->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix)
-				->setUniform3<sp_float>(lightPositionLocation, SpLightManager::instance()->lights()->position())
-				->setUniform3<sp_float>(lightColorLocation, SpLightManager::instance()->lights()->color())
+				->setUniform3<sp_float>(lightEnvironmentLocation, SpLightManager::instance()->environmentLight)
+				->setUniform3<sp_float>(lightPositionLocation, SpLightManager::instance()->lights(0u)->position())
+				->setUniform3<sp_float>(lightColorLocation, SpLightManager::instance()->lights(0u)->color())
 				->setUniform<sp_float>(shininessFactorLocation, 1000.0f)
 				->setUniform<sp_uint>(transformOffsetLocation, physicIndex);
 

@@ -84,7 +84,7 @@ namespace NAMESPACE_RENDERING
 		glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, renderData.viewMatrix);
 		//glUniformMatrix4fv(transformMatrixLocation, 1, GL_FALSE, transform.toMat4()); // TODO: ENABLE !!!!
 
-		glUniform4fv(colorLocation, 1, color.toVec4());
+		glUniform4fv(colorLocation, 1, (sp_float*)&color);
 		glUniform1f(radiusLocation, geometry->ray);
 
 		setupAttributeLocations();

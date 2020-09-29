@@ -150,7 +150,7 @@ namespace NAMESPACE_RENDERING
 
 	void Polygon3D::renderBorder(RenderData renderData)
 	{
-		glUniform4f(colorLocation, borderColor->Red, borderColor->Green, borderColor->Blue, borderColor->Alpha);
+		glUniform4f(colorLocation, borderColor->red, borderColor->green, borderColor->blue, borderColor->alpha);
 
 		float currentLineWidth = GLConfig::getGLfloat(GL_LINE_WIDTH);
 		glLineWidth(borderWidth);
@@ -169,7 +169,7 @@ namespace NAMESPACE_RENDERING
 		glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, renderData.projectionMatrix);
 		glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, renderData.viewMatrix);
 		//glUniformMatrix4fv(transformMatrixLocation, 1, GL_FALSE, transform.toMat4()); // TODO: ENABLE !!!
-		glUniform4f(colorLocation, color.Red, color.Green, color.Blue, color.Alpha);
+		glUniform4f(colorLocation, color.red, color.green, color.blue, color.alpha);
 		glUniform1i(textureEnableLocation, isTextureEnabled() ? 1 : 0);
 
 		setUpPositionAttribute();

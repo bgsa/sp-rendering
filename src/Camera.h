@@ -19,7 +19,7 @@ namespace NAMESPACE_RENDERING
 		Vec3 position;
 		Vec3 target;
 		Vec3 _up;
-		Vec3 _direction;
+		Vec3 _forward;
 		Vec3 _right;
 		
 		sp_float _fieldOfView;

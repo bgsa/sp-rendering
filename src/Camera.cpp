@@ -20,18 +20,18 @@ namespace NAMESPACE_RENDERING
 
 	void Camera::updateViewMatrix()
 	{
-		normalize(position - target, &_direction);   //zAxis
-
-		cross(_up, _direction, &_right);
+		normalize(position - target, &_forward);   //zAxis
+		
+		cross(_forward, _up, &_right);
 		normalize(&_right);     //xAxis
 
 		Vec3 cameraUp;
-		cross(_direction, _right, &cameraUp);      //yAxis
+		cross(_right, _forward, &cameraUp);      //yAxis
 
 		viewMatrix = {
-			_right[0], cameraUp[0], _direction[0], ZERO_FLOAT,
-			_right[1], cameraUp[1], _direction[1], ZERO_FLOAT,
-			_right[2], cameraUp[2], _direction[2], ZERO_FLOAT,
+			_right[0], cameraUp[0], _forward[0], ZERO_FLOAT,
+			_right[1], cameraUp[1], _forward[1], ZERO_FLOAT,
+			_right[2], cameraUp[2], _forward[2], ZERO_FLOAT,
 			ZERO_FLOAT, ZERO_FLOAT, ZERO_FLOAT, ONE_FLOAT
 		};
 

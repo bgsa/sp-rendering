@@ -235,7 +235,10 @@ namespace NAMESPACE_RENDERING
 		/// </summary>
 		API_INTERFACE inline sp_int getUniform(const sp_char* name)
 		{
-			sp_assert(glGetUniformLocation(program, name) > -1, "InvalidArgumentException");
+#ifdef DEBUG
+			sp_log_info1s("Shader uniform not found: ");
+			sp_log_info1s(name); sp_log_newline();
+#endif
 			return glGetUniformLocation(program, name);
 		}
 
@@ -244,7 +247,10 @@ namespace NAMESPACE_RENDERING
 		/// </summary>
 		API_INTERFACE inline sp_int getAttribute(const sp_char* name)
 		{
-			sp_assert(glGetAttribLocation(program, name) > -1, "InvalidArgumentException");
+#ifdef DEBUG
+			sp_log_info1s("Shader attribute not found: ");
+			sp_log_info1s(name); sp_log_newline();
+#endif	
 			return glGetAttribLocation(program, name);
 		}
 

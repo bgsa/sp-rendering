@@ -94,7 +94,7 @@ namespace NAMESPACE_RENDERING
 			SpPhysicProperties* physic = physicProperties(index);
 			DOP18* bvs = (DOP18*)boundingVolumes(index);
 
-			physic->mass(5.0f);
+			physic->mass(1.1f);
 
 			bvs->scale({ 2.8f, 3.0f, 3.0f });
 			//bvs->min[DOP18_AXIS_UP_DEPTH] += 1.0f;

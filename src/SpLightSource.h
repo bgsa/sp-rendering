@@ -17,7 +17,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE SpLightSource()
 		{
-			_position = Vec3(0.0f);
+			_position = Vec3Zeros;
 			_color = ColorRGB(1.0f, 1.0f, 1.0f);
 			_enabled = true;
 		}

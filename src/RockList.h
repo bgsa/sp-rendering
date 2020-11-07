@@ -83,7 +83,7 @@ namespace NAMESPACE_RENDERING
 
 			vertexesLength = model.vertexes->length();
 
-			const Mat3 tensor = SpInertiaTensor::sphere(2.0f, 1.0f / physicProperties(0u)->massInverse());
+			const Mat3 tensor = SpInertiaTensor::sphere(1.0f, 1.0f / physicProperties(0u)->massInverse());
 
 			for (sp_uint i = 0; i < length(); i++)
 				physicProperties(i)->inertialTensor(tensor);

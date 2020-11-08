@@ -70,23 +70,23 @@ namespace NAMESPACE_RENDERING
 		renderData.viewMatrix = _camera->getViewMatrix();
 		renderData.viewport = _viewport;
 
-		glViewport(_viewport->x, _viewport->y, _viewport->width, _viewport->height);
-		glScissor(_viewport->x, _viewport->y, _viewport->width, _viewport->height);
-		glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		sp_opengl_check(glViewport(_viewport->x, _viewport->y, _viewport->width, _viewport->height));
+		sp_opengl_check(glScissor(_viewport->x, _viewport->y, _viewport->width, _viewport->height));
+		sp_opengl_check(glClearColor(0.5f, 0.5f, 0.5f, 1.0f));
+		sp_opengl_check(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
 
-		glEnable(GL_LINE_SMOOTH);
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
-		glEnable(GL_POLYGON_OFFSET_FILL);
-		glPolygonOffset(1.0f, 1.0f);
+		sp_opengl_check(glEnable(GL_LINE_SMOOTH));
+		sp_opengl_check(glEnable(GL_DEPTH_TEST));
+		sp_opengl_check(glEnable(GL_CULL_FACE));
+		sp_opengl_check(glEnable(GL_POLYGON_OFFSET_FILL));
+		sp_opengl_check(glPolygonOffset(1.0f, 1.0f));
 
 		render3D(renderData);
 
 		renderData.projectionMatrix = _camera->getHUDProjectionMatrix((sp_float)_viewport->width, (sp_float)_viewport->height);
 
-		glDisable(GL_DEPTH_TEST);
-		glDisable(GL_CULL_FACE);
+		sp_opengl_check(glDisable(GL_DEPTH_TEST));
+		sp_opengl_check(glDisable(GL_CULL_FACE));
 
 		render2D(renderData);
 	}

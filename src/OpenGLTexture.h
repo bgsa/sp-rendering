@@ -87,10 +87,11 @@ namespace NAMESPACE_RENDERING
 			return texture;
 		}
 
-		API_INTERFACE inline void updateData(const sp_uchar* data, const sp_int colorFormat)
+		API_INTERFACE inline OpenGLTexture* updateData(const sp_uchar* data, const sp_int colorFormat)
 		{
 			glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
 			glTexImage2D(GL_TEXTURE_2D, 0, colorFormat, _size.width, _size.height, 0, colorFormat, GL_UNSIGNED_BYTE, data);
+			return this;
 		}
 
 		API_INTERFACE inline void readData(sp_uchar* data, sp_int outputFormat = GL_RGBA)

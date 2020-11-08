@@ -93,6 +93,14 @@ namespace NAMESPACE_RENDERING
 		}
 
 	};
+
+#ifdef DEBUG
+	#define sp_opengl_check(command) \
+		command; \
+		sp_assert(glGetError() == GL_NO_ERROR, "OpenCLException" );
+#else
+	#define sp_opengl_check(command) command
+#endif
 }
 
 #endif // !SP_OPENGL_HEADER

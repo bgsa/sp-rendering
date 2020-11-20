@@ -80,6 +80,7 @@ namespace NAMESPACE_RENDERING
 		sp_opengl_check(glEnable(GL_CULL_FACE));
 		sp_opengl_check(glEnable(GL_POLYGON_OFFSET_FILL));
 		sp_opengl_check(glPolygonOffset(1.0f, 1.0f));
+		//sp_opengl_check(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
 
 		render3D(renderData);
 

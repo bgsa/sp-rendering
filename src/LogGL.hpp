@@ -42,6 +42,7 @@ namespace NAMESPACE_RENDERING
 				}
 
 				sp_log_info1s(errorMessage.c_str());
+				sp_log_newline();
 
 				error = glGetError();
 			}

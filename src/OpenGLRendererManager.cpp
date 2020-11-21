@@ -16,8 +16,8 @@ namespace NAMESPACE_RENDERING
 
 		_viewport->resize((sp_int)width, (sp_int)height);
 
-		glViewport(_viewport->x, _viewport->y, _viewport->width, _viewport->height);
-		glScissor(_viewport->x, _viewport->y, _viewport->width, _viewport->height);
+		sp_opengl_check(glViewport(_viewport->x, _viewport->y, _viewport->width, _viewport->height));
+		sp_opengl_check(glScissor(_viewport->x, _viewport->y, _viewport->width, _viewport->height));
 
 		_camera->updateProjectionPerspectiveAspect(_viewport->aspectRatio());
 	}
@@ -26,33 +26,33 @@ namespace NAMESPACE_RENDERING
 	{
 		this->_camera = camera;
 
-		sp_log_error1s("OpenGL Vendor: "); sp_log_newline();
+		sp_log_error1s("OpenGL Vendor: ");
 		sp_log_error1s(GLConfig::getGLVendor().c_str()); sp_log_newline();
 
-		sp_log_error1s("OpenGL Version: "); sp_log_newline();
+		sp_log_error1s("OpenGL Version: ");
 		sp_log_error1s(GLConfig::getGLVersion().c_str()); sp_log_newline();
 
-		sp_log_error1s("OpenGLSL Version: "); sp_log_newline();
+		sp_log_error1s("OpenGLSL Version: ");
 		sp_log_error1s(GLConfig::getGLShadingLanguageVersion().c_str()); sp_log_newline();
 
-		sp_log_error1s("OpenGL Renderer: "); sp_log_newline();
+		sp_log_error1s("OpenGL Renderer: ");
 		sp_log_error1s(GLConfig::getGLRenderer().c_str()); sp_log_newline();
 
-		sp_log_error1s("OpenGL Extensions: "); sp_log_newline();
+		sp_log_error1s("OpenGL Extensions: ");
 		for (std::string extension : GLConfig::getGLExtensions())
 		{
 			sp_log_error1s(extension.c_str());
 			sp_log_newline();
 		}
 
-		glEnable(GL_SCISSOR_TEST);
-		glEnable(GL_DEPTH_TEST); //elimina os vértices que sobrepoem outros vértices quando estão no mesmo eixo Z.
-		glEnable(GL_BLEND);									  //enable alpha color
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);    //enable alpha color
-		glEnable(GL_LINE_SMOOTH);
+		sp_opengl_check(glEnable(GL_SCISSOR_TEST));
+		sp_opengl_check(glEnable(GL_DEPTH_TEST)); //elimina os vértices que sobrepoem outros vértices quando estão no mesmo eixo Z.
+		sp_opengl_check(glEnable(GL_BLEND));								  //enable alpha color
+		sp_opengl_check(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));    //enable alpha color
+		sp_opengl_check(glEnable(GL_LINE_SMOOTH));
 
-		glViewport(_viewport->x, _viewport->y, _viewport->width, _viewport->height);
-		glScissor(_viewport->x, _viewport->y, _viewport->width, _viewport->height);
+		sp_opengl_check(glViewport(_viewport->x, _viewport->y, _viewport->width, _viewport->height));
+		sp_opengl_check(glScissor(_viewport->x, _viewport->y, _viewport->width, _viewport->height));
 
 		IRendererManager::init(camera);
 	}

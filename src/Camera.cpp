@@ -67,7 +67,7 @@ namespace NAMESPACE_RENDERING
 		xmax = -xmin;
 
 		// Construct the projection matrix
-		projectionMatrix = Mat4::identity();
+		projectionMatrix = Mat4Identity;
 		projectionMatrix[0] = (TWO_FLOAT * near) / (xmax - xmin);
 		projectionMatrix[5] = (TWO_FLOAT * near) / (ymax - ymin);
 		projectionMatrix[8] = (xmax + xmin) / (xmax - xmin);
@@ -78,7 +78,7 @@ namespace NAMESPACE_RENDERING
 		projectionMatrix[15] = ZERO_FLOAT;
 
 		// Do the Math for the far clipping plane
-		yFmax = far * tanf(sp_float(fieldOfView * PI_DIV_360));
+		yFmax = far * tanf((sp_float)(fieldOfView * PI_DIV_360));
 		yFmin = -yFmax;
 		xFmin = yFmin * aspectRatio;
 		xFmax = -xFmin;

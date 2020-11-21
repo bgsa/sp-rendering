@@ -32,7 +32,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE sp_float aspectRatio() const
 		{
-			return (sp_float)(width / height);
+			return (sp_float)((sp_float)width / (sp_float)height);
 		}
 
 	};

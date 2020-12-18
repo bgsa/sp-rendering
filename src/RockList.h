@@ -83,15 +83,15 @@ namespace NAMESPACE_RENDERING
 
 			vertexesLength = model.vertexes->length();
 
-			const Mat3 tensor = SpInertiaTensor::sphere(1.0f, 1.0f / physicProperties(0u)->massInverse());
+			const Mat3 tensor = SpInertiaTensor::sphere(1.0f, 1.0f / rigidBodies(0u)->massInverse());
 
 			for (sp_uint i = 0; i < length(); i++)
-				physicProperties(i)->inertialTensor(tensor);
+				rigidBodies(i)->inertialTensor(tensor);
 		}
 		
 		inline void initObject(const sp_uint index)
 		{
-			physicProperties(index)->mass(1.1f);
+			rigidBodies(index)->mass(1.1f);
 		}
 
 	public:
@@ -109,7 +109,7 @@ namespace NAMESPACE_RENDERING
 		{
 			transforms(index)->translate(translation);
 			boundingVolumes(index)->translate(translation);
-			physicProperties(index)->currentState.translate(translation);
+			rigidBodies(index)->currentState.translate(translation);
 		}
 
 		API_INTERFACE inline void rotate(const sp_uint index, const Quat& rotation)
@@ -118,7 +118,7 @@ namespace NAMESPACE_RENDERING
 			multiply(transforms(index)->orientation, rotation, &newOrientation);
 
 			transforms(index)->orientation = newOrientation;
-			physicProperties(index)->currentState.orientation(newOrientation);
+			rigidBodies(index)->currentState.orientation(newOrientation);
 		}
 
 		API_INTERFACE inline void scale(const sp_uint index, const Vec3& factors) override

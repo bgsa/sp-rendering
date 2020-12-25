@@ -27,6 +27,7 @@ namespace NAMESPACE_RENDERING
 		sp_int transformMatrixLocation;
 
 		sp_int positionAttribute = -1;
+		sp_int normalAttribute = -1;
 		sp_int colorLocation = -1;
 
 		BoundingVolumeRenderer* _boundingVolumeRenderer;

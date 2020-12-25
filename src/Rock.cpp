@@ -1,5 +1,4 @@
 #include "Rock.h"
-#include "RockRenderer.h"
 
 namespace NAMESPACE_RENDERING
 {

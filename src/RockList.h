@@ -31,8 +31,6 @@ namespace NAMESPACE_RENDERING
 		sp_int shininessFactorLocation;
 		sp_int transformOffsetLocation;
 
-		Vec3 modelInitialPosition;
-
 		void initIndexBuffer(const ObjModel* model)
 		{
 			facesLength = model->faces->length();

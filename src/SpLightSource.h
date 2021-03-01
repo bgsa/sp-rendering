@@ -22,12 +22,12 @@ namespace NAMESPACE_RENDERING
 			_enabled = true;
 		}
 
-		API_INTERFACE inline Vec3 position()
+		API_INTERFACE inline Vec3& position()
 		{
 			return _position;
 		}
 
-		API_INTERFACE void position(const Vec3 newPosition)
+		API_INTERFACE void position(const Vec3& newPosition)
 		{
 			_position = newPosition;
 		}

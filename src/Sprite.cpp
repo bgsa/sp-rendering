@@ -80,20 +80,35 @@ namespace NAMESPACE_RENDERING
 
 	void Sprite::translate(float x, float y, float z)
 	{
-		Mat4 translateMatrix = Mat4::createTranslate(x, y, z);
-		model = translateMatrix * model;
+		Mat4 translateMatrix;
+		createTranslate(x, y, z, translateMatrix);
+
+		Mat4 temp;
+		translateMatrix.multiply(model, temp);
+
+		std::memcpy(model, temp, sizeof(Mat4));
 	}
 
 	void Sprite::scale(float xScale, float yScale, float zScale = 0)
 	{
-		Mat4 scaleMatrix = Mat4::createScale(xScale, yScale, zScale);
-		model = scaleMatrix * model;
+		Mat4 scaleMatrix;
+		createScale(xScale, yScale, zScale, scaleMatrix);
+
+		Mat4 temp;
+		scaleMatrix.multiply(model, temp);
+
+		std::memcpy(model, temp, sizeof(Mat4));
 	}
 
 	void Sprite::rotate(float angle, float x, float y, float z)
 	{
-		Mat4 rotationMatrix = Mat4::createRotate(angle, x, y, z);
-		model = rotationMatrix * model;
+		Mat4 rotationMatrix;
+		createRotate(angle, x, y, z, rotationMatrix);
+		
+		Mat4 temp;
+		rotationMatrix.multiply(model, temp);
+
+		std::memcpy(model, temp, sizeof(Mat4));
 	}
 
 	void Sprite::rotateByCenter(float angle, float x, float y, float z)

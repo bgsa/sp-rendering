@@ -112,14 +112,17 @@ namespace NAMESPACE_RENDERING
 		glLineWidth(lineWidth);
 
 		sp_float quantidade = 10.0f;
-		Mat4 matrixRotate = Mat4::createRotate((sp_float)degreesToRadians(90), 0.0f, 1.0f, 0.0f);
+		Mat4 matrixRotate;
+		createRotate((sp_float)degreesToRadians(90), 0.0f, 1.0f, 0.0f, matrixRotate);
+
 		//float spacing = 1.0f;
 		//Mat4 scaleMatrix = Mat4::createScale(spacing, 0.0f, spacing);
 
 		for (sp_float i = -quantidade; i < quantidade + 1; i++)
 		{
 			//draw lines on Z axis
-			Mat4 matrixTranslatedX = Mat4::createTranslate(i, 0.0f, 0.0f);
+			Mat4 matrixTranslatedX;
+			createTranslate(i, 0.0f, 0.0f, matrixTranslatedX);
 
 			Mat4 result = matrixTranslatedX;
 
@@ -127,11 +130,13 @@ namespace NAMESPACE_RENDERING
 			glDrawArrays(GL_LINES, 0, 2);
 
 			//draw lines on X axis		
-			Mat4 matrixTranslatedZ = Mat4::createTranslate(0.0f, 0.0f, i);
+			Mat4 matrixTranslatedZ;
+			createTranslate(0.0f, 0.0f, i, matrixTranslatedZ);
 
 			result = matrixRotate;
 
-			Mat4 result2 = matrixTranslatedZ * result;
+			Mat4 result2;
+			matrixTranslatedZ.multiply(result, result2);
 
 			glUniformMatrix4fv(transformMatrixLocation, 1, GL_FALSE, result2);
 			glDrawArrays(GL_LINES, 0, 2);

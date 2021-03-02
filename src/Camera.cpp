@@ -35,7 +35,13 @@ namespace NAMESPACE_RENDERING
 			ZERO_FLOAT, ZERO_FLOAT, ZERO_FLOAT, ONE_FLOAT
 		};
 
-		viewMatrix *= Mat4::createTranslate(-position[0], -position[1], -position[2]);
+		Mat4 translation;
+		createTranslate(-position[0], -position[1], -position[2], translation);
+
+		Mat4 temp;
+		viewMatrix.multiply(translation, temp);
+
+		std::memcpy(viewMatrix, temp, sizeof(Mat4));
 	}
 
 	void Camera::initProjectionPerspective(const Vec3& position, const Vec3& target, sp_float aspectRatio)
@@ -135,7 +141,7 @@ namespace NAMESPACE_RENDERING
 
 	void Camera::setProjectionOrthographic(sp_float xMin, sp_float xMax, sp_float yMin, sp_float yMax, sp_float zMin, sp_float zMax)
 	{
-		projectionMatrix = Mat4::createOrthographicMatrix(xMin, xMax, yMin, yMax, zMin, zMax);
+		createOrthographicMatrix(xMin, xMax, yMin, yMax, zMin, zMax, projectionMatrix);
 
 		// Fill in values for untransformed Frustum corners	// Near Upper Left
 		nearUpperLeft[0] = xMin;
@@ -186,9 +192,9 @@ namespace NAMESPACE_RENDERING
 		farLowerRight[3] = ONE_FLOAT;
 	}
 
-	Mat4 Camera::getHUDProjectionMatrix(sp_float width, sp_float height) const
+	void Camera::getHUDProjectionMatrix(sp_float width, sp_float height, Mat4& output) const
 	{
-		return Mat4::createOrthographicMatrix(ZERO_FLOAT, width, ZERO_FLOAT, height, -ONE_FLOAT, ONE_FLOAT);
+		createOrthographicMatrix(ZERO_FLOAT, width, ZERO_FLOAT, height, -ONE_FLOAT, ONE_FLOAT, output);
 	}
 
 	Vec3 Camera::getFromWorldToScreen(const Vec3& vertex, const Mat4& modelViewMatrix, const SpViewportData* viewport)
@@ -196,9 +202,21 @@ namespace NAMESPACE_RENDERING
 		sp_float halhWidth = viewport->width * HALF_FLOAT;
 		sp_float halhHeight = viewport->height * HALF_FLOAT;
 
-		//Vec4 vertex4D = Vec4(vertex, 1.0f) * modelViewMatrix * viewMatrix * projectionMatrix;
-		Vec4 vertex4D = projectionMatrix * viewMatrix * modelViewMatrix * Vec4(vertex, ONE_FLOAT);
-		vertex4D /= vertex4D[3];
+		Vec4 vertex4D;
+
+		Mat4 m1, m2;
+		projectionMatrix.multiply(viewMatrix, m1);
+		m1.multiply(modelViewMatrix, m2);
+		m2.multiply(Vec4(vertex, 1.0f), vertex4D);
+
+		/*
+		Vec4 temp1, temp2;
+		modelViewMatrix.multiply(Vec4(vertex, ONE_FLOAT), temp1);
+		viewMatrix.multiply(temp1, temp2);
+		projectionMatrix.multiply(temp2, vertex4D);
+		*/
+
+		vertex4D /= vertex4D.w;
 
 		Vec3 vertexOnDeviceSpace = vertex4D.toVec3();
 

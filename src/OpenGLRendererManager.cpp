@@ -84,7 +84,7 @@ namespace NAMESPACE_RENDERING
 
 		render3D(renderData);
 
-		renderData.projectionMatrix = _camera->getHUDProjectionMatrix((sp_float)_viewport->width, (sp_float)_viewport->height);
+		_camera->getHUDProjectionMatrix((sp_float)_viewport->width, (sp_float)_viewport->height, renderData.projectionMatrix);
 
 		sp_opengl_check(glDisable(GL_DEPTH_TEST));
 		sp_opengl_check(glDisable(GL_CULL_FACE));

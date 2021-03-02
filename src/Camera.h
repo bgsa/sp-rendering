@@ -80,7 +80,7 @@ namespace NAMESPACE_RENDERING
 			return viewMatrix;
 		}
 
-		API_INTERFACE inline Mat4 getHUDProjectionMatrix(sp_float width, sp_float height) const;
+		API_INTERFACE inline void getHUDProjectionMatrix(sp_float width, sp_float height, Mat4& output) const;
 
 		API_INTERFACE void setProjectionPerspective(sp_float fieldOfView, sp_float aspect, sp_float near, sp_float far);
 		API_INTERFACE void setProjectionOrthographic(sp_float xMin, sp_float xMax, sp_float yMin, sp_float yMax, sp_float zMin, sp_float zMax);

@@ -176,7 +176,8 @@ namespace NAMESPACE_RENDERING
 
 	void CustomCube::render(Mat4 projectionViewMatrix)
 	{
-		Mat3 normalMatrix = model.toMat3();
+		Mat3 normalMatrix;
+		model.toMat3(normalMatrix);
 
 		glUseProgram(programShader);
 

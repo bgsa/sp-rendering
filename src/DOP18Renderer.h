@@ -25,7 +25,7 @@ namespace NAMESPACE_RENDERING
 		GLint viewMatrixLocation;
 		GLint positionAttribute = -1;
 
-		void updatePoints(sp_float* points, sp_size& index, const Plane3D& plane1, const Plane3D& plane2, const Plane3D& plane3)
+		void updatePoints(sp_float* points, sp_size& index, const Plane& plane1, const Plane& plane2, const Plane& plane3)
 		{
 			Line3D line;
 			plane1.intersection(plane2, &line);
@@ -39,8 +39,8 @@ namespace NAMESPACE_RENDERING
 		}
 
 		void updatePoints(sp_float* points, sp_size& index,
-			const Plane3D& plane1, const Plane3D& plane2,
-			const Plane3D& plane3, const Plane3D& plane4)
+			const Plane& plane1, const Plane& plane2,
+			const Plane& plane3, const Plane& plane4)
 		{
 			Line3D line;
 			plane1.intersection(plane2, &line);
@@ -61,27 +61,27 @@ namespace NAMESPACE_RENDERING
 
 		void updatePoints(DOP18* dop, sp_float* points, sp_size pointIndex)
 		{
-			Plane3D* planes = dop->planes();
+			Plane* planes = dop->planes();
 
-			Plane3D leftPlane = planes[0];
-			Plane3D rightPlane = planes[1];
-			Plane3D upPlane = planes[2];
-			Plane3D downPlane = planes[3];
-			Plane3D frontPlane = planes[4];
-			Plane3D depthPlane = planes[5];
+			Plane leftPlane = planes[0];
+			Plane rightPlane = planes[1];
+			Plane upPlane = planes[2];
+			Plane downPlane = planes[3];
+			Plane frontPlane = planes[4];
+			Plane depthPlane = planes[5];
 
-			Plane3D upLeftPlane = planes[6];
-			Plane3D downRightPlane = planes[7];
-			Plane3D upRightPlane = planes[8];
-			Plane3D downLeftPlane = planes[9];
-			Plane3D upFrontPlane = planes[10];
-			Plane3D downDepthPlane = planes[11];
-			Plane3D upDepthPlane = planes[12];
-			Plane3D downFrontPlane = planes[13];
-			Plane3D leftDepthPlane = planes[14];
-			Plane3D rightFrontPlane = planes[15];
-			Plane3D rightDepthPlane = planes[16];
-			Plane3D leftFrontPlane = planes[17];
+			Plane upLeftPlane = planes[6];
+			Plane downRightPlane = planes[7];
+			Plane upRightPlane = planes[8];
+			Plane downLeftPlane = planes[9];
+			Plane upFrontPlane = planes[10];
+			Plane downDepthPlane = planes[11];
+			Plane upDepthPlane = planes[12];
+			Plane downFrontPlane = planes[13];
+			Plane leftDepthPlane = planes[14];
+			Plane rightFrontPlane = planes[15];
+			Plane rightDepthPlane = planes[16];
+			Plane leftFrontPlane = planes[17];
 
 			// axis aligned
 			updatePoints(points, pointIndex, frontPlane, leftFrontPlane, upFrontPlane, downFrontPlane); // left-front line and vertexes
@@ -115,7 +115,7 @@ namespace NAMESPACE_RENDERING
 			//down-right-depth vertex
 			updatePoints(points, pointIndex, downDepthPlane, rightDepthPlane, downRightPlane);
 
-			sp_mem_delete(planes, Plane3D);
+			sp_mem_delete(planes, Plane);
 		}
 
 		inline void setUpPositionAttribute()

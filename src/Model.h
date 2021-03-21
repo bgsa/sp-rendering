@@ -77,7 +77,7 @@ namespace NAMESPACE_RENDERING
 			{
 				const SpPoint3<sp_uint> indexes = faces->data()[i];
 
-				const Plane3D plane(
+				const Plane plane(
 					vertexes->data()[indexes[0]],
 					vertexes->data()[indexes[1]],
 					vertexes->data()[indexes[2]]

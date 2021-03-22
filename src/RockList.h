@@ -48,7 +48,7 @@ namespace NAMESPACE_RENDERING
 
 		void initMesh(const ObjModel& model)
 		{
-			PoolMemoryAllocator::main()->enableMemoryAlignment();
+			SpPoolMemoryAllocator::main()->enableMemoryAlignment();
 
 			SpMesh* mesh = sp_mem_new(SpMesh)();
 			mesh->vertexesMesh = sp_mem_new(SpArray<SpVertexMesh*>)(model.vertexes->length());
@@ -67,7 +67,7 @@ namespace NAMESPACE_RENDERING
 
 			SpPhysicSimulator::instance()->mesh(physicIndex, mesh);
 
-			PoolMemoryAllocator::main()->disableMemoryAlignment();
+			SpPoolMemoryAllocator::main()->disableMemoryAlignment();
 		}
 
 		void initBuffers()

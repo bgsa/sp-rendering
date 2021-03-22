@@ -6,7 +6,7 @@
 #include "GraphicObject2D.h"
 #include "GraphicObject3D.h"
 #include "GraphicObject3DList.h"
-#include "Camera.h"
+#include "SpCamera.h"
 #include "SpViewportData.h"
 #include "SpPhysicObject.h"
 #include "SpPhysicObjectList.h"
@@ -19,7 +19,7 @@ namespace NAMESPACE_RENDERING
 	class IRendererManager
 	{
 	protected:
-		Camera* _camera = NULL;
+		SpCamera* _camera = NULL;
 		SpViewportData* _viewport;
 
 		SpVector<GraphicObject*> graphicObjects2D;
@@ -64,7 +64,7 @@ namespace NAMESPACE_RENDERING
 			_viewport = sp_mem_new(SpViewportData)();
 		}
 		
-		API_INTERFACE inline Camera* camera()
+		API_INTERFACE inline SpCamera* camera()
 		{
 			return _camera;
 		}
@@ -74,7 +74,7 @@ namespace NAMESPACE_RENDERING
 			return _viewport;
 		}
 
-		API_INTERFACE virtual void init(Camera* camera)
+		API_INTERFACE virtual void init(SpCamera* camera)
 		{
 			//dop18Renderer.init();
 			//dop18ListRenderer.init();

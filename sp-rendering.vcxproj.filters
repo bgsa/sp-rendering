@@ -27,9 +27,6 @@
     <ClInclude Include="src\BSPTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\CompositeModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -150,9 +147,6 @@
     <ClInclude Include="src\ShaderUniform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\SpViewportData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\OpenGLRendererManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -216,9 +210,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\BSPTree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CompositeModel.cpp">

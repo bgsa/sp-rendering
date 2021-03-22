@@ -27,7 +27,7 @@ namespace NAMESPACE_RENDERING
 		{
 		}
 
-		API_INTERFACE virtual void init(Camera* camera) override;
+		API_INTERFACE virtual void init(SpCamera* camera) override;
 		API_INTERFACE void resize(sp_float width, sp_float height) override;
 
 		API_INTERFACE void preRender() override;

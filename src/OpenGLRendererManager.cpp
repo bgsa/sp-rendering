@@ -22,7 +22,7 @@ namespace NAMESPACE_RENDERING
 		_camera->updateProjectionPerspectiveAspect(_viewport->aspectRatio());
 	}
 
-	void OpenGLRendererManager::init(Camera* camera)
+	void OpenGLRendererManager::init(SpCamera* camera)
 	{
 		this->_camera = camera;
 
@@ -100,7 +100,7 @@ namespace NAMESPACE_RENDERING
 	{
 		if (_camera != NULL)
 		{
-			sp_mem_delete(_camera, Camera);
+			sp_mem_delete(_camera, SpCamera);
 			_camera = nullptr;
 		}
 	}

@@ -65,7 +65,7 @@ namespace NAMESPACE_RENDERING
 
 			mesh->init();
 
-			SpPhysicSimulator::instance()->mesh(physicIndex, mesh);
+			SpWorldManagerInstance->current()->mesh(physicIndex, mesh);
 
 			SpPoolMemoryAllocator::main()->disableMemoryAlignment();
 		}
@@ -166,7 +166,7 @@ namespace NAMESPACE_RENDERING
 			glVertexAttribPointer(normalAttribute, 3, GL_FLOAT, GL_FALSE, 0, (void*)(vertexesLength * VEC3_LENGTH * SIZEOF_FLOAT));
 			glEnableVertexAttribArray(normalAttribute);
 
-			SpPhysicSimulator::instance()->transformsGPU()->use();
+			SpWorldManagerInstance->current()->transformsGPU()->use();
 			_indexesBuffer->use();
 			
 			glDrawElementsInstanced(GL_TRIANGLES, facesLength * THREE_SIZE, GL_UNSIGNED_INT, NULL, length());

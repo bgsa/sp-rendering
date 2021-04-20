@@ -33,7 +33,7 @@ namespace NAMESPACE_RENDERING
 		bspTree->root->value = *BSPNode::initRootNode();
 	}
 
-	void BSPEditor2D::render(const RenderData& renderData)
+	void BSPEditor2D::render(const SpRenderData& renderData)
 	{
 		//bspTree->root->value.render2D(renderData);
 	}

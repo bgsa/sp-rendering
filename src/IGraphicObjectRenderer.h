@@ -2,7 +2,7 @@
 #define I_GRAPHIC_OBJECT_RENDERER_HEADER
 
 #include "SpectrumRendering.h"
-#include "RenderData.h"
+#include "SpRenderData.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -13,7 +13,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE virtual void update() = 0;
 
-		API_INTERFACE virtual void render(const RenderData& renderData) = 0;
+		API_INTERFACE virtual void render(const SpRenderData& renderData) = 0;
 
 	};
 }

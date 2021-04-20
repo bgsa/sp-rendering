@@ -12,11 +12,11 @@ namespace NAMESPACE_RENDERING
 	{
 	private:
 
-		void render(const RenderData& renderData) override { };
+		void render(const SpRenderData& renderData) override { };
 
 	public:
 
-		API_INTERFACE virtual void render(const RenderData& renderData, BoundingVolume* boundingVolume) = 0;
+		API_INTERFACE virtual void render(const SpRenderData& renderData, BoundingVolume* boundingVolume) = 0;
 
 	};
 }

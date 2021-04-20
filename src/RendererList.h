@@ -62,7 +62,7 @@ namespace NAMESPACE_RENDERING
 			setUpPositionAttribute();
 		}
 
-		API_INTERFACE void render(const RenderData& renderData) override
+		API_INTERFACE void render(const SpRenderData& renderData) override
 		{
 			_list->buffer()->use();
 			glVertexAttribPointer(positionAttribute, 3, GL_FLOAT, GL_FALSE, 0, 0);

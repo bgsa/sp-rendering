@@ -24,7 +24,7 @@ namespace NAMESPACE_RENDERING
 
 		void init();
 
-		void render(const RenderData& renderData);
+		void render(const SpRenderData& renderData);
 
 		API_INTERFACE const sp_char* toString() override
 		{

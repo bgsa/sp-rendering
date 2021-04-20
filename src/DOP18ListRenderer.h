@@ -18,7 +18,7 @@ namespace NAMESPACE_RENDERING
 		void initVertexBuffer();		
 		void updateVertexBuffer(DOP18* listOfDOP18, sp_uint length);
 
-		void render(const RenderData& renderData) override { }
+		void render(const SpRenderData& renderData) override { }
 
 	public:
 
@@ -30,7 +30,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE void scale(const sp_uint index, const Vec3& factors) override { }
 
-		API_INTERFACE void render(const RenderData& renderData, DOP18* listOfDOP18, sp_uint length);
+		API_INTERFACE void render(const SpRenderData& renderData, DOP18* listOfDOP18, sp_uint length);
 
 		API_INTERFACE void dispose() override;
 

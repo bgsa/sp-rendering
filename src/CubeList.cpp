@@ -9,7 +9,7 @@ namespace NAMESPACE_RENDERING
 		this->cubesSize = cubesSize;
 	}
 
-	void CubeList::render(const RenderData& renderData)
+	void CubeList::render(const SpRenderData& renderData)
 	{
 		renderer->beforeRender(renderData, cubes, cubesSize);
 		renderer->render(cubesSize);

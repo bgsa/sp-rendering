@@ -148,7 +148,7 @@ namespace NAMESPACE_RENDERING
 		initVBO();
 	}
 
-	void Polygon3D::renderBorder(RenderData renderData)
+	void Polygon3D::renderBorder(SpRenderData renderData)
 	{
 		glUniform4f(colorLocation, borderColor->red, borderColor->green, borderColor->blue, borderColor->alpha);
 
@@ -160,7 +160,7 @@ namespace NAMESPACE_RENDERING
 		glLineWidth(currentLineWidth);
 	}
 
-	void Polygon3D::render(RenderData renderData)
+	void Polygon3D::render(SpRenderData renderData)
 	{
 		glUseProgram(programShader);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);

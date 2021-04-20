@@ -2,7 +2,7 @@
 
 namespace NAMESPACE_RENDERING
 {
-	void Rock::render(const RenderData& renderData)
+	void Rock::render(const SpRenderData& renderData)
 	{
 		shader->enable();
 		indexesBuffer->use();

@@ -33,9 +33,9 @@ namespace NAMESPACE_RENDERING
 
 		static BSPNode* initRootNode();
 
-		void render(const RenderData& renderData) override;
+		void render(const SpRenderData& renderData) override;
 		//void render2D(RenderData renderData);
-		void render3D(RenderData renderData);
+		void render3D(SpRenderData renderData);
 
 		API_INTERFACE const sp_char* toString() {
 			return "BSP TreeNode";

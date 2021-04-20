@@ -72,7 +72,7 @@ namespace NAMESPACE_RENDERING
 		setupAttributeLocations();
 	}
 
-	void SphereRenderer::render(const RenderData& renderData)
+	void SphereRenderer::render(const SpRenderData& renderData)
 	{
 		glUseProgram(programShader);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);

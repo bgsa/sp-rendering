@@ -2,8 +2,7 @@
 #define RENDERER_EDITOR_HEADER
 
 #include "SpectrumPhysics.h"
-#include "IRendererManager.h"
-#include "RenderData.h"
+#include "SpIRendererManager.h"
 
 namespace NAMESPACE_RENDERING
 {

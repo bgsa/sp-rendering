@@ -170,7 +170,7 @@ namespace NAMESPACE_RENDERING
 		positionAttribute = shader->getAttribute("Position");
 	}
 
-	void DOP18ListRenderer::render(const RenderData& renderData, DOP18* listOfDOP18, sp_uint length)
+	void DOP18ListRenderer::render(const SpRenderData& renderData, DOP18* listOfDOP18, sp_uint length)
 	{
 		shader
 			->enable()

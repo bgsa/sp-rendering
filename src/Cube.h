@@ -17,7 +17,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE void init(CubeRenderer* renderer);
 
-		API_INTERFACE void render(const RenderData& renderData) override;
+		API_INTERFACE void render(const SpRenderData& renderData) override;
 
 		API_INTERFACE const sp_char* toString() override
 		{

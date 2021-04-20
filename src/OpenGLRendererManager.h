@@ -8,7 +8,7 @@
 #include "GLConfig.h"
 #include "SpEventDispatcher.h"
 #include "LogGL.hpp"
-#include "IRendererManager.h"
+#include "SpIRendererManager.h"
 
 #include "SphereX.h"
 #include "Cube.h"
@@ -18,12 +18,12 @@
 namespace NAMESPACE_RENDERING
 {
 	class OpenGLRendererManager
-		: public IRendererManager
+		: public SpIRendererManager
 	{
 	public:
 
 		API_INTERFACE OpenGLRendererManager()
-			: IRendererManager()
+			: SpIRendererManager()
 		{
 		}
 
@@ -34,7 +34,9 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE void render() override;
 		API_INTERFACE void postRender() override;
 
-		API_INTERFACE ~OpenGLRendererManager();
+		API_INTERFACE void dispose() override;
+
+		~OpenGLRendererManager() { dispose(); }
 	};
 }
 

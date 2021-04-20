@@ -22,7 +22,7 @@ namespace NAMESPACE_RENDERING
 			renderer = NULL;
 		}
 
-		void render(const RenderData& renderData) override
+		void render(const SpRenderData& renderData) override
 		{
 			renderer->geometry = &geometry;
 			//renderer->setColor(*this->color);

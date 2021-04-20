@@ -7,7 +7,7 @@ namespace NAMESPACE_RENDERING
 		this->bspTree = bspTree;
 	}
 
-	void BSPEditor3D::render(const RenderData& renderData)
+	void BSPEditor3D::render(const SpRenderData& renderData)
 	{
 		bspTree->root->value.render3D(renderData);
 	}

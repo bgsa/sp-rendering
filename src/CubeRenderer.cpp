@@ -135,7 +135,7 @@ namespace NAMESPACE_RENDERING
 		glBindTexture(GL_TEXTURE_BUFFER, modelMatrixTBO);
 	}
 
-	void CubeRenderer::beforeRender(const RenderData& renderData, Cube* cubes, size_t cubesCount)
+	void CubeRenderer::beforeRender(const SpRenderData& renderData, Cube* cubes, size_t cubesCount)
 	{
 		glUseProgram(programShader);
 

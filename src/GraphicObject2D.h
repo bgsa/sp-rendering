@@ -86,7 +86,7 @@ namespace NAMESPACE_RENDERING
 			return borderColor;
 		}
 
-		API_INTERFACE virtual void renderBorder(RenderData renderData, sp_size pointsCount)
+		API_INTERFACE virtual void renderBorder(SpRenderData renderData, sp_size pointsCount)
 		{
 			if (borderWidth == 0.0f)
 				return;

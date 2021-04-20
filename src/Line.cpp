@@ -85,7 +85,7 @@ namespace NAMESPACE_RENDERING
 		setUpPositionAttribute();
 	}
 
-	void Line::render(RenderData renderData)
+	void Line::render(SpRenderData renderData)
 	{
 		glUseProgram(programShader);
 

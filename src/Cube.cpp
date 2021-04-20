@@ -11,7 +11,7 @@ namespace NAMESPACE_RENDERING
 		this->renderer = renderer;
 	}
 
-	void Cube::render(const RenderData& renderData)
+	void Cube::render(const SpRenderData& renderData)
 	{
 		renderer->beforeRender(renderData, this, 1);
 		renderer->render(1);

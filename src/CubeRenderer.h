@@ -98,7 +98,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE void init();
 
-		API_INTERFACE void beforeRender(const RenderData& renderData, Cube* cubes, size_t cubesCount);
+		API_INTERFACE void beforeRender(const SpRenderData& renderData, Cube* cubes, size_t cubesCount);
 		API_INTERFACE void render(size_t cubesCount);
 
 		API_INTERFACE std::string toString()

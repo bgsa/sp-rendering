@@ -3,7 +3,7 @@
 
 #include "SpectrumRendering.h"
 #include <Object.h>
-#include "RenderData.h"
+#include "SpRenderData.h"
 #include "SpTransform.h"
 #include "BoundingVolumeRenderer.h"
 
@@ -58,7 +58,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE virtual void init() = 0;
 
-		API_INTERFACE virtual void render(const RenderData& renderData) = 0;
+		API_INTERFACE virtual void render(const SpRenderData& renderData) = 0;
 
 		API_INTERFACE virtual GraphicObjectType type() = 0;
 

@@ -45,7 +45,7 @@ namespace NAMESPACE_RENDERING
 			return _boundingVolume;
 		}
 
-		API_INTERFACE void render(const RenderData& renderData) override;
+		API_INTERFACE void render(const SpRenderData& renderData) override;
 
 		API_INTERFACE inline const sp_char* toString() override
 		{

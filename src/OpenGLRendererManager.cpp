@@ -11,15 +11,15 @@ namespace NAMESPACE_RENDERING
 		if (width == ZERO_FLOAT || height == ZERO_FLOAT)
 			return;
 
-		if (_viewport->width == width && _viewport->height == height)
+		if (_viewport.width == width && _viewport.height == height)
 			return;
 
-		_viewport->resize((sp_int)width, (sp_int)height);
+		_viewport.resize((sp_int)width, (sp_int)height);
 
-		sp_opengl_check(glViewport(_viewport->x, _viewport->y, _viewport->width, _viewport->height));
-		sp_opengl_check(glScissor(_viewport->x, _viewport->y, _viewport->width, _viewport->height));
+		sp_opengl_check(glViewport(_viewport.x, _viewport.y, _viewport.width, _viewport.height));
+		sp_opengl_check(glScissor(_viewport.x, _viewport.y, _viewport.width, _viewport.height));
 
-		_camera->updateProjectionPerspectiveAspect(_viewport->aspectRatio());
+		_camera->updateProjectionPerspectiveAspect(_viewport.aspectRatio());
 	}
 
 	void OpenGLRendererManager::init(SpCamera* camera)
@@ -51,10 +51,10 @@ namespace NAMESPACE_RENDERING
 		sp_opengl_check(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));    //enable alpha color
 		sp_opengl_check(glEnable(GL_LINE_SMOOTH));
 
-		sp_opengl_check(glViewport(_viewport->x, _viewport->y, _viewport->width, _viewport->height));
-		sp_opengl_check(glScissor(_viewport->x, _viewport->y, _viewport->width, _viewport->height));
+		sp_opengl_check(glViewport(_viewport.x, _viewport.y, _viewport.width, _viewport.height));
+		sp_opengl_check(glScissor(_viewport.x, _viewport.y, _viewport.width, _viewport.height));
 
-		IRendererManager::init(camera);
+		SpIRendererManager::init(camera);
 	}
 
 	void OpenGLRendererManager::preRender()
@@ -63,15 +63,15 @@ namespace NAMESPACE_RENDERING
 
 	void OpenGLRendererManager::render()
 	{
-		_camera->updateProjectionPerspectiveAspect(_viewport->aspectRatio());
+		_camera->updateProjectionPerspectiveAspect(_viewport.aspectRatio());
 
-		RenderData renderData;
+		SpRenderData renderData;
 		renderData.projectionMatrix = _camera->getProjectionMatrix();
 		renderData.viewMatrix = _camera->getViewMatrix();
-		renderData.viewport = _viewport;
+		renderData.viewport = &_viewport;
 
-		sp_opengl_check(glViewport(_viewport->x, _viewport->y, _viewport->width, _viewport->height));
-		sp_opengl_check(glScissor(_viewport->x, _viewport->y, _viewport->width, _viewport->height));
+		sp_opengl_check(glViewport(_viewport.x, _viewport.y, _viewport.width, _viewport.height));
+		sp_opengl_check(glScissor(_viewport.x, _viewport.y, _viewport.width, _viewport.height));
 		sp_opengl_check(glClearColor(0.5f, 0.5f, 0.5f, 1.0f));
 		sp_opengl_check(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
 
@@ -84,7 +84,7 @@ namespace NAMESPACE_RENDERING
 
 		render3D(renderData);
 
-		_camera->getHUDProjectionMatrix((sp_float)_viewport->width, (sp_float)_viewport->height, renderData.projectionMatrix);
+		_camera->getHUDProjectionMatrix((sp_float)_viewport.width, (sp_float)_viewport.height, renderData.projectionMatrix);
 
 		sp_opengl_check(glDisable(GL_DEPTH_TEST));
 		sp_opengl_check(glDisable(GL_CULL_FACE));
@@ -96,7 +96,7 @@ namespace NAMESPACE_RENDERING
 	{
 	}
 
-	OpenGLRendererManager::~OpenGLRendererManager()
+	void OpenGLRendererManager::dispose()
 	{
 		if (_camera != NULL)
 		{

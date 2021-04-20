@@ -3,6 +3,7 @@
 
 #include "SpectrumRendering.h"
 #include "GraphicObject.h"
+#include "SpIGraphicObjectList3D.h"
 #include "IGraphicObjectRenderer.h"
 #include "SpArray.h"
 #include "OpenGLBuffer.h"
@@ -11,8 +12,9 @@
 
 namespace NAMESPACE_RENDERING
 {
-	class GraphicObject3DList : 
-		public GraphicObject
+	class GraphicObject3DList 
+		: public SpIGraphicObjectList3D
+		, public GraphicObject
 	{
 	protected:
 		IGraphicObjectRenderer* renderer;
@@ -47,7 +49,7 @@ namespace NAMESPACE_RENDERING
 			this->renderer = renderer;
 		}
 
-		API_INTERFACE void render(const RenderData& renderData) override
+		API_INTERFACE void render(const SpRenderData& renderData) override
 		{
 			renderer->render(renderData);
 		}

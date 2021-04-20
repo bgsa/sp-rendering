@@ -215,7 +215,7 @@ namespace NAMESPACE_RENDERING
 			*/
 	}
 
-	void BSPNode::render(const RenderData& renderData)
+	void BSPNode::render(const SpRenderData& renderData)
 	{
 		//render2D(renderData);
 	}
@@ -234,7 +234,7 @@ namespace NAMESPACE_RENDERING
 	}
 	*/
 
-	void BSPNode::render3D(RenderData renderData)
+	void BSPNode::render3D(SpRenderData renderData)
 	{
 		if (polygon3D != nullptr)
 			polygon3D->render(renderData);

@@ -94,7 +94,7 @@ namespace NAMESPACE_RENDERING
 		setUpPositionAttribute();
 	}
 
-	void GridSystem::render(const RenderData& renderData)
+	void GridSystem::render(const SpRenderData& renderData)
 	{
 		glUseProgram(programShader);
 

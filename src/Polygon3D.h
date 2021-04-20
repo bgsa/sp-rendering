@@ -4,7 +4,7 @@
 #include "Shader.h"
 #include "GraphicObject3D.h"
 #include <ColorRGBA.h>
-#include "RenderData.h"
+#include "SpRenderData.h"
 #include <Image.h>
 #include <ImageFactory.h>
 #include <FileSystem.h>
@@ -47,8 +47,8 @@ namespace NAMESPACE_RENDERING
 
 		void init();
 
-		void renderBorder(RenderData renderData);
-		void render(RenderData renderData);
+		void renderBorder(SpRenderData renderData);
+		void render(SpRenderData renderData);
 
 		API_INTERFACE const char* toString() override
 		{

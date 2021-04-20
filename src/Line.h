@@ -27,7 +27,7 @@ namespace NAMESPACE_RENDERING
 
 		void setLineWidth(float newLineWidth);
 
-		void render(RenderData renderData);
+		void render(SpRenderData renderData);
 
 		API_INTERFACE const sp_char* toString() {
 			return "Line 3D";

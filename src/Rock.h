@@ -5,7 +5,7 @@
 #include "GraphicObject3D.h"
 #include "DOP18.h"
 #include "IGraphicObjectRenderer.h"
-#include "ObjModel.h"
+#include <ObjModel.h>
 #include "OpenGLBuffer.h"
 #include "OpenGLShader.h"
 #include "OpenGLTexture.h"

@@ -10,8 +10,8 @@
 namespace NAMESPACE_RENDERING
 {
 	struct ShaderAttributes {
-		GLfloat position[9];
-		GLfloat color[12];
+		sp_float position[9];
+		sp_float color[12];
 	};
 
 	class Triangle

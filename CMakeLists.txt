@@ -15,7 +15,6 @@ project(SpRendering VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION})
 
 option(OPERATING_SYSTEM "Define which operating system will be built for"  "WINDOWS")
 option(ARCH_BITS        "Define the compilation to 64 bits"                "32")
-option(BUILD_TYPE       "Define the build type (Debug or Release"          "Debug")
 option(OPENCL_ENABLED   "Define if OpenCL will be enabled"   ON)
 option(OPENCL_DIR       "Define the OpenCL home folder OR Environment Var %OPENCL_HOME% Ex.: C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v9.2" $ENV{OPENCL_HOME})
 
@@ -34,7 +33,6 @@ find_package(OpenGL REQUIRED)
 set (PROJECT_DIR  ${CMAKE_CURRENT_SOURCE_DIR})
 set (SOLUTION_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
-set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_DIR}/lib)
 set (SP_FOUNDATION_DIR ${SOLUTION_DIR}/sp-foundation)
 set (SP_PHYSICS_DIR ${SOLUTION_DIR}/sp-physics)
 set (VENDOR_DIR ${SOLUTION_DIR}/vendor)
@@ -57,6 +55,8 @@ else()
 	set (OS_LIB_DIR       /usr/local/lib)
 	set (OS_BIN_DIR       /usr/local/bin)
 endif()
+
+set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_DIR}/lib/${ARCH}/${CMAKE_BUILD_TYPE})
 
 if ( ${OPERATING_SYSTEM} STREQUAL "WINDOWS" )
 	if( ${BUILD_SHARED_LIBS} )
@@ -92,9 +92,9 @@ include_directories(
 )
 
 link_directories(
-	${VENDOR_DIR}/lib/${BUILD_TYPE}
-	${SP_FOUNDATION_DIR}/lib/${BUILD_TYPE}
-	${SP_PHYSICS_DIR}/lib/${BUILD_TYPE}
+	${VENDOR_DIR}/lib/${ARCH}/${CMAKE_BUILD_TYPE}
+	${SP_FOUNDATION_DIR}/lib/${ARCH}/${CMAKE_BUILD_TYPE}
+	${SP_PHYSICS_DIR}/lib/${ARCH}/${CMAKE_BUILD_TYPE}
 	${OS_LIB_DIR}
 	${OS_BIN_DIR}
 )

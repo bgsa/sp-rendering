@@ -59,7 +59,7 @@ namespace NAMESPACE_RENDERING
 
 		glGenBuffers(1, &vertexBufferObject);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-		glBufferData(GL_ARRAY_BUFFER, SIZEOF_FLOAT * 3, initialPosition, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(sp_float) * 3, initialPosition, GL_STATIC_DRAW);
 
 		projectionMatrixLocation = glGetUniformLocation(programShader, "projection");
 		viewMatrixLocation = glGetUniformLocation(programShader, "view");

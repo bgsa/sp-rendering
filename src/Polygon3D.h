@@ -34,9 +34,9 @@ namespace NAMESPACE_RENDERING
 	public:
 		Vec3List vertexes;
 		GLubyte* faces;
-		size_t facesSize = 0;
+		sp_size facesSize = ZERO_SIZE;
 
-		float borderWidth = 0.0f;
+		sp_float borderWidth = 0.0f;
 		ColorRGBA* borderColor = new ColorRGBA(0.3f, 0.3f, 0.3f, 1.0f);
 
 		std::string API_INTERFACE getTexture();

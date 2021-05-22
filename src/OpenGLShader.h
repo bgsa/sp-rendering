@@ -149,7 +149,7 @@ namespace NAMESPACE_RENDERING
 
 				if (infoLen > 1)
 				{
-					sp_char* infoLog = ALLOC_ARRAY(sp_char, SIZEOF_CHAR * infoLen);
+					sp_char* infoLog = ALLOC_ARRAY(sp_char, sizeof(sp_char) * infoLen);
 					glGetShaderInfoLog(shader, infoLen, nullptr, infoLog);
 
 					sp_log_error1s(infoLog); sp_log_newline();
@@ -190,7 +190,7 @@ namespace NAMESPACE_RENDERING
 
 				if (infoLen > 1)
 				{
-					sp_char *infoLog = ALLOC_ARRAY(sp_char, SIZEOF_CHAR * infoLen);
+					sp_char *infoLog = ALLOC_ARRAY(sp_char, sizeof(sp_char) * infoLen);
 					glGetProgramInfoLog(program, infoLen, nullptr, infoLog);
 
 					sp_log_error1s(infoLog); sp_log_newline();

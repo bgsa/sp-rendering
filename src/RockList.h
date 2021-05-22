@@ -34,7 +34,7 @@ namespace NAMESPACE_RENDERING
 		void initIndexBuffer(const ObjModel* model)
 		{
 			facesLength = model->faces->length();
-			_indexesBuffer = sp_mem_new(OpenGLBuffer)(facesLength * 3 * SIZEOF_UINT, model->faces->data(), GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
+			_indexesBuffer = sp_mem_new(OpenGLBuffer)(facesLength * 3 * sizeof(sp_uint), model->faces->data(), GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 		}
 
 		void initVertexBuffer(const ObjModel* model)
@@ -42,7 +42,7 @@ namespace NAMESPACE_RENDERING
 			const sp_size allBuffersLen = model->allBuffersLength();
 			sp_float* tempCpuBuffer = ALLOC_ARRAY(sp_float, allBuffersLen);
 			model->allBuffers(tempCpuBuffer);
-			_buffer = sp_mem_new(OpenGLBuffer)(allBuffersLen * SIZEOF_FLOAT, tempCpuBuffer);
+			_buffer = sp_mem_new(OpenGLBuffer)(allBuffersLen * sizeof(sp_float), tempCpuBuffer);
 			ALLOC_RELEASE(tempCpuBuffer);
 		}
 
@@ -163,7 +163,7 @@ namespace NAMESPACE_RENDERING
 			_buffer->use();
 			glVertexAttribPointer(positionAttribute, 3, GL_FLOAT, GL_FALSE, 0, 0);
 			glEnableVertexAttribArray(positionAttribute);
-			glVertexAttribPointer(normalAttribute, 3, GL_FLOAT, GL_FALSE, 0, (void*)(vertexesLength * VEC3_LENGTH * SIZEOF_FLOAT));
+			glVertexAttribPointer(normalAttribute, 3, GL_FLOAT, GL_FALSE, 0, (void*)(vertexesLength * VEC3_LENGTH * sizeof(sp_float)));
 			glEnableVertexAttribArray(normalAttribute);
 
 			SpWorldManagerInstance->current()->transformsGPU()->use();

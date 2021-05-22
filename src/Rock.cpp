@@ -52,10 +52,10 @@ namespace NAMESPACE_RENDERING
 		const sp_size allBuffersLength = model.allBuffersLength();
 		sp_float* tempCpuBuffer = ALLOC_ARRAY(sp_float, allBuffersLength);
 		model.allBuffers(tempCpuBuffer);
-		buffer = sp_mem_new(OpenGLBuffer)(allBuffersLength * SIZEOF_FLOAT, tempCpuBuffer);
+		buffer = sp_mem_new(OpenGLBuffer)(allBuffersLength * sizeof(sp_float), tempCpuBuffer);
 		ALLOC_RELEASE(tempCpuBuffer);
 
-		indexesBuffer = sp_mem_new(OpenGLBuffer)(facesLength * 3 * SIZEOF_UINT, model.faces->data(), GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
+		indexesBuffer = sp_mem_new(OpenGLBuffer)(facesLength * 3 * sizeof(sp_uint), model.faces->data(), GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 
 		shader = sp_mem_new(OpenGLShader)();
 		shader

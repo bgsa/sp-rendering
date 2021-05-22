@@ -10,7 +10,7 @@
 namespace NAMESPACE_RENDERING
 {
 	#define INDEXES_COUNT_PER_18DOP (96)
-	#define SIZE_PER_18DOP (SIZEOF_UINT * INDEXES_COUNT_PER_18DOP)
+	#define SIZE_PER_18DOP (sizeof(sp_uint) * INDEXES_COUNT_PER_18DOP)
 	#define VERTEXES_PER_18DOP (INDEXES_COUNT_PER_18DOP * 3)  /* (32 * 3) */
 
 	class DOP18Renderer
@@ -163,7 +163,7 @@ namespace NAMESPACE_RENDERING
 			};
 
 			vertexBuffer = sp_mem_new(OpenGLBuffer)();
-			indecesBuffer = sp_mem_new(OpenGLBuffer)(INDEXES_COUNT_PER_18DOP * SIZEOF_FLOAT, IndexesPerKdop, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
+			indecesBuffer = sp_mem_new(OpenGLBuffer)(INDEXES_COUNT_PER_18DOP * sizeof(sp_float), IndexesPerKdop, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 		}
 
 		API_INTERFACE void update() override { }
@@ -177,7 +177,7 @@ namespace NAMESPACE_RENDERING
 			updatePoints(dop, points, ZERO_SIZE);
 			vertexBuffer
 				->use()
-				->updateData(INDEXES_COUNT_PER_18DOP * SIZEOF_FLOAT, points, GL_DYNAMIC_DRAW);
+				->updateData(INDEXES_COUNT_PER_18DOP * sizeof(sp_float), points, GL_DYNAMIC_DRAW);
 			
 			glVertexAttribPointer(positionAttribute, 3, GL_FLOAT, GL_FALSE, 0, 0);
 

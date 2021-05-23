@@ -38,8 +38,8 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE virtual void disable() override
 		{
-			glBindBuffer(GL_TEXTURE_BUFFER, NULL);
-			glBindTexture(GL_TEXTURE_BUFFER, NULL);
+			glBindBuffer(GL_TEXTURE_BUFFER, 0);
+			glBindTexture(GL_TEXTURE_BUFFER, 0);
 		}
 
 		API_INTERFACE const sp_char* toString() override

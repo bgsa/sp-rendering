@@ -39,7 +39,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE inline void disable() override
 		{
-			glBindBuffer(_type, NULL);
+			glBindBuffer(_type, 0);
 		}
 
 		API_INTERFACE inline OpenGLBuffer* updateData(sp_size size, void* data, sp_int usageType = GL_STATIC_DRAW) override

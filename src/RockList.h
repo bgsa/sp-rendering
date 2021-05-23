@@ -73,7 +73,7 @@ namespace NAMESPACE_RENDERING
 		void initBuffers()
 		{
 			ObjModel model;
-			model.load("resources\\models\\rocks\\obj.obj");
+			model.load("resources/models/rocks/obj.obj");
 
 			initVertexBuffer(&model);
 			initIndexBuffer(&model);
@@ -131,8 +131,8 @@ namespace NAMESPACE_RENDERING
 
 			shader = sp_mem_new(OpenGLShader)();
 			shader
-				->buildFromFile(GL_VERTEX_SHADER, "resources\\shaders\\opengl\\rock\\shader-list.vs")
-				->buildFromFile(GL_FRAGMENT_SHADER, "resources\\shaders\\opengl\\rock\\shader-list.fs")
+				->buildFromFile(GL_VERTEX_SHADER, "resources/shaders/opengl/rock/shader-list.vs")
+				->buildFromFile(GL_FRAGMENT_SHADER, "resources/shaders/opengl/rock/shader-list.fs")
 				->link();
 
 			projectionMatrixLocation = shader->getUniform("projectionMatrix");

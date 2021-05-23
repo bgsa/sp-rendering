@@ -57,7 +57,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE inline void disable()
 		{
-			glBindTexture(GL_TEXTURE_2D, NULL);
+			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 
 		API_INTERFACE inline OpenGLTexture* property(sp_int name, sp_int value)

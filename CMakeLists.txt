@@ -19,13 +19,11 @@ option(OPENCL_ENABLED   "Define if OpenCL will be enabled"   ON)
 option(OPENCL_DIR       "Define the OpenCL home folder OR Environment Var %OPENCL_HOME% Ex.: C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v9.2" $ENV{OPENCL_HOME})
 
 if ( ${OPENCL_ENABLED} )
-	set (OPENCL_DEFINITION "-DOPENCL_ENABLED")
+	list(APPEND CUSTOM_DEFINITIONS "-DOPENCL_ENABLED")
 
 	if ( "${OPENCL_DIR}" STREQUAL "OFF" )
 		set (OPENCL_DIR $ENV{OPENCL_HOME})
 	endif()
-else()
-	set (OPENCL_DEFINITION "")
 endif()
 
 find_package(OpenGL REQUIRED)
@@ -48,15 +46,21 @@ if ( ${ARCH_BITS} STREQUAL "64" )
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64 -fPIC -std=c++11" )
 	set (OS_LIB_DIR       /usr/lib/x86_64-linux-gnu)
 	set (OS_BIN_DIR       /usr/bin/x86_64-linux-gnu)
+
+	list(APPEND CUSTOM_DEFINITIONS "-DENV_64BITS")
 else()
 	set (ARCH "x86")	
 	set (CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -m32 -fPIC -std=c11" )
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -fPIC -std=c++11" )
 	set (OS_LIB_DIR       /usr/local/lib)
 	set (OS_BIN_DIR       /usr/local/bin)
+
+	list(APPEND CUSTOM_DEFINITIONS "-DENV_32BITS")
 endif()
 
 set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_DIR}/lib/${ARCH}/${CMAKE_BUILD_TYPE})
+
+list(APPEND CUSTOM_DEFINITIONS "-DAPI_EXPORT")
 
 if ( ${OPERATING_SYSTEM} STREQUAL "WINDOWS" )
 	if( ${BUILD_SHARED_LIBS} )
@@ -69,17 +73,38 @@ if ( ${OPERATING_SYSTEM} STREQUAL "WINDOWS" )
 
 	set (SP_FOUNDATION_LIB_NAME "SpFoundation.lib")
 	set (SP_PHYSICS_LIB_NAME    "SpPhysics.lib")
-	set (CUSTOM_DEFINITIONS "-D_CRT_SECURE_NO_WARNINGS")
 	set (OS_INCLUDE_DIR .)
 
-elseif ( ${OPERATING_SYSTEM} STREQUAL "LINUX" OR ${OPERATING_SYSTEM} STREQUAL "OSX" )
+	list(APPEND CUSTOM_DEFINITIONS "-DWINDOWS")
+	list(APPEND CUSTOM_DEFINITIONS "-D_CRT_SECURE_NO_WARNINGS")
+
+elseif ( ${OPERATING_SYSTEM} STREQUAL "LINUX" )
 	set (SP_FOUNDATION_LIB_NAME "libSpFoundation.a")
 	set (SP_PHYSICS_LIB_NAME "libSpPhysics.a"   )
-	set (CUSTOM_DEFINITIONS "-Wno-dangling-else" "-Wno-ignored-attributes")
 	set (OS_INCLUDE_DIR /usr/local/include)
+
+	list(APPEND CUSTOM_DEFINITIONS "-DLINUX")
+	list(APPEND CUSTOM_DEFINITIONS "-Wno-dangling-else")
+	list(APPEND CUSTOM_DEFINITIONS "-Wno-ignored-attributes")
+
+elseif ( ${OPERATING_SYSTEM} STREQUAL "OSX" )
+	set (SP_FOUNDATION_LIB_NAME "libSpFoundation.a")
+	set (SP_PHYSICS_LIB_NAME "libSpPhysics.a"   )
+	set (OS_INCLUDE_DIR /usr/local/include)
+
+	list(APPEND CUSTOM_DEFINITIONS "-DOSX")
+	list(APPEND CUSTOM_DEFINITIONS "-DUNIX")
+	list(APPEND CUSTOM_DEFINITIONS "-Wno-dangling-else")
+	list(APPEND CUSTOM_DEFINITIONS "-Wno-ignored-attributes")
+
 else()
 	message(FATAL_ERROR "Operating System not defined!")
 endif()
+
+if ( ${CMAKE_BUILD_TYPE} STREQUAL "Debug" )
+	list(APPEND CUSTOM_DEFINITIONS "-DDEBUG")
+endif()
+
 
 file(GLOB SOURCES "src/*.cpp")
 
@@ -105,15 +130,9 @@ else()
 	add_library(${PROJECT_NAME} STATIC ${SOURCES})
 endif()
 
-if     ( ${OPERATING_SYSTEM} STREQUAL "WINDOWS" )
-    add_definitions(-DAPI_EXPORT -DOPENGL_ENABLED ${OPENCL_DEFINITION} ${CUSTOM_DEFINITIONS} -DWINDOWS)
-elseif ( ${OPERATING_SYSTEM} STREQUAL "LINUX"   )
-    add_definitions(-DAPI_EXPORT -DOPENGL_ENABLED ${OPENCL_DEFINITION} ${CUSTOM_DEFINITIONS} -DLINUX)
-elseif ( ${OPERATING_SYSTEM} STREQUAL "OSX"     )
-    add_definitions(-DAPI_EXPORT -DOPENGL_ENABLED ${OPENCL_DEFINITION} ${CUSTOM_DEFINITIONS} -DOSX)
-else()
-    message(FATAL_ERROR "Operating System not defined!")
-endif()
+list(JOIN CUSTOM_DEFINITIONS " " CUSTOM_DEFINITIONS)
+message(STATUS "FLAGS: " ${CUSTOM_DEFINITIONS})
+add_definitions(${CUSTOM_DEFINITIONS} -DOPENGL_ENABLED -DMAJOR_COLUMN_ORDER)
 
 target_link_libraries(${PROJECT_NAME} 
 	${SP_FOUNDATION_LIB_NAME}

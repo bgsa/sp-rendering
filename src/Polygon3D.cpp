@@ -155,7 +155,7 @@ namespace NAMESPACE_RENDERING
 		float currentLineWidth = GLConfig::getGLfloat(GL_LINE_WIDTH);
 		glLineWidth(borderWidth);
 
-		glDrawElements(GL_LINE_STRIP, facesSize, GL_UNSIGNED_BYTE, faces);
+		glDrawElements(GL_LINE_STRIP, (GLsizei)facesSize, GL_UNSIGNED_BYTE, faces);
 
 		glLineWidth(currentLineWidth);
 	}
@@ -175,7 +175,7 @@ namespace NAMESPACE_RENDERING
 		setUpPositionAttribute();
 		setUpTextureAttribute();
 
-		glDrawElements(GL_TRIANGLES, facesSize, GL_UNSIGNED_BYTE, faces);
+		glDrawElements(GL_TRIANGLES, (GLsizei)facesSize, GL_UNSIGNED_BYTE, faces);
 
 		if (borderWidth > 0.0f)
 			renderBorder(renderData);

@@ -96,7 +96,7 @@ namespace NAMESPACE_RENDERING
 			sp_float currentLineWidth = GLConfig::getGLfloat(GL_LINE_WIDTH);
 			glLineWidth(borderWidth);
 
-			glDrawArrays(GL_LINE_LOOP, 0, pointsCount);
+			glDrawArrays(GL_LINE_LOOP, 0, (GLsizei)pointsCount);
 
 			glLineWidth(currentLineWidth);
 		}

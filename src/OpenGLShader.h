@@ -350,14 +350,14 @@ namespace NAMESPACE_RENDERING
 	template <>
 	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniformArray(const GLint id, const Mat4* listOfMat4, sp_size length)
 	{
-		glUniformMatrix4fv(id, length, GL_FALSE, (sp_float*)listOfMat4);
+		glUniformMatrix4fv(id, (GLsizei)length, GL_FALSE, (sp_float*)listOfMat4);
 		return this;
 	}
 
 	template <>
 	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniformArray(const GLint id, const sp_float* listOfFloat, sp_size length)
 	{
-		glUniform1fv(id, length, listOfFloat);
+		glUniform1fv(id, (GLsizei)length, listOfFloat);
 		return this;
 	}
 

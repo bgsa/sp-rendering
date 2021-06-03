@@ -160,7 +160,7 @@ namespace NAMESPACE_RENDERING
 		setUpPositionAttribute();
 		setUpColorAttribute();
 
-		glDrawArrays(GL_POINTS, 0, attributes.getPointCount());
+		glDrawArrays(GL_POINTS, 0, (GLsizei)attributes.getPointCount());
 	}
 
 	PointList::~PointList()

@@ -180,8 +180,8 @@ namespace NAMESPACE_RENDERING
 		ALLOC_RELEASE(modelMatrixes);
 	}
 
-	void CubeRenderer::render(size_t cubesCount)
+	void CubeRenderer::render(sp_size cubesCount)
 	{
-		glDrawElementsInstanced(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, cubeIndices, cubesCount);
+		glDrawElementsInstanced(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, cubeIndices, (GLsizei)cubesCount);
 	}
 }

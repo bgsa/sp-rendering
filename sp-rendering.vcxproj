@@ -94,6 +94,7 @@
     <ClCompile Include="src\Framebuffer.cpp" />
     <ClCompile Include="src\GridSystem.cpp" />
     <ClCompile Include="src\DOP18ListRenderer.cpp" />
+    <ClCompile Include="src\OpenGLTexture.cpp" />
     <ClCompile Include="src\RendererList.cpp" />
     <ClCompile Include="src\Line.cpp" />
     <ClCompile Include="src\LineList.cpp" />

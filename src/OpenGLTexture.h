@@ -19,17 +19,36 @@ namespace NAMESPACE_RENDERING
 
 	public:
 
-		API_INTERFACE OpenGLTexture()
+		/// <summary>
+		/// Default constructor
+		/// </summary>
+		/// <returns></returns>
+		API_INTERFACE inline OpenGLTexture()
 		{
 			_id = ZERO_UINT;
 			_length = ZERO_UINT;
 		}
 
+		/// <summary>
+		/// Load OpenGL Texture from file
+		/// </summary>
+		/// <param name="filename"></param>
+		/// <returns></returns>
+		API_INTERFACE OpenGLTexture(const sp_char* filename);
+
+		/// <summary>
+		/// Get the OpenGLTexture ID
+		/// </summary>
+		/// <returns></returns>
 		API_INTERFACE inline sp_uint id() const
 		{
 			return _id;
 		}
 
+		/// <summary>
+		/// Get the size of image (width, height)
+		/// </summary>
+		/// <returns></returns>
 		API_INTERFACE inline SpSize<sp_int> size() const
 		{
 			return _size;
@@ -43,6 +62,10 @@ namespace NAMESPACE_RENDERING
 			return this;
 		}
 
+		/// <summary>
+		/// Bind an OpenGL Texture
+		/// </summary>
+		/// <returns></returns>
 		API_INTERFACE inline OpenGLTexture* use()
 		{
 			glBindTexture(GL_TEXTURE_2D, _id);
@@ -55,11 +78,21 @@ namespace NAMESPACE_RENDERING
 			return this;
 		}
 
+		/// <summary>
+		/// Unbind the OpenGL Texture
+		/// </summary>
+		/// <returns></returns>
 		API_INTERFACE inline void disable()
 		{
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 
+		/// <summary>
+		/// Set a property to OpenGL Texture
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="value"></param>
+		/// <returns></returns>
 		API_INTERFACE inline OpenGLTexture* property(sp_int name, sp_int value)
 		{
 			glTexParameteri(GL_TEXTURE_2D, name, value);

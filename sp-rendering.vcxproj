@@ -206,7 +206,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>DEBUG;GLFW_ENABLED;MAJOR_COLUMN_ORDER;API_EXPORT;OPENCL_ENABLED;OPENGL_ENABLED;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG;MEMORY_PROFILING_ENABLED;GLFW_ENABLED;MAJOR_COLUMN_ORDER;API_EXPORT;OPENCL_ENABLED;OPENGL_ENABLED;_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)vendor\include;$(SolutionDir)sp-foundation\src;$(SolutionDir)sp-physics\src</AdditionalIncludeDirectories>

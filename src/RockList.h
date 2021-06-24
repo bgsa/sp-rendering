@@ -113,7 +113,7 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE inline void rotate(const sp_uint index, const Quat& rotation)
 		{
 			Quat newOrientation;
-			multiply(transforms(index)->orientation, rotation, &newOrientation);
+			multiply(transforms(index)->orientation, rotation, newOrientation);
 
 			transforms(index)->orientation = newOrientation;
 			rigidBody3D(index)->currentState.orientation(newOrientation);

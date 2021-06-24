@@ -113,7 +113,7 @@ namespace NAMESPACE_RENDERING
 
 		sp_float quantidade = 10.0f;
 		Mat4 matrixRotate;
-		createRotate((sp_float)degreesToRadians(90), 0.0f, 1.0f, 0.0f, matrixRotate);
+		createRotate(radians(90), 0.0f, 1.0f, 0.0f, matrixRotate);
 
 		//float spacing = 1.0f;
 		//Mat4 scaleMatrix = Mat4::createScale(spacing, 0.0f, spacing);

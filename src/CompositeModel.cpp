@@ -71,9 +71,9 @@ namespace NAMESPACE_RENDERING
 				//models[i]->scale(0.1f);
 				//models[i]->scale(5.0f);
 				//models[i]->translate(0.0f, 2000.0f, 0.0f);
-				//models[i]->rotate(degreesToRadians(270), 1.0f, 0.0f, 0.0f);
-				//models[i]->rotate(degreesToRadians(180), 1.0f, 0.0f, 0.0f);
-				//models[i]->rotate(degreesToRadians(90), 1.0f, 0.0f, 0.0f);
+				//models[i]->rotate(radians(270), 1.0f, 0.0f, 0.0f);
+				//models[i]->rotate(radians(180), 1.0f, 0.0f, 0.0f);
+				//models[i]->rotate(radians(90), 1.0f, 0.0f, 0.0f);
 			}
 
 		delete fileManager;

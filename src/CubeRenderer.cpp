@@ -157,7 +157,7 @@ namespace NAMESPACE_RENDERING
 		glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, renderData.projectionMatrix);
 		glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, renderData.viewMatrix);
 
-		//cubes[1].rotate((sp_float) degreesToRadians(3), 0.0f, 0.0f, 1.0f);
+		//cubes[1].rotate((sp_float) radians(3), 0.0f, 0.0f, 1.0f);
 
 		sp_float* modelMatrixes = ALLOC_ARRAY(sp_float, cubesCount * MAT4_LENGTH);
 		for (sp_uint index = 0; index < cubesCount; index++)

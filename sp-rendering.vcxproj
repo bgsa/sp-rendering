@@ -76,6 +76,9 @@
     <ClInclude Include="src\SpMaterial.h" />
     <ClInclude Include="src\SpOpenGL.h" />
     <ClInclude Include="src\Sprite.h" />
+    <ClInclude Include="src\SpSceneRenderer.h" />
+    <ClInclude Include="src\SpSceneRendererData.h" />
+    <ClInclude Include="src\SpViewport.h" />
     <ClInclude Include="src\Square.h" />
     <ClInclude Include="src\Triangle.h" />
   </ItemGroup>

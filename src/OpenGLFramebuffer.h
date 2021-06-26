@@ -38,11 +38,23 @@ namespace NAMESPACE_RENDERING
 			glGenTextures(1, &depthStencilAttachment);
 		}
 
+		/// <summary>
+		/// Use/Bind the this framebuffer
+		/// </summary>
+		/// <returns></returns>
 		API_INTERFACE inline OpenGLFramebuffer* use()
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, _id);
-			sp_assert(glCheckNamedFramebufferStatus(_id, GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "OpenGLFramebufferException");
 			return this;
+		}
+
+		/// <summary>
+		/// Check the framebuffer is completed
+		/// </summary>
+		/// <returns></returns>
+		API_INTERFACE inline sp_bool isCompleted() const
+		{
+			return glCheckNamedFramebufferStatus(_id, GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
 		}
 
 		API_INTERFACE inline OpenGLFramebuffer* setup(sp_int width, sp_int height, sp_uint internalformat = SP_OPENGL_FRAMEBUFFER_DEFAULT_FORMAT, sp_uint mipMapLevel = ZERO_UINT)
@@ -75,17 +87,20 @@ namespace NAMESPACE_RENDERING
 			return this;
 		}
 
+		/// <summary>
+		/// Disable/Unbind this framebuffer
+		/// </summary>
+		/// <returns>void</returns>
 		API_INTERFACE inline void disable()
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 
-		API_INTERFACE inline const sp_char* toString()
-		{
-			return "OpenGLFramebuffer";
-		}
-
+		/// <summary>
+		/// Release all allocated resources
+		/// </summary>
+		/// <returns></returns>
 		API_INTERFACE inline void dispose()
 		{
 			if (_id != 0)
@@ -107,7 +122,11 @@ namespace NAMESPACE_RENDERING
 			}
 		}
 
-		API_INTERFACE ~OpenGLFramebuffer()
+		/// <summary>
+		/// Release all allocated resources
+		/// </summary>
+		/// <returns></returns>
+		~OpenGLFramebuffer()
 		{
 			dispose();
 		}

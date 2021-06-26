@@ -192,6 +192,15 @@
     <ClInclude Include="src\SpBufferVertexFormats.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\SpSceneRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SpSceneRendererData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SpViewport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BSPEditor2D.cpp">

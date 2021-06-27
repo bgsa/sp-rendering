@@ -2,7 +2,7 @@
 #define RENDERER_SETTINGS_HEADER
 
 #include "SpectrumRendering.h"
-#include <ColorRGBA.h>
+#include <SpColorRGBA.h>
 #include "Rectangle2D.h"
 
 namespace NAMESPACE_RENDERING
@@ -14,7 +14,7 @@ namespace NAMESPACE_RENDERING
 
 		sp_float width = ZERO_FLOAT, height = ZERO_FLOAT;
 		Vec2 rendererPosition = Vec2(ZERO_FLOAT);
-		ColorRGBA backgroundColor = { 0.5f, 0.5f, 0.5f, 1.0f }; //gray backgtound color
+		SpColorRGBA backgroundColor = { 0.5f, 0.5f, 0.5f, 1.0f }; //gray backgtound color
 
 	public:
 
@@ -45,17 +45,17 @@ namespace NAMESPACE_RENDERING
 		/// <summary>
 		/// Get the default screen backgound color
 		/// </summary>
-		API_INTERFACE ColorRGBA getBackgroudColor();
+		API_INTERFACE SpColorRGBA getBackgroudColor();
 
 		/// <summary>
 		/// Set the default screen backgound color
 		/// </summary>
-		API_INTERFACE void setBackgroudColor(ColorRGBA color);
+		API_INTERFACE void setBackgroudColor(SpColorRGBA color);
 
 		/// <summary>
 		/// Get the color of a screen pixel
 		/// </summary>
-		API_INTERFACE ColorRGBA getPixelColor(int xPosition, int yPosition);
+		API_INTERFACE SpColorRGBA getPixelColor(int xPosition, int yPosition);
 
 	};
 }

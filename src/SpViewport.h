@@ -12,7 +12,7 @@ namespace NAMESPACE_RENDERING
 	class SpViewport
 	{
 	private:
-		SpViewportData viewportData;
+		SpSceneRendererData renderData;
 		OpenGLFramebuffer* _framebuffer;
 		SpSceneRenderer* renderer;
 
@@ -37,10 +37,10 @@ namespace NAMESPACE_RENDERING
 		/// <returns>void</returns>
 		API_INTERFACE inline void resize(const SpRect<sp_int>& area)
 		{
-			viewportData.x = area.x;
-			viewportData.y = area.y;
-			viewportData.width = area.width;
-			viewportData.height = area.height;
+			renderData.viewportData.x = area.x;
+			renderData.viewportData.y = area.y;
+			renderData.viewportData.width = area.width;
+			renderData.viewportData.height = area.height;
 
 			_framebuffer
 				->use()
@@ -53,8 +53,6 @@ namespace NAMESPACE_RENDERING
 		/// <returns></returns>
 		API_INTERFACE inline void render()
 		{
-			SpSceneRendererData renderData;
-			renderData.viewportData = &viewportData;
 			renderData.framebuffer = _framebuffer;
 			renderData.cameraIndex = activeCameraIndex;
 			renderData.scene = scene;
@@ -77,7 +75,7 @@ namespace NAMESPACE_RENDERING
 		/// <returns></returns>
 		API_INTERFACE inline SpSize<sp_int> size() const
 		{
-			return SpSize<sp_int>(viewportData.width, viewportData.height);
+			return SpSize<sp_int>(renderData.viewportData.width, renderData.viewportData.height);
 		}
 
 		/// <summary>

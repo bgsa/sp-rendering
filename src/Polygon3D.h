@@ -3,7 +3,7 @@
 
 #include "Shader.h"
 #include "GraphicObject3D.h"
-#include <ColorRGBA.h>
+#include <SpColorRGBA.h>
 #include "SpRenderData.h"
 #include <Image.h>
 #include <ImageFactory.h>
@@ -37,7 +37,7 @@ namespace NAMESPACE_RENDERING
 		sp_size facesSize = ZERO_SIZE;
 
 		sp_float borderWidth = 0.0f;
-		ColorRGBA* borderColor = new ColorRGBA(0.3f, 0.3f, 0.3f, 1.0f);
+		SpColorRGBA* borderColor = new SpColorRGBA(0.3f, 0.3f, 0.3f, 1.0f);
 
 		std::string API_INTERFACE getTexture();
 		void API_INTERFACE setTexture(std::string filename);

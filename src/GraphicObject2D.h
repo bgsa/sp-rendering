@@ -6,15 +6,15 @@
 #include "GraphicObject.h"
 #include "GLConfig.h"
 #include "ContentAlignment.h"
-#include <ColorRGBA.h>
+#include <SpColorRGBA.h>
 
 namespace NAMESPACE_RENDERING
 {
 	class GraphicObject2D : public GraphicObject
 	{
 	protected:
-		ColorRGBA* color = new ColorRGBA{ 1.0f, 1.0f, 1.0f, 1.0f };
-		ColorRGBA* borderColor = new ColorRGBA{ 1.0f, 0.0f, 1.0f, 1.0f };
+		SpColorRGBA* color = new SpColorRGBA{ 1.0f, 1.0f, 1.0f, 1.0f };
+		SpColorRGBA* borderColor = new SpColorRGBA{ 1.0f, 0.0f, 1.0f, 1.0f };
 		sp_float borderWidth = 0.0f;
 		GraphicObject2D* parentObject2D = nullptr;
 		std::vector<GraphicObject2D*> childrenObject2D;
@@ -35,10 +35,10 @@ namespace NAMESPACE_RENDERING
 			parentObject2D = parentObject;
 		}
 
-		API_INTERFACE virtual ColorRGBA* getColor() {
+		API_INTERFACE virtual SpColorRGBA* getColor() {
 			return color;
 		}
-		API_INTERFACE virtual void setColor(ColorRGBA color) {
+		API_INTERFACE virtual void setColor(SpColorRGBA color) {
 			this->color->red = color.red;
 			this->color->green = color.green;
 			this->color->blue = color.blue;
@@ -74,14 +74,14 @@ namespace NAMESPACE_RENDERING
 			this->borderWidth = borderWidth;
 		}
 
-		API_INTERFACE virtual void setBorderColor(ColorRGBA color)
+		API_INTERFACE virtual void setBorderColor(SpColorRGBA color)
 		{
 			borderColor->red = color.red;
 			borderColor->green = color.green;
 			borderColor->blue = color.blue;
 			borderColor->alpha = color.alpha;
 		}
-		API_INTERFACE virtual ColorRGBA* getBorderColor()
+		API_INTERFACE virtual SpColorRGBA* getBorderColor()
 		{
 			return borderColor;
 		}

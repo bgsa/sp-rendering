@@ -13,15 +13,14 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE inline virtual void render(const SpSceneRendererData& rendererData)
 		{
 			SpCamera* camera = rendererData.scene->cameras()->get(rendererData.cameraIndex);
-			SpViewportData* viewportData = rendererData.viewportData;
 
-			camera->updateProjectionPerspectiveAspect(rendererData.viewportData->aspectRatio());
+			camera->updateProjectionPerspectiveAspect(rendererData.viewportData.aspectRatio());
 
 			rendererData.framebuffer->use();
 
-			sp_opengl_check(glViewport(viewportData->x, viewportData->y, viewportData->width, viewportData->height));
-			sp_opengl_check(glScissor(viewportData->x, viewportData->y, viewportData->width, viewportData->height));
-			sp_opengl_check(glClearColor(1.0f, 0.0f, 0.0f, 1.0f));
+			sp_opengl_check(glViewport(rendererData.viewportData.x, rendererData.viewportData.y, rendererData.viewportData.width, rendererData.viewportData.height));
+			sp_opengl_check(glScissor(rendererData.viewportData.x, rendererData.viewportData.y, rendererData.viewportData.width, rendererData.viewportData.height));
+			sp_opengl_check(glClearColor(rendererData.backgroundColor.red, rendererData.backgroundColor.green, rendererData.backgroundColor.blue, rendererData.backgroundColor.alpha));
 			sp_opengl_check(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
 
 			sp_opengl_check(glEnable(GL_LINE_SMOOTH));

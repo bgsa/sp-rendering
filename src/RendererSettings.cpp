@@ -68,18 +68,18 @@ namespace NAMESPACE_RENDERING
 		return float(getWidth()) / float(getHeight());
 	}
 
-	ColorRGBA RendererSettings::getBackgroudColor()
+	SpColorRGBA RendererSettings::getBackgroudColor()
 	{
 		return backgroundColor;
 	}
-	void RendererSettings::setBackgroudColor(ColorRGBA color)
+	void RendererSettings::setBackgroudColor(SpColorRGBA color)
 	{
 		this->backgroundColor = color;
 	}
 
-	ColorRGBA RendererSettings::getPixelColor(int xPosition, int yPosition)
+	SpColorRGBA RendererSettings::getPixelColor(int xPosition, int yPosition)
 	{
-		ColorRGBA pixelColor;
+		SpColorRGBA pixelColor;
 
 		glReadPixels(xPosition, yPosition, 1, 1, GL_RGBA, GL_FLOAT, &pixelColor);
 

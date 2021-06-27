@@ -2,7 +2,7 @@
 #define SP_LIGHT_SOURCE_HEADER
 
 #include "SpectrumRendering.h"
-#include "ColorRGBA.h"
+#include "ColorRGB.h"
 
 namespace NAMESPACE_RENDERING
 {

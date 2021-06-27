@@ -1,9 +1,8 @@
 #pragma once
 
 #include "SpectrumRendering.h"
-#include <ColorRGBA.h>
+#include <SpColorRGBA.h>
 #include "GraphicObject2D.h"
-//#include "Polygon2D.h"
 #include "Polygon3D.h"
 #include <Line2D.h>
 

@@ -9,6 +9,7 @@
 #include "ContentAlignment.h"
 #include <BoundingVolume.h>
 #include "IGraphicObjectRenderer.h"
+#include "SpColorRGBA.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -17,7 +18,7 @@ namespace NAMESPACE_RENDERING
 	{
 	protected:
 		IGraphicObjectRenderer* renderer = NULL;
-		ColorRGBA color = ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
+		SpColorRGBA color = SpColorRGBA(1.0f, 1.0f, 1.0f, 1.0f);
 
 	public:
 

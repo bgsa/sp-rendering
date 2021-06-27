@@ -5,6 +5,7 @@
 #include "SpScene.h"
 #include "OpenGLFramebuffer.h"
 #include "SpViewportData.h"
+#include "SpColorRGBA.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -14,7 +15,18 @@ namespace NAMESPACE_RENDERING
 		SpScene* scene;
 		sp_uint cameraIndex;
 		OpenGLFramebuffer* framebuffer;
-		SpViewportData* viewportData;
+		SpViewportData viewportData;
+
+		SpColorRGBA backgroundColor;
+
+		/// <summary>
+		/// Default constructor
+		/// </summary>
+		/// <returns></returns>
+		API_INTERFACE inline SpSceneRendererData()
+		{
+			backgroundColor = SpColorRGBABlack;
+		}
 
 	};
 }

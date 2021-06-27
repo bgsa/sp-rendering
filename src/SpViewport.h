@@ -17,6 +17,7 @@ namespace NAMESPACE_RENDERING
 		SpSceneRenderer* renderer;
 
 	public:
+		
 		sp_uint activeCameraIndex;
 		SpScene* scene;
 
@@ -58,6 +59,15 @@ namespace NAMESPACE_RENDERING
 			renderData.scene = scene;
 
 			renderer->render(renderData);
+		}
+
+		/// <summary>
+		/// Get the background color
+		/// </summary>
+		/// <returns>Color RGBA</returns>
+		API_INTERFACE inline SpColorRGBA* backgroundColor()
+		{
+			return &renderData.backgroundColor;
 		}
 
 		/// <summary>

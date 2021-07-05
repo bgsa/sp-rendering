@@ -164,18 +164,17 @@ namespace NAMESPACE_RENDERING
 			->buildFromFile(GL_FRAGMENT_SHADER, "resources\\shaders\\opengl\\dop-18\\shader-list.fs")
 			->link();
 
-		projectionMatrixLocation = shader->getUniform("projectionMatrix");
-		viewMatrixLocation = shader->getUniform("viewMatrix");
+		projectionMatrixLocation = shader->uniform("projectionMatrix");
+		viewMatrixLocation = shader->uniform("viewMatrix");
 
-		positionAttribute = shader->getAttribute("Position");
+		positionAttribute = shader->attribute("Position");
 	}
 
 	void DOP18ListRenderer::render(const SpRenderData& renderData, DOP18* listOfDOP18, sp_uint length)
 	{
-		shader
-			->enable()
-			->setUniform<Mat4>(projectionMatrixLocation, renderData.projectionMatrix)
-			->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix);
+		shader->enable();
+		shader->setUniform(projectionMatrixLocation, renderData.projectionMatrix);
+		shader->setUniform(viewMatrixLocation, renderData.viewMatrix);
 
 		updateVertexBuffer(listOfDOP18, length);
 		_buffer->use();

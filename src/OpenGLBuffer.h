@@ -17,7 +17,7 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE inline OpenGLBuffer(GLenum bufferType = GL_ARRAY_BUFFER)
 		{
 			_type = bufferType;
-			glGenBuffers(ONE_INT, &_id);
+			sp_opengl_check(glGenBuffers(ONE_INT, &_id));
 		}
 
 		/// <summary>
@@ -25,37 +25,38 @@ namespace NAMESPACE_RENDERING
 		/// </summary>
 		API_INTERFACE inline OpenGLBuffer(sp_size size, const void* data, GLenum bufferType = GL_ARRAY_BUFFER, GLenum usageType = GL_STATIC_DRAW)
 		{
+			sp_assert(size > 0, "InvalidArgumentException");
+			sp_assert(data != nullptr, "InvalidArgumentException");
+
 			_type = bufferType;
-			glGenBuffers(ONE_INT, &_id);
-			glBindBuffer(_type, _id);
-			glBufferData(_type, size, data, usageType);
+			sp_opengl_check(glGenBuffers(ONE_INT, &_id));
+			sp_opengl_check(glBindBuffer(_type, _id));
+			sp_opengl_check(glBufferData(_type, size, data, usageType));
 		}
 
 		API_INTERFACE inline OpenGLBuffer* use() override
 		{
-			glBindBuffer(_type, _id);
+			sp_opengl_check(glBindBuffer(_type, _id));
 			return this;
 		}
 
 		API_INTERFACE inline void disable() override
 		{
-			glBindBuffer(_type, 0);
+			sp_opengl_check(glBindBuffer(_type, 0));
 		}
 
-		API_INTERFACE inline OpenGLBuffer* updateData(sp_size size, void* data, sp_int usageType = GL_STATIC_DRAW) override
+		API_INTERFACE inline OpenGLBuffer* updateData(const sp_size size, const void* data, const sp_int usageType = GL_STATIC_DRAW) override
 		{
-			glBufferData(_type, size, data, usageType);
+			sp_assert(size > 0, "InvalidArgumentException");
+			sp_assert(data != nullptr, "InvalidArgumentException");
+
+			sp_opengl_check(glBufferData(_type, size, data, usageType));
 			return this;
 		}
 
-		API_INTERFACE inline const sp_char* toString() override
+		API_INTERFACE inline void dispose()
 		{
-			return "OpenGLBuffer";
-		}
-
-		API_INTERFACE inline void dispose() override
-		{
-			glDeleteBuffers(ONE_INT, &_id);
+			sp_opengl_check(glDeleteBuffers(ONE_INT, &_id));
 		}
 
 		API_INTERFACE ~OpenGLBuffer()

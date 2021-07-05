@@ -44,7 +44,7 @@ namespace NAMESPACE_RENDERING
 		/// <returns></returns>
 		API_INTERFACE inline OpenGLFramebuffer* use()
 		{
-			glBindFramebuffer(GL_FRAMEBUFFER, _id);
+			sp_opengl_check(glBindFramebuffer(GL_FRAMEBUFFER, _id));
 			return this;
 		}
 

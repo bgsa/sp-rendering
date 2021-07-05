@@ -4,29 +4,25 @@
 #include "SpectrumRendering.h"
 #include <SpVector.h>
 #include <SpArray.h>
-#include "ShaderAttribute.h"
-#include "ShaderUniform.h"
 #include "FileSystem.h"
 #include "SpLogger.h"
+#include "SpShader.h"
 
 namespace NAMESPACE_RENDERING
 {
 #define SP_DEFAULT_SHADER_VERSION "#version 300 es\n\n"
 
 	class OpenGLShader
+		: public SpShader
 	{
 	private:
-		GLuint program;
-		SpVector<sp_uint> shadersId;
-		SpArray<ShaderAttribute*>* attributes;
-		SpArray<ShaderUniform*>* uniforms;
 
 		void loadAttributes()
 		{
 			sp_int count;
 			glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, &count);
 
-			attributes = sp_mem_new(SpArray<ShaderAttribute*>)(count);
+			_attributes = sp_mem_new(SpArray<SpShaderAttribute*>)(count);
 
 			for (sp_int i = ZERO_INT; i < count; i++)
 			{
@@ -37,14 +33,14 @@ namespace NAMESPACE_RENDERING
 
 				glGetActiveAttrib(program, (GLuint)i, SP_DEFAULT_STRING_SIZE, &actualLength, &arraySize, &type, name);
 
-				ShaderAttribute* attr = sp_mem_new(ShaderAttribute)();
-				attr->name = sp_mem_new(SpString)(name);
+				SpShaderAttribute* attr = sp_mem_new(SpShaderAttribute)();
+				attr->name(name);
 				attr->type = type;
 
 				if (std::strcmp(name, "gl_InstanceID") != ZERO_INT) // ignore fake attribute of GLSL
-					attr->location = getAttribute(attr->name->data());
+					attr->location = attribute(attr->name());
 
-				attributes->add(attr);
+				_attributes->add(attr);
 
 				ALLOC_RELEASE(name);
 			}
@@ -55,7 +51,7 @@ namespace NAMESPACE_RENDERING
 			sp_int count;
 			glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &count);
 
-			uniforms = sp_mem_new(SpArray<ShaderUniform*>)(count);
+			_uniforms = sp_mem_new(SpArray<SpShaderUniform*>)(count);
 
 			for (sp_int i = ZERO_INT; i < count; i++)
 			{
@@ -66,12 +62,12 @@ namespace NAMESPACE_RENDERING
 
 				glGetActiveUniform(program, (GLuint)i, SP_DEFAULT_STRING_SIZE, &actualLength, &arraySize, &type, name);
 
-				ShaderUniform* attr = sp_mem_new(ShaderUniform)();
-				attr->name = sp_mem_new(SpString)(name);
+				SpShaderUniform* attr = sp_mem_new(SpShaderUniform)();
+				attr->name(name);
 				attr->type = type;
-				attr->location = getUniform(attr->name->data());
+				attr->location = uniform(attr->name());
 
-				uniforms->add(attr);
+				_uniforms->add(attr);
 
 				ALLOC_RELEASE(name);
 			}
@@ -82,7 +78,7 @@ namespace NAMESPACE_RENDERING
 		/// <summary>
 		/// Create a new shader program for OpenGL API
 		/// </summary>
-		OpenGLShader()
+		API_INTERFACE inline OpenGLShader()
 		{
 			program = glCreateProgram();
 
@@ -96,9 +92,9 @@ namespace NAMESPACE_RENDERING
 		/// <summary>
 		/// Set the OpenGL state to use this program
 		/// </summary>
-		API_INTERFACE inline OpenGLShader* enable()
+		API_INTERFACE inline SpShader* enable() override
 		{
-			glUseProgram(program);
+			sp_opengl_check(glUseProgram(program));
 			return this;
 		}
 
@@ -215,25 +211,9 @@ namespace NAMESPACE_RENDERING
 		}
 
 		/// <summary>
-		/// Get the uniforms of actived shader
-		/// </summary>
-		API_INTERFACE inline SpArray<ShaderUniform*>* getUniforms()
-		{
-			return uniforms;
-		}
-
-		/// <summary>
-		/// Get the attributes of actived shader
-		/// </summary>
-		API_INTERFACE inline SpArray<ShaderAttribute*>* getAttributes()
-		{
-			return attributes;
-		}
-
-		/// <summary>
 		/// Get the uniform location from a shader
 		/// </summary>
-		API_INTERFACE inline sp_int getUniform(const sp_char* name)
+		API_INTERFACE inline sp_int uniform(const sp_char* name)
 		{
 #ifdef DEBUG
 			sp_log_info1s("Shader uniform not found: ");
@@ -245,22 +225,13 @@ namespace NAMESPACE_RENDERING
 		/// <summary>
 		/// Get the attribute location from a shader
 		/// </summary>
-		API_INTERFACE inline sp_int getAttribute(const sp_char* name)
+		API_INTERFACE inline sp_int attribute(const sp_char* name)
 		{
 #ifdef DEBUG
 			sp_log_info1s("Shader attribute not found: ");
 			sp_log_info1s(name); sp_log_newline();
 #endif	
 			return glGetAttribLocation(program, name);
-		}
-
-		/// <summary>
-		/// Set the uniform value of shader
-		/// </summary>
-		template <typename T>
-		API_INTERFACE inline OpenGLShader* setUniform(const GLint id, const T& value)
-		{
-			return this;
 		}
 
 		/// <summary>
@@ -300,12 +271,84 @@ namespace NAMESPACE_RENDERING
 		}
 
 		/// <summary>
+		/// Set the uniform with Mat3 value
+		/// </summary>
+		/// <param name="id">Uniform Id</param>
+		/// <param name="value">Mat3</param>
+		/// <returns>Current shader</returns>
+		API_INTERFACE inline SpShader* setUniform(const sp_int id, const Mat3& value) override
+		{
+			glUniformMatrix3fv(id, ONE_INT, GL_FALSE, value);
+			return this;
+		}
+
+		/// <summary>
+		/// Set the uniform with Mat4 value
+		/// </summary>
+		/// <param name="id">Uniform Id</param>
+		/// <param name="value">Mat4</param>
+		/// <returns>Current shader</returns>
+		API_INTERFACE inline SpShader* setUniform(const sp_int id, const Mat4& value) override
+		{
+			glUniformMatrix4fv(id, ONE_INT, GL_FALSE, value);
+			return this;
+		}
+
+		/// <summary>
+		/// Set the uniform with scalar int value
+		/// </summary>
+		/// <param name="id">Uniform Id</param>
+		/// <param name="value">Iouble</param>
+		/// <returns>Current shader</returns>
+		API_INTERFACE inline SpShader* setUniform(const sp_int id, const sp_int value) override
+		{
+			glUniform1i(id, value);
+			return this;
+		}
+
+		/// <summary>
+		/// Set the uniform with scalar unsigned int value
+		/// </summary>
+		/// <param name="id">Uniform Id</param>
+		/// <param name="value">unsigned int</param>
+		/// <returns>Current shader</returns>
+		API_INTERFACE inline SpShader* setUniform(const sp_int id, const sp_uint value) override
+		{
+			glUniform1ui(id, value);
+			return this;
+		}
+
+		/// <summary>
+		/// Set the uniform with scalar flaot value
+		/// </summary>
+		/// <param name="id">Uniform Id</param>
+		/// <param name="value">Float</param>
+		/// <returns>Current shader</returns>
+		API_INTERFACE inline SpShader* setUniform(const sp_int id, const sp_float value) override
+		{
+			glUniform1f(id, value);
+			return this;
+		}
+
+		/// <summary>
+		/// Set the uniform with scalar double value
+		/// </summary>
+		/// <param name="id">Uniform Id</param>
+		/// <param name="value">Double</param>
+		/// <returns>Current shader</returns>
+		API_INTERFACE inline SpShader* setUniform(const sp_int id, const sp_double value) override
+		{
+			glUniform1d(id, value);
+			return this;
+		}
+
+		/// <summary>
 		/// Eisable all attributes enabled. It is usually used at the begining of shader render
 		/// </summary>
 		API_INTERFACE OpenGLShader* enableAttributes()
 		{
-			for (sp_uint i = 0; i < attributes->length(); i++)
-				glEnableVertexAttribArray(attributes->data()[i]->location);
+			for (sp_uint i = 0; i < _attributes->length(); i++)
+				sp_opengl_check(glEnableVertexAttribArray(_attributes->data()[i]->location));
 
 			return this;
 		}
@@ -315,35 +358,81 @@ namespace NAMESPACE_RENDERING
 		/// </summary>
 		API_INTERFACE inline void disableAttributes()
 		{
-			for (sp_uint i = 0; i < attributes->length(); i++)
-				if (attributes->data()[i]->type != 5124)
-					glDisableVertexAttribArray(attributes->data()[i]->location);
+			for (sp_uint i = 0; i < _attributes->length(); i++)
+				if (_attributes->data()[i]->type != 5124)
+					sp_opengl_check(glDisableVertexAttribArray(_attributes->data()[i]->location));
+		}
+
+		/// <summary>
+		/// Enable vertex attribute in shader
+		/// </summary>
+		/// <param name="index">Attribute index</param>
+		/// <param name="size">Count of elements in attribute</param>
+		/// <param name="type">Attribute Type</param>
+		/// <param name="normalized">Is Normalized?</param>
+		/// <param name="stride">Stride of elements</param>
+		/// <param name="pointer">Pointer to start of element</param>
+		/// <returns></returns>
+		API_INTERFACE inline SpShader* enableVertexAttribute(const sp_uint index, sp_int size, sp_int type, sp_bool normalized, sp_size stride, const void* pointer) override
+		{
+			sp_opengl_check(glVertexAttribPointer(index, size, type, normalized, stride, pointer));
+			sp_opengl_check(glEnableVertexAttribArray(index));
+			return this;
+		}
+
+		/// <summary>
+		/// Disable a vertex attribute
+		/// </summary>
+		/// <param name="index">Attribute index</param>
+		/// <returns></returns>
+		API_INTERFACE inline SpShader* disableVertexAttribute(const sp_uint index) override
+		{
+			sp_opengl_check(glDisableVertexAttribArray(index));
+			return this;
+		}
+
+		API_INTERFACE inline SpShader* drawElements(const sp_int primitiveTypeId, const sp_size indexesLength, const sp_int indexTypeId, const void* indexes = NULL) override
+		{
+			sp_opengl_check(glDrawElements(primitiveTypeId, indexesLength, indexTypeId, indexes));
+			return this;
+		}
+
+		API_INTERFACE inline SpShader* drawElementsInstanced(const sp_int primitiveTypeId, const sp_size indexesLength, const sp_int indexTypeId, const void* indexes = NULL, const sp_size primitiveCount = 0) override
+		{
+			sp_opengl_check(glDrawElementsInstanced(primitiveTypeId, indexesLength, indexTypeId, indexes, primitiveCount));
+			return this;
 		}
 
 		/// <summary>
 		/// Disable the shader and all attributes enabled. It is usually used at the end of shader render
 		/// </summary>
-		API_INTERFACE inline void disable()
+		API_INTERFACE inline void disable() override
 		{
 			disableAttributes();
-			glUseProgram(ZERO_UINT);
+			sp_opengl_check(glUseProgram(0));
 		}
 
 		/// <summary>
-		/// Destruct the shader
+		/// Release all allocated resources
 		/// </summary>
-		API_INTERFACE ~OpenGLShader()
+		/// <returns></returns>
+		API_INTERFACE inline void dispose() override
 		{
 			if (program != ZERO_UINT)
 			{
-				glDeleteProgram(program);
+				sp_opengl_check(glDeleteProgram(program));
 				program = ZERO_UINT;
 			}
 
-			if (attributes != NULL)
+			if (_attributes != NULL)
 			{
-				sp_mem_delete(attributes, SpArray<ShaderAttribute*>);
+				sp_mem_delete(_attributes, SpArray<SpShaderAttribute*>);
 			}
+		}
+
+		~OpenGLShader()
+		{
+			dispose();
 		}
 	};
 
@@ -358,106 +447,6 @@ namespace NAMESPACE_RENDERING
 	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniformArray(const GLint id, const sp_float* listOfFloat, sp_size length)
 	{
 		glUniform1fv(id, (GLsizei)length, listOfFloat);
-		return this;
-	}
-
-	/// <summary>
-	/// Set the uniform value of shader for Mat4 value
-	/// </summary>
-	template <>
-	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const Mat4& value)
-	{
-		glUniformMatrix4fv(id, ONE_INT, GL_FALSE, value);
-		return this;
-	}
-
-	/// <summary>
-	/// Set the uniform value of shader for Mat3 value
-	/// </summary>
-	template <>
-	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const Mat3& value)
-	{
-		glUniformMatrix3fv(id, ONE_INT, GL_FALSE, value);
-		return this;
-	}
-
-	/// <summary>
-	/// Set the uniform value of shader for Mat2 value
-	/// </summary>
-	template <>
-	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const Mat2& value)
-	{
-		glUniformMatrix3fv(id, ONE_INT, GL_FALSE, value);
-		return this;
-	}
-
-	/// <summary>
-	/// Set the uniform value of shader for Mat2 value
-	/// </summary>
-	template <>
-	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const Vec4& value)
-	{
-		glUniform4fv(id, ONE_INT, value);
-		return this;
-	}
-
-	/// <summary>
-	/// Set the uniform value of shader for Mat2 value
-	/// </summary>
-	template <>
-	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const Vec3& value)
-	{
-		glUniform3fv(id, ONE_INT, value);
-		return this;
-	}
-
-	/// <summary>
-	/// Set the uniform value of shader for Mat2 value
-	/// </summary>
-	template <>
-	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const Vec2& value)
-	{
-		glUniform2fv(id, ONE_INT, value);
-		return this;
-	}
-
-	/// <summary>
-	/// Set the uniform value of shader for a single float value
-	/// </summary>
-	template <>
-	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const sp_float& value)
-	{
-		glUniform1f(id, value);
-		return this;
-	}
-
-	/// <summary>
-	/// Set the uniform value of shader for a single double value
-	/// </summary>
-	template <>
-	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const sp_double& value)
-	{
-		glUniform1d(id, value);
-		return this;
-	}
-
-	/// <summary>
-	/// Set the uniform value of shader for a single unsigned int value
-	/// </summary>
-	template <>
-	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const sp_uint& value)
-	{
-		glUniform1ui(id, value);
-		return this;
-	}
-
-	/// <summary>
-	/// Set the uniform value of shader for a single int value
-	/// </summary>
-	template <>
-	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform(const GLint id, const sp_int& value)
-	{
-		glUniform1i(id, value);
 		return this;
 	}
 

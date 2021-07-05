@@ -54,6 +54,9 @@ namespace NAMESPACE_RENDERING
 		/// <returns></returns>
 		API_INTERFACE inline void render()
 		{
+			if (scene == nullptr)
+				return;
+				
 			renderData.framebuffer = _framebuffer;
 			renderData.cameraIndex = activeCameraIndex;
 			renderData.scene = scene;

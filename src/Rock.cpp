@@ -10,8 +10,8 @@ namespace NAMESPACE_RENDERING
 
 		shader
 			->enableAttributes()
-			->setUniform<Mat4>(projectionMatrixLocation, renderData.projectionMatrix)
-			->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix);
+			->setUniform(projectionMatrixLocation, renderData.projectionMatrix)
+			->setUniform(viewMatrixLocation, renderData.viewMatrix);
 			//->setUniform<Mat4>(transformMatrixLocation, transform.toMat4()); // TODO: ENABLE !!!
 
 		glVertexAttribPointer(positionAttribute,
@@ -63,12 +63,12 @@ namespace NAMESPACE_RENDERING
 			->buildFromFile(GL_FRAGMENT_SHADER, "resources\\shaders\\opengl\\rock\\shader.fs")
 			->link();
 
-		projectionMatrixLocation = shader->getUniform("projectionMatrix");
-		viewMatrixLocation = shader->getUniform("viewMatrix");
-		transformMatrixLocation = shader->getUniform("modelMatrix");
+		projectionMatrixLocation = shader->uniform("projectionMatrix");
+		viewMatrixLocation = shader->uniform("viewMatrix");
+		transformMatrixLocation = shader->uniform("modelMatrix");
 
-		positionAttribute = shader->getAttribute("Position");
-		textureAttribute = shader->getAttribute("TexCoord");
+		positionAttribute = shader->attribute("Position");
+		textureAttribute = shader->attribute("TexCoord");
 
 		texture = sp_mem_new(OpenGLTexture)();
 		ImageBMP* image = ImageBMP::load("resources\\models\\FreeRock\\FreeRock.bmp");

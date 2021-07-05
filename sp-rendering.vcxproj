@@ -64,8 +64,6 @@
     <ClInclude Include="src\Rock.h" />
     <ClInclude Include="src\RockList.h" />
     <ClInclude Include="src\Shader.h" />
-    <ClInclude Include="src\ShaderAttribute.h" />
-    <ClInclude Include="src\ShaderUniform.h" />
     <ClInclude Include="src\SpBufferVertexFormats.h" />
     <ClInclude Include="src\SpectrumRendering.h" />
     <ClInclude Include="src\SpGpuRenderingFactoryOpenGL.h" />
@@ -75,6 +73,7 @@
     <ClInclude Include="src\SpLightSource.h" />
     <ClInclude Include="src\SpMaterial.h" />
     <ClInclude Include="src\SpOpenGL.h" />
+    <ClInclude Include="src\SpRenderingFactoryOpenGL.h" />
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\SpSceneRenderer.h" />
     <ClInclude Include="src\SpSceneRendererData.h" />

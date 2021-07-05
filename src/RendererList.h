@@ -53,11 +53,11 @@ namespace NAMESPACE_RENDERING
 				->buildFromFile(GL_FRAGMENT_SHADER, "resources\\shaders\\opengl\\renderer-list\\shader.fs")
 				->link();
 
-			projectionMatrixLocation = shader->getUniform("projectionMatrix");
-			viewMatrixLocation = shader->getUniform("viewMatrix");
-			transformLocation = shader->getUniform("transformMatrix");
+			projectionMatrixLocation = shader->uniform("projectionMatrix");
+			viewMatrixLocation = shader->uniform("viewMatrix");
+			transformLocation = shader->uniform("transformMatrix");
 
-			positionAttribute = shader->getAttribute("Position");
+			positionAttribute = shader->attribute("Position");
 			
 			setUpPositionAttribute();
 		}
@@ -67,10 +67,9 @@ namespace NAMESPACE_RENDERING
 			_list->buffer()->use();
 			glVertexAttribPointer(positionAttribute, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-			shader
-				->enable()
-				->setUniform<Mat4>(projectionMatrixLocation, renderData.projectionMatrix)
-				->setUniform<Mat4>(viewMatrixLocation, renderData.viewMatrix);
+			shader->enable();
+			shader->setUniform(projectionMatrixLocation, renderData.projectionMatrix);
+			shader->setUniform(viewMatrixLocation, renderData.viewMatrix);
 
 			SpWorldManagerInstance->current()->transformsGPU()->use();
 

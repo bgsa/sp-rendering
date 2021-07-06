@@ -195,7 +195,7 @@
     <ClInclude Include="src\SpViewport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\SpRenderingFactoryOpenGL.h">
+    <ClInclude Include="src\SpRenderingAPIOpenGL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

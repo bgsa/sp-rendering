@@ -12,7 +12,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE inline virtual void render(const SpSceneRendererData& rendererData)
 		{
-			SpRenderingFactory* renderingApi = SpGameInstance->renderingFactory();
+			SpRenderingAPI* renderingApi = SpGameInstance->renderingAPI();
 			const sp_int typeFloatId = renderingApi->typeFloatId();
 			const sp_int typeUIntId = renderingApi->typeUIntId();
 			const sp_int typeTriangleId = renderingApi->typeTriangleId();
@@ -24,16 +24,16 @@ namespace NAMESPACE_RENDERING
 
 			rendererData.framebuffer->use();
 
-			sp_opengl_check(glViewport(rendererData.viewportData.x, rendererData.viewportData.y, rendererData.viewportData.width, rendererData.viewportData.height));
-			sp_opengl_check(glScissor(rendererData.viewportData.x, rendererData.viewportData.y, rendererData.viewportData.width, rendererData.viewportData.height));
-			sp_opengl_check(glClearColor(rendererData.backgroundColor.red, rendererData.backgroundColor.green, rendererData.backgroundColor.blue, rendererData.backgroundColor.alpha));
-			sp_opengl_check(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
+			renderingApi->setViewport(rendererData.viewportData);
+			renderingApi->setScissor(SpRect<sp_int>(rendererData.viewportData.x, rendererData.viewportData.y, rendererData.viewportData.width, rendererData.viewportData.height));
+			renderingApi->clearColor(rendererData.backgroundColor);
+			renderingApi->clearFramebuffer();
 
-			sp_opengl_check(glEnable(GL_LINE_SMOOTH));
-			sp_opengl_check(glEnable(GL_DEPTH_TEST));
-			sp_opengl_check(glEnable(GL_CULL_FACE));
-			sp_opengl_check(glEnable(GL_POLYGON_OFFSET_FILL));
-			sp_opengl_check(glPolygonOffset(1.0f, 1.0f));
+			renderingApi->enableLineSmooth();
+			renderingApi->enableDepthTest();
+			renderingApi->enableCullingFace();
+			renderingApi->enablePolygonOffsetFill();
+			renderingApi->setPolygonOffset(1.0f, 1.0f);
 			//sp_opengl_check(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
 
 			SpScene* scene = rendererData.scene;
@@ -69,8 +69,8 @@ namespace NAMESPACE_RENDERING
 
 			//camera->getHUDProjectionMatrix((sp_float)_viewport.width, (sp_float)_viewport.height, renderData.projectionMatrix);
 
-			sp_opengl_check(glDisable(GL_DEPTH_TEST));
-			sp_opengl_check(glDisable(GL_CULL_FACE));
+			renderingApi->disable(GL_DEPTH_TEST);
+			renderingApi->disable(GL_CULL_FACE);
 
 			//render2D(renderData);
 

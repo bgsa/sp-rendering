@@ -73,7 +73,7 @@
     <ClInclude Include="src\SpLightSource.h" />
     <ClInclude Include="src\SpMaterial.h" />
     <ClInclude Include="src\SpOpenGL.h" />
-    <ClInclude Include="src\SpRenderingFactoryOpenGL.h" />
+    <ClInclude Include="src\SpRenderingAPIOpenGL.h" />
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\SpSceneRenderer.h" />
     <ClInclude Include="src\SpSceneRendererData.h" />

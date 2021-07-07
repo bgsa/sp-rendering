@@ -158,7 +158,7 @@ namespace NAMESPACE_RENDERING
 		initIndexBuffer();
 		initVertexBuffer();
 
-		shader = sp_mem_new(OpenGLShader)();
+		shader = sp_mem_new(SpShaderOpenGL)();
 		shader
 			->buildFromFile(GL_VERTEX_SHADER, "resources\\shaders\\opengl\\dop-18\\shader-list.vs")
 			->buildFromFile(GL_FRAGMENT_SHADER, "resources\\shaders\\opengl\\dop-18\\shader-list.fs")
@@ -203,7 +203,7 @@ namespace NAMESPACE_RENDERING
 
 		if (shader != nullptr)
 		{
-			sp_mem_delete(shader, OpenGLShader);
+			sp_mem_delete(shader, SpShaderOpenGL);
 			shader = nullptr;
 		}
 

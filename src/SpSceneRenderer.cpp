@@ -61,6 +61,8 @@ namespace NAMESPACE_RENDERING
 			for (SpVectorItem<SpGpuBuffer*>* bufferItem = renderableObject->buffers.begin(); bufferItem != nullptr; bufferItem = bufferItem->next())
 				bufferItem->value()->disable();
 
+			scene->transformManager()->gpuBuffer()->disable();
+
 			shader->disable();
 		}
 

@@ -7,7 +7,7 @@
 #include "IGraphicObjectRenderer.h"
 #include <ObjModel.h>
 #include "OpenGLBuffer.h"
-#include "OpenGLShader.h"
+#include "SpShaderOpenGL.h"
 #include "OpenGLTexture.h"
 #include "ImageBMP.h"
 #include "SpPhysicObject.h"
@@ -20,7 +20,7 @@ namespace NAMESPACE_RENDERING
 	{
 	private:
 		OpenGLBuffer* buffer;
-		OpenGLShader* shader;
+		SpShaderOpenGL* shader;
 		OpenGLBuffer* indexesBuffer;
 		OpenGLTexture* texture = NULL;
 

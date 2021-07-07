@@ -53,7 +53,7 @@
     <ClInclude Include="src\ModelFile.h" />
     <ClInclude Include="src\ObjModel.h" />
     <ClInclude Include="src\OpenGLBuffer.h" />
-    <ClInclude Include="src\OpenGLShader.h" />
+    <ClInclude Include="src\SpShaderOpenGL.h" />
     <ClInclude Include="src\OpenGLTexture.h" />
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\PointList.h" />

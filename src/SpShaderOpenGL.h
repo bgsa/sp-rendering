@@ -1,5 +1,5 @@
-#ifndef OPENGL_SHADER_HEADER
-#define OPENGL_SHADER_HEADER
+#ifndef SP_SHADER_OPENGL_HEADER
+#define SP_SHADER_OPENGL_HEADER
 
 #include "SpectrumRendering.h"
 #include <SpVector.h>
@@ -12,7 +12,7 @@ namespace NAMESPACE_RENDERING
 {
 #define SP_DEFAULT_SHADER_VERSION "#version 300 es\n\n"
 
-	class OpenGLShader
+	class SpShaderOpenGL
 		: public SpShader
 	{
 	private:
@@ -73,12 +73,96 @@ namespace NAMESPACE_RENDERING
 			}
 		}
 
+		sp_size findIncludeIndex(sp_char* text, const sp_size textLength)
+		{
+			sp_size index = 0;
+
+			for (sp_size i = 0; i < textLength; i++)
+			{
+				if (text[i] == '#')
+				{
+					while (text[i] != END_OF_LINE && text[i] != END_OF_STRING)
+						i++;
+
+					index = i;
+				}
+			}
+
+			return index;
+		}
+
+		sp_char* includeFiles(sp_char* text, const sp_size textLength, const sp_char* rootDir, const sp_size rootDirLength)
+		{
+			const sp_size prefixLength = 10;
+			const sp_char prefix[prefixLength] = { '#', 'i' , 'n', 'c', 'l' , 'u', 'd', 'e', ' ' , '"'};
+			sp_size prefixIndex = 0;
+
+			sp_size previousTextLength = textLength;
+			sp_char* previousText = ALLOC_ARRAY(sp_char, textLength);
+			std::memcpy(previousText, text, textLength);
+
+			sp_size newTextLength = textLength;
+			sp_char* newText = ALLOC_ARRAY(sp_char, textLength);;
+			std::memcpy(newText, text, textLength);
+		
+			for (sp_size i = 0; i < newTextLength; i++)
+			{
+				if (newText[i] == prefix[prefixIndex])
+				{
+					if (prefixIndex + 1 == prefixLength) // include found
+					{
+						const sp_size includeBegin = i - prefixLength + 1;
+						const sp_size filenameBegin = i + 1;
+
+						while (newText[++i] != '"');
+						const sp_size filenameEnd = i - 1;
+
+						while (newText[++i] != END_OF_LINE_LF);
+						const sp_size includeEnd = i;
+
+						const sp_size filenameSize = filenameEnd - filenameBegin + 2;
+						sp_char* filename = ALLOC_ARRAY(sp_char, filenameSize);
+						std::memcpy(filename, &newText[filenameBegin], filenameEnd - filenameBegin + 1);
+						filename[filenameEnd - filenameBegin + 1] = END_OF_STRING;
+
+						sp_char fullFilename[500];
+						std::memcpy(fullFilename, rootDir, rootDirLength);
+						fullFilename[rootDirLength] = '/';
+						std::memcpy(&fullFilename[rootDirLength + 1], filename, filenameSize);
+
+						SP_FILE file;
+						const sp_size includeContentSize = file.sizeOfFile(fullFilename) + 1;
+
+						newTextLength = newTextLength + includeContentSize - (includeEnd - includeBegin);
+						newText = ALLOC_ARRAY(sp_char, newTextLength);
+						std::memcpy(newText, previousText, includeBegin);
+
+						file.readTextFile(fullFilename, &newText[includeBegin]);
+
+						std::memcpy(&newText[includeBegin + includeContentSize - 1], &previousText[includeEnd], previousTextLength - includeEnd);
+
+						previousTextLength = newTextLength;
+						previousText = ALLOC_ARRAY(sp_char, newTextLength);
+						std::memcpy(previousText, newText, newTextLength);
+
+						prefixIndex = 0;
+					}
+					else
+						prefixIndex++;
+				}
+				else
+					prefixIndex = 0;
+			}
+
+			return newText;
+		}
+
 	public:
 
 		/// <summary>
 		/// Create a new shader program for OpenGL API
 		/// </summary>
-		API_INTERFACE inline OpenGLShader()
+		API_INTERFACE inline SpShaderOpenGL()
 		{
 			program = glCreateProgram();
 
@@ -101,23 +185,50 @@ namespace NAMESPACE_RENDERING
 		/// <summary>
 		/// Build/Compile the shader source from disk file
 		/// </summary>
-		API_INTERFACE OpenGLShader* buildFromFile(GLenum type, const sp_char* filename, const sp_char* includeContent = nullptr)
+		API_INTERFACE SpShaderOpenGL* buildFromFile(GLenum type, const sp_char* filename, const sp_char* includeContent = nullptr)
 		{
 			SP_FILE file;
-			SpString* source = file.readTextFile(filename);
+			sp_size textLength = file.sizeOfFile(filename) + 1;
+			sp_char* text = ALLOC_ARRAY(sp_char, textLength);
+			sp_char* pointer = text;
 
-			if (!source->startWith("#version "))
-				source->append(SP_DEFAULT_SHADER_VERSION);
+			file.readTextFile(filename, text);
+
+			if (!strStartWith(text, textLength, "#version", 8))
+			{
+				const sp_size previousTextLength = textLength;
+
+				const sp_size shaderVersionLength = std::strlen(SP_DEFAULT_SHADER_VERSION);
+				textLength += shaderVersionLength;
+
+				sp_char* newText = ALLOC_ARRAY(sp_char, textLength);
+
+				strInsert(text, previousTextLength, SP_DEFAULT_SHADER_VERSION, shaderVersionLength, 0, newText);
+				pointer = newText;
+			}
 
 			if (includeContent != nullptr)
 			{
-				source->resize(source->allocatedLength() + std::strlen(includeContent));
-				source->append(includeContent, source->indexOf(END_OF_LINE) + 1);
+				const sp_size previousTextLength = textLength;
+				const sp_size index = findIncludeIndex(pointer, textLength);
+
+				const sp_size includeContentLength = std::strlen(includeContent);
+				textLength += includeContentLength;
+
+				sp_char* newText = ALLOC_ARRAY(sp_char, textLength);
+				
+				strInsert(text, previousTextLength, includeContent, includeContentLength, index, newText);
+				pointer = newText;
 			}
 
-			build(type, source->data());
+			sp_char rootDir[500];
+			SpDirectory::directoryFromFile(filename, rootDir);
+			const sp_size rootDirLength = std::strlen(rootDir);
+			pointer = includeFiles(pointer, textLength, rootDir, rootDirLength);
 
-			sp_mem_delete(source, SpString);
+			build(type, pointer);
+
+			ALLOC_RELEASE(text);
 
 			return this;
 		}
@@ -125,7 +236,7 @@ namespace NAMESPACE_RENDERING
 		/// <summary>
 		/// Build/Compile the shader source
 		/// </summary>
-		API_INTERFACE OpenGLShader* build(GLenum type, const sp_char* source)
+		API_INTERFACE SpShaderOpenGL* build(GLenum type, const sp_char* source)
 		{
 			GLuint shader = glCreateShader(type);
 
@@ -238,7 +349,7 @@ namespace NAMESPACE_RENDERING
 		/// Set the uniform value of shader
 		/// </summary>
 		template <typename T>
-		API_INTERFACE inline OpenGLShader* setUniform2(const GLint id, const T* values)
+		API_INTERFACE inline SpShaderOpenGL* setUniform2(const GLint id, const T* values)
 		{
 			return this;
 		}
@@ -247,7 +358,7 @@ namespace NAMESPACE_RENDERING
 		/// Set the uniform value of shader
 		/// </summary>
 		template <typename T>
-		API_INTERFACE inline OpenGLShader* setUniform3(const GLint id, const T* values)
+		API_INTERFACE inline SpShaderOpenGL* setUniform3(const GLint id, const T* values)
 		{
 			return this;
 		}
@@ -256,7 +367,7 @@ namespace NAMESPACE_RENDERING
 		/// Set the uniform value of shader
 		/// </summary>
 		template <typename T>
-		API_INTERFACE inline OpenGLShader* setUniform4(const GLint id, const T* values)
+		API_INTERFACE inline SpShaderOpenGL* setUniform4(const GLint id, const T* values)
 		{
 			return this;
 		}
@@ -265,7 +376,7 @@ namespace NAMESPACE_RENDERING
 		/// Set the uniform array of shader
 		/// </summary>
 		template <typename T>
-		API_INTERFACE inline OpenGLShader* setUniformArray(const GLint id, const T* listOfT, sp_size length)
+		API_INTERFACE inline SpShaderOpenGL* setUniformArray(const GLint id, const T* listOfT, sp_size length)
 		{
 			return this;
 		}
@@ -359,7 +470,7 @@ namespace NAMESPACE_RENDERING
 		/// <summary>
 		/// Eisable all attributes enabled. It is usually used at the begining of shader render
 		/// </summary>
-		API_INTERFACE OpenGLShader* enableAttributes()
+		API_INTERFACE SpShaderOpenGL* enableAttributes()
 		{
 			for (sp_uint i = 0; i < _attributes->length(); i++)
 				sp_opengl_check(glEnableVertexAttribArray(_attributes->data()[i]->location));
@@ -444,21 +555,21 @@ namespace NAMESPACE_RENDERING
 			}
 		}
 
-		~OpenGLShader()
+		~SpShaderOpenGL()
 		{
 			dispose();
 		}
 	};
 
 	template <>
-	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniformArray(const GLint id, const Mat4* listOfMat4, sp_size length)
+	API_INTERFACE inline SpShaderOpenGL* SpShaderOpenGL::setUniformArray(const GLint id, const Mat4* listOfMat4, sp_size length)
 	{
 		glUniformMatrix4fv(id, (GLsizei)length, GL_FALSE, (sp_float*)listOfMat4);
 		return this;
 	}
 
 	template <>
-	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniformArray(const GLint id, const sp_float* listOfFloat, sp_size length)
+	API_INTERFACE inline SpShaderOpenGL* SpShaderOpenGL::setUniformArray(const GLint id, const sp_float* listOfFloat, sp_size length)
 	{
 		glUniform1fv(id, (GLsizei)length, listOfFloat);
 		return this;
@@ -468,7 +579,7 @@ namespace NAMESPACE_RENDERING
 	/// Set the uniform value of shader
 	/// </summary>
 	template <>
-	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform2(const GLint id, const sp_float* values)
+	API_INTERFACE inline SpShaderOpenGL* SpShaderOpenGL::setUniform2(const GLint id, const sp_float* values)
 	{
 		glUniform3fv(id, ONE_SIZE, values);
 		return this;
@@ -478,7 +589,7 @@ namespace NAMESPACE_RENDERING
 	/// Set the uniform value of shader
 	/// </summary>
 	template <>
-	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform3(const GLint id, const sp_float* values)
+	API_INTERFACE inline SpShaderOpenGL* SpShaderOpenGL::setUniform3(const GLint id, const sp_float* values)
 	{
 		glUniform3fv(id, ONE_SIZE, values);
 		return this;
@@ -488,7 +599,7 @@ namespace NAMESPACE_RENDERING
 	/// Set the uniform value of shader
 	/// </summary>
 	template <>
-	API_INTERFACE inline OpenGLShader* OpenGLShader::setUniform4(const GLint id, const sp_float* values)
+	API_INTERFACE inline SpShaderOpenGL* SpShaderOpenGL::setUniform4(const GLint id, const sp_float* values)
 	{
 		glUniform4fv(id, ONE_SIZE, values);
 		return this;
@@ -496,4 +607,4 @@ namespace NAMESPACE_RENDERING
 
 }
 
-#endif // OPENGL_SHADER_HEADER
+#endif // SP_SHADER_OPENGL_HEADER

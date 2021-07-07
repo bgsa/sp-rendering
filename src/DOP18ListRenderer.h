@@ -4,7 +4,7 @@
 #include "SpectrumRendering.h"
 #include <DOP18.h>
 #include "GraphicObject3DList.h"
-#include "OpenGLShader.h"
+#include "SpShaderOpenGL.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -12,7 +12,7 @@ namespace NAMESPACE_RENDERING
 		: public GraphicObject3DList
 	{
 	private:
-		OpenGLShader* shader;
+		SpShaderOpenGL* shader;
 
 		void initIndexBuffer();
 		void initVertexBuffer();		

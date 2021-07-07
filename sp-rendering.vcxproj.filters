@@ -132,7 +132,7 @@
     <ClInclude Include="src\OpenGLBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\OpenGLShader.h">
+    <ClInclude Include="src\SpShaderOpenGL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\OpenGLRendererManager.h">

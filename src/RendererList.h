@@ -4,7 +4,7 @@
 #include "SpectrumRendering.h"
 #include "GraphicObject3DList.h"
 #include "IGraphicObjectRenderer.h"
-#include "OpenGLShader.h"
+#include "SpShaderOpenGL.h"
 #include "SpPhysicSimulator.h"
 
 namespace NAMESPACE_RENDERING
@@ -13,7 +13,7 @@ namespace NAMESPACE_RENDERING
 		: public IGraphicObjectRenderer
 	{
 	private:
-		OpenGLShader* shader;
+		SpShaderOpenGL* shader;
 		GLuint programShader;
 		GLuint vertexBufferObject;
 		GLuint modelBufferObject;
@@ -47,7 +47,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE void init()
 		{
-			shader = sp_mem_new(OpenGLShader)();
+			shader = sp_mem_new(SpShaderOpenGL)();
 			shader
 				->buildFromFile(GL_VERTEX_SHADER, "resources\\shaders\\opengl\\renderer-list\\shader.vs")
 				->buildFromFile(GL_FRAGMENT_SHADER, "resources\\shaders\\opengl\\renderer-list\\shader.fs")
@@ -86,7 +86,7 @@ namespace NAMESPACE_RENDERING
 		{
 			if (shader != nullptr)
 			{
-				sp_mem_delete(shader, OpenGLShader);
+				sp_mem_delete(shader, SpShaderOpenGL);
 				shader = nullptr;
 			}
 		}

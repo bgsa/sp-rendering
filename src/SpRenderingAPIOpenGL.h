@@ -3,7 +3,7 @@
 
 #include "SpectrumRendering.h"
 #include "SpRenderingAPI.h"
-#include "OpenGLShader.h"
+#include "SpShaderOpenGL.h"
 #include "SpGpuBuffer.h"
 #include "OpenGLBuffer.h"
 #include "SpTextureBufferOpenGL.h"
@@ -97,7 +97,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE inline SpShader* createShader() override
 		{
-			return sp_mem_new(OpenGLShader)();
+			return sp_mem_new(SpShaderOpenGL)();
 		}
 
 		API_INTERFACE inline SpGpuBuffer* createArrayBuffer() override
@@ -122,7 +122,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE inline SpShader* createPrimitiveShader() override
 		{
-			OpenGLShader* shader = sp_mem_new(OpenGLShader)();
+			SpShaderOpenGL* shader = sp_mem_new(SpShaderOpenGL)();
 			shader->name("Primitive");
 
 			shader

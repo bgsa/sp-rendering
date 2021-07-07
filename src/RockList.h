@@ -7,7 +7,7 @@
 #include "IGraphicObjectRenderer.h"
 #include "ObjModel.h"
 #include "OpenGLBuffer.h"
-#include "OpenGLShader.h"
+#include "SpShaderOpenGL.h"
 #include "SpPhysicObjectList.h"
 #include "SpLightManager.h"
 #include "SpInertiaTensor.h"
@@ -20,7 +20,7 @@ namespace NAMESPACE_RENDERING
 		, public SpPhysicObjectList
 	{
 	private:
-		OpenGLShader* shader;
+		SpShaderOpenGL* shader;
 		sp_uint facesLength;
 		sp_uint vertexesLength;
 		sp_int normalAttribute;
@@ -129,7 +129,7 @@ namespace NAMESPACE_RENDERING
 		{
 			initBuffers();
 
-			shader = sp_mem_new(OpenGLShader)();
+			shader = sp_mem_new(SpShaderOpenGL)();
 			shader
 				->buildFromFile(GL_VERTEX_SHADER, "resources/shaders/opengl/rock/shader-list.vs")
 				->buildFromFile(GL_FRAGMENT_SHADER, "resources/shaders/opengl/rock/shader-list.fs")
@@ -199,7 +199,7 @@ namespace NAMESPACE_RENDERING
 
 			if (shader != nullptr)
 			{
-				sp_mem_delete(shader, OpenGLShader);
+				sp_mem_delete(shader, SpShaderOpenGL);
 				shader = nullptr;
 			}
 		}

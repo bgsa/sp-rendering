@@ -57,7 +57,7 @@ namespace NAMESPACE_RENDERING
 
 		indexesBuffer = sp_mem_new(OpenGLBuffer)(facesLength * 3 * sizeof(sp_uint), model.faces->data(), GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 
-		shader = sp_mem_new(OpenGLShader)();
+		shader = sp_mem_new(SpShaderOpenGL)();
 		shader
 			->buildFromFile(GL_VERTEX_SHADER, "resources\\shaders\\opengl\\rock\\shader.vs")
 			->buildFromFile(GL_FRAGMENT_SHADER, "resources\\shaders\\opengl\\rock\\shader.fs")
@@ -102,7 +102,7 @@ namespace NAMESPACE_RENDERING
 
 		if (shader != NULL)
 		{
-			sp_mem_delete(shader, OpenGLShader);
+			sp_mem_delete(shader, SpShaderOpenGL);
 			shader = NULL;
 		}
 	}

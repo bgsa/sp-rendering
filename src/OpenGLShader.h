@@ -278,7 +278,7 @@ namespace NAMESPACE_RENDERING
 		/// <returns>Current shader</returns>
 		API_INTERFACE inline SpShader* setUniform(const sp_int id, const Mat3& value) override
 		{
-			glUniformMatrix3fv(id, ONE_INT, GL_FALSE, value);
+			sp_opengl_check(glUniformMatrix3fv(id, ONE_INT, GL_FALSE, value));
 			return this;
 		}
 
@@ -290,7 +290,7 @@ namespace NAMESPACE_RENDERING
 		/// <returns>Current shader</returns>
 		API_INTERFACE inline SpShader* setUniform(const sp_int id, const Mat4& value) override
 		{
-			glUniformMatrix4fv(id, ONE_INT, GL_FALSE, value);
+			sp_opengl_check(glUniformMatrix4fv(id, ONE_INT, GL_FALSE, value));
 			return this;
 		}
 
@@ -302,7 +302,7 @@ namespace NAMESPACE_RENDERING
 		/// <returns>Current shader</returns>
 		API_INTERFACE inline SpShader* setUniform(const sp_int id, const sp_int value) override
 		{
-			glUniform1i(id, value);
+			sp_opengl_check(glUniform1i(id, value));
 			return this;
 		}
 
@@ -314,9 +314,23 @@ namespace NAMESPACE_RENDERING
 		/// <returns>Current shader</returns>
 		API_INTERFACE inline SpShader* setUniform(const sp_int id, const sp_uint value) override
 		{
-			glUniform1ui(id, value);
+			sp_opengl_check(glUniform1ui(id, value));
 			return this;
 		}
+
+#ifdef ENV_64BITS
+		/// <summary>
+		/// Set the uniform with scalar unsigned size value
+		/// </summary>
+		/// <param name="id">Uniform Id</param>
+		/// <param name="value">unsigned size</param>
+		/// <returns>Current shader</returns>
+		API_INTERFACE inline SpShader* setUniform(const sp_int id, const sp_size value) override
+		{
+			sp_opengl_check(glUniform1uiv(id, value));
+			return this;
+		}
+#endif
 
 		/// <summary>
 		/// Set the uniform with scalar flaot value
@@ -326,7 +340,7 @@ namespace NAMESPACE_RENDERING
 		/// <returns>Current shader</returns>
 		API_INTERFACE inline SpShader* setUniform(const sp_int id, const sp_float value) override
 		{
-			glUniform1f(id, value);
+			sp_opengl_check(glUniform1f(id, value));
 			return this;
 		}
 
@@ -338,7 +352,7 @@ namespace NAMESPACE_RENDERING
 		/// <returns>Current shader</returns>
 		API_INTERFACE inline SpShader* setUniform(const sp_int id, const sp_double value) override
 		{
-			glUniform1d(id, value);
+			sp_opengl_check(glUniform1d(id, value));
 			return this;
 		}
 

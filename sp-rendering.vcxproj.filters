@@ -147,7 +147,7 @@
     <ClInclude Include="src\IGraphicObjectRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\OpenGLTextureBuffer.h">
+    <ClInclude Include="src\SpTextureBufferOpenGL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\BoundingVolumeRenderer.h">
@@ -291,6 +291,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\OpenGLTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SpSceneRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

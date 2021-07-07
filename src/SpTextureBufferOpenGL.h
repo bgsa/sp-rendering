@@ -1,19 +1,19 @@
 #ifdef OPENGL_ENABLED
 
-#ifndef OPENGL_TEXTURE_BUFFER_HEADER
-#define OPENGL_TEXTURE_BUFFER_HEADER
+#ifndef SP_TEXTURE_BUFFER_OPENGL_HEADER
+#define SP_TEXTURE_BUFFER_OPENGL_HEADER
 
 #include "SpectrumRendering.h"
 #include "SpGpuTextureBuffer.h"
 
 namespace NAMESPACE_RENDERING
 {
-	class OpenGLTextureBuffer
+	class SpTextureBufferOpenGL
 		: public SpGpuTextureBuffer
 	{
 	public:
 
-		API_INTERFACE OpenGLTextureBuffer()
+		API_INTERFACE inline SpTextureBufferOpenGL()
 		{
 			glGenTextures(1, &_textureId);
 			glGenBuffers(1, &_bufferId);
@@ -21,30 +21,25 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE inline void updateData(const sp_size size, const void* buffer, sp_uint usage = GL_DYNAMIC_DRAW) override
 		{
-			glBindBuffer(GL_TEXTURE_BUFFER, _bufferId);
-			glBufferData(GL_TEXTURE_BUFFER, size, buffer, usage);
-			glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, _bufferId);
+			sp_opengl_check(glBindBuffer(GL_TEXTURE_BUFFER, _bufferId));
+			sp_opengl_check(glBufferData(GL_TEXTURE_BUFFER, size, buffer, usage));
+			sp_opengl_check(glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, _bufferId));
 		}
 
-		API_INTERFACE inline OpenGLTextureBuffer* use() override
+		API_INTERFACE inline SpTextureBufferOpenGL* use() override
 		{
-			glBindBuffer(GL_TEXTURE_BUFFER, _bufferId);
+			sp_opengl_check(glBindBuffer(GL_TEXTURE_BUFFER, _bufferId));
 
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_BUFFER, _textureId);
+			sp_opengl_check(glActiveTexture(GL_TEXTURE0));
+			sp_opengl_check(glBindTexture(GL_TEXTURE_BUFFER, _textureId));
 
 			return this;
 		}
 
 		API_INTERFACE virtual void disable() override
 		{
-			glBindBuffer(GL_TEXTURE_BUFFER, 0);
-			glBindTexture(GL_TEXTURE_BUFFER, 0);
-		}
-
-		API_INTERFACE const sp_char* toString() override
-		{
-			return "OpenGL Texture Buffer";
+			sp_opengl_check(glBindBuffer(GL_TEXTURE_BUFFER, 0));
+			sp_opengl_check(glBindTexture(GL_TEXTURE_BUFFER, 0));
 		}
 
 		API_INTERFACE void dispose() override
@@ -62,7 +57,7 @@ namespace NAMESPACE_RENDERING
 			}
 		}
 
-		~OpenGLTextureBuffer()
+		~SpTextureBufferOpenGL()
 		{
 			dispose();
 		}
@@ -70,6 +65,6 @@ namespace NAMESPACE_RENDERING
 	};
 }
 
-#endif // OPENGL_TEXTURE_BUFFER_HEADER
+#endif // SP_TEXTURE_BUFFER_OPENGL_HEADER
 
 #endif // OPENGL_ENABLED

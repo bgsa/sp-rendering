@@ -6,6 +6,7 @@
 #include "OpenGLShader.h"
 #include "SpGpuBuffer.h"
 #include "OpenGLBuffer.h"
+#include "SpTextureBufferOpenGL.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -74,6 +75,11 @@ namespace NAMESPACE_RENDERING
 			return GL_STATIC_DRAW;
 		}
 
+		API_INTERFACE inline sp_int bufferUsageTypeDynamicDraw() override
+		{
+			return GL_DYNAMIC_DRAW;
+		}
+
 		API_INTERFACE inline sp_int typeFloatId() override
 		{
 			return GL_FLOAT;
@@ -107,6 +113,11 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE inline SpGpuBuffer* createBuffer(const sp_int type) override
 		{
 			return sp_mem_new(OpenGLBuffer)(type);
+		}
+
+		API_INTERFACE virtual SpGpuTextureBuffer* createTextureBuffer() override
+		{
+			return sp_mem_new(SpTextureBufferOpenGL)();
 		}
 
 		API_INTERFACE inline SpShader* createPrimitiveShader() override

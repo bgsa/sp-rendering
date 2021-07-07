@@ -5,8 +5,7 @@
 #include "SpGpuRenderingFactory.h"
 #include "SpGpuBuffer.h"
 #include "OpenGLBuffer.h"
-#include "OpenGLTextureBuffer.h"
-#include "SpGpuTextureBuffer.h"
+#include "SpTextureBufferOpenGL.h"
 
 namespace NAMESPACE_PHYSICS
 {
@@ -37,7 +36,7 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE virtual SpGpuTextureBuffer* createTextureBuffer() override
 		{
-			return sp_mem_new(OpenGLTextureBuffer)();
+			return sp_mem_new(SpTextureBufferOpenGL)();
 		}
 
 		API_INTERFACE inline const sp_char* toString() override

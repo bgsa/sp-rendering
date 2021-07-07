@@ -7,7 +7,7 @@
 #include "IGraphicObjectRenderer.h"
 #include "SpArray.h"
 #include "OpenGLBuffer.h"
-#include "OpenGLTextureBuffer.h"
+#include "SpTextureBufferOpenGL.h"
 #include "SpTransform.h"
 
 namespace NAMESPACE_RENDERING

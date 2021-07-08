@@ -51,9 +51,9 @@ namespace NAMESPACE_RENDERING
 			// enable all buffers
 			for (SpVectorItem<SpGpuBuffer*>* bufferItem = renderableObject->buffers.begin(); bufferItem != nullptr; bufferItem = bufferItem->next())
 				bufferItem->value()->use();
-
-			shader->enableVertexAttribute(0, 3, typeFloatId, false, 0, 0);
-			shader->enableVertexAttribute(1, 3, typeFloatId, false, 3, 0);
+				
+			shader->enableVertexAttribute(0, 3, typeFloatId, false, sizeof(sp_float) * 6, 0);
+			shader->enableVertexAttribute(1, 3, typeFloatId, false, sizeof(sp_float) * 6, (void*)(sizeof(sp_float) * 3));
 
 			shader->drawElements(typeTriangleId, mesh->facesLength * 3, typeUIntId);
 

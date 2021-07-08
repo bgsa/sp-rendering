@@ -21,8 +21,10 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE inline void updateData(const sp_size size, const void* buffer, sp_uint usage = GL_DYNAMIC_DRAW) override
 		{
+			sp_int remainingSizeForColorPack = size % sizeof(SpColorRGBA); // GL_RGBA32F
+
 			sp_opengl_check(glBindBuffer(GL_TEXTURE_BUFFER, _bufferId));
-			sp_opengl_check(glBufferData(GL_TEXTURE_BUFFER, size, buffer, usage));
+			sp_opengl_check(glBufferData(GL_TEXTURE_BUFFER, size + remainingSizeForColorPack, buffer, usage));
 			sp_opengl_check(glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, _bufferId));
 		}
 

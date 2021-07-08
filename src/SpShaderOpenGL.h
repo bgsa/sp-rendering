@@ -498,9 +498,9 @@ namespace NAMESPACE_RENDERING
 		/// <param name="stride">Stride of elements</param>
 		/// <param name="pointer">Pointer to start of element</param>
 		/// <returns></returns>
-		API_INTERFACE inline SpShader* enableVertexAttribute(const sp_uint index, sp_int size, sp_int type, sp_bool normalized, sp_size stride, const void* pointer) override
+		API_INTERFACE inline SpShader* enableVertexAttribute(const sp_uint index, sp_int size, sp_int type, sp_bool normalize, sp_size stride, const void* pointer) override
 		{
-			sp_opengl_check(glVertexAttribPointer(index, size, type, normalized, stride, pointer));
+			sp_opengl_check(glVertexAttribPointer(index, size, type, normalize, stride, pointer));
 			sp_opengl_check(glEnableVertexAttribArray(index));
 			return this;
 		}

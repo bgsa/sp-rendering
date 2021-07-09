@@ -25,6 +25,11 @@ namespace NAMESPACE_RENDERING
 			sp_opengl_check(glDisable(propertyId));
 		}
 
+		API_INTERFACE inline void disableDepthTest() override
+		{
+			sp_opengl_check(glDisable(GL_DEPTH_TEST));
+		}
+
 		API_INTERFACE inline void enableLineSmooth() override
 		{
 			sp_opengl_check(glEnable(GL_LINE_SMOOTH));
@@ -70,29 +75,34 @@ namespace NAMESPACE_RENDERING
 			sp_opengl_check(glScissor(area.x, area.y, area.width, area.height));
 		}
 
-		API_INTERFACE inline sp_int bufferUsageTypeStaticDraw() override
+		API_INTERFACE inline sp_uint bufferUsageTypeStaticDraw() override
 		{
 			return GL_STATIC_DRAW;
 		}
 
-		API_INTERFACE inline sp_int bufferUsageTypeDynamicDraw() override
+		API_INTERFACE inline sp_uint bufferUsageTypeDynamicDraw() override
 		{
 			return GL_DYNAMIC_DRAW;
 		}
 
-		API_INTERFACE inline sp_int typeFloatId() override
+		API_INTERFACE inline sp_uint typeFloatId() override
 		{
 			return GL_FLOAT;
 		}
 
-		API_INTERFACE inline sp_int typeUIntId() override
+		API_INTERFACE inline sp_uint typeUIntId() override
 		{
 			return GL_UNSIGNED_INT;
 		}
 
-		API_INTERFACE inline sp_int typeTriangleId() override
+		API_INTERFACE inline sp_uint typeTriangleId() override
 		{
 			return GL_TRIANGLES;
+		}
+
+		API_INTERFACE inline sp_uint typeLinesId() override
+		{
+			return GL_LINES;
 		}
 
 		API_INTERFACE inline SpShader* createShader() override
@@ -128,6 +138,19 @@ namespace NAMESPACE_RENDERING
 			shader
 				->buildFromFile(GL_VERTEX_SHADER, "resources/shaders/opengl/primitive/shader.vs")
 				->buildFromFile(GL_FRAGMENT_SHADER, "resources/shaders/opengl/primitive/shader.fs")
+				->link();
+
+			return shader;
+		}
+
+		API_INTERFACE inline SpShader* createLinesShader() override
+		{
+			SpShaderOpenGL* shader = sp_mem_new(SpShaderOpenGL)();
+			shader->name("LinesList");
+
+			shader
+				->buildFromFile(GL_VERTEX_SHADER, "resources/shaders/opengl/line-list/shader.vs")
+				->buildFromFile(GL_FRAGMENT_SHADER, "resources/shaders/opengl/line-list/shader.fs")
 				->link();
 
 			return shader;

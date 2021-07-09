@@ -29,6 +29,8 @@ namespace NAMESPACE_RENDERING
 		{
 			_framebuffer = sp_mem_new(OpenGLFramebuffer);
 			renderer = sp_mem_new(SpSceneRenderer);
+			activeCameraIndex = SP_UINT_MAX;
+			scene = nullptr;
 		}
 		
 		/// <summary>
@@ -53,15 +55,21 @@ namespace NAMESPACE_RENDERING
 		/// </summary>
 		/// <returns></returns>
 		API_INTERFACE inline void render()
-		{
-			if (scene == nullptr)
-				return;
-				
+		{		
 			renderData.framebuffer = _framebuffer;
 			renderData.cameraIndex = activeCameraIndex;
 			renderData.scene = scene;
 
 			renderer->render(renderData);
+		}
+
+		/// <summary>
+		/// Get the aspect ratio of this viewport
+		/// </summary>
+		/// <returns></returns>
+		API_INTERFACE inline sp_float aspectRatio() const
+		{
+			return renderData.viewportData.aspectRatio();
 		}
 
 		/// <summary>

@@ -54,7 +54,7 @@ namespace NAMESPACE_RENDERING
 			return this;
 		}
 
-		API_INTERFACE inline void dispose()
+		API_INTERFACE inline void dispose() override
 		{
 			sp_opengl_check(glDeleteBuffers(ONE_INT, &_id));
 		}

@@ -8,9 +8,9 @@ namespace NAMESPACE_RENDERING
 	void SpSceneRenderer::render(const SpSceneRendererData& rendererData)
 	{
 		SpRenderingAPI* renderingApi = SpGameInstance->renderingAPI();
-		const sp_int typeFloatId = renderingApi->typeFloatId();
-		const sp_int typeUIntId = renderingApi->typeUIntId();
-		const sp_int typeTriangleId = renderingApi->typeTriangleId();
+		const sp_uint typeFloatId = renderingApi->typeFloatId();
+		const sp_uint typeUIntId = renderingApi->typeUIntId();
+		const sp_uint typeTriangleId = renderingApi->typeTriangleId();
 
 		SpCamera* camera = rendererData.scene->cameras()->get(rendererData.cameraIndex);
 		camera->updateProjectionPerspectiveAspect(rendererData.viewportData.aspectRatio());

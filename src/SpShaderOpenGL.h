@@ -516,13 +516,19 @@ namespace NAMESPACE_RENDERING
 			return this;
 		}
 
-		API_INTERFACE inline SpShader* drawElements(const sp_int primitiveTypeId, const sp_size indexesLength, const sp_int indexTypeId, const void* indexes = NULL) override
+		API_INTERFACE inline SpShader* drawArray(const sp_uint primitiveTypeId, const sp_int first, const sp_size count) override
+		{
+			sp_opengl_check(glDrawArrays(primitiveTypeId, first, count));
+			return this;
+		}
+
+		API_INTERFACE inline SpShader* drawElements(const sp_uint primitiveTypeId, const sp_size indexesLength, const sp_int indexTypeId, const void* indexes = NULL) override
 		{
 			sp_opengl_check(glDrawElements(primitiveTypeId, indexesLength, indexTypeId, indexes));
 			return this;
 		}
 
-		API_INTERFACE inline SpShader* drawElementsInstanced(const sp_int primitiveTypeId, const sp_size indexesLength, const sp_int indexTypeId, const void* indexes = NULL, const sp_size primitiveCount = 0) override
+		API_INTERFACE inline SpShader* drawElementsInstanced(const sp_uint primitiveTypeId, const sp_size indexesLength, const sp_int indexTypeId, const void* indexes = NULL, const sp_size primitiveCount = 0) override
 		{
 			sp_opengl_check(glDrawElementsInstanced(primitiveTypeId, indexesLength, indexTypeId, indexes, primitiveCount));
 			return this;

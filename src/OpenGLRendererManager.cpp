@@ -19,7 +19,7 @@ namespace NAMESPACE_RENDERING
 		sp_opengl_check(glViewport(_viewport.x, _viewport.y, _viewport.width, _viewport.height));
 		sp_opengl_check(glScissor(_viewport.x, _viewport.y, _viewport.width, _viewport.height));
 
-		_camera->updateProjectionPerspectiveAspect(_viewport.aspectRatio());
+		_camera->aspectRatio(_viewport.aspectRatio());
 	}
 
 	void OpenGLRendererManager::init(SpCamera* camera)
@@ -63,11 +63,11 @@ namespace NAMESPACE_RENDERING
 
 	void OpenGLRendererManager::render()
 	{
-		_camera->updateProjectionPerspectiveAspect(_viewport.aspectRatio());
+		_camera->update(_viewport.aspectRatio());
 
 		SpRenderData renderData;
-		renderData.projectionMatrix = _camera->getProjectionMatrix();
-		renderData.viewMatrix = _camera->getViewMatrix();
+		renderData.projectionMatrix = _camera->projectionMatrix();
+		renderData.viewMatrix = _camera->viewMatrix();
 		renderData.viewport = &_viewport;
 
 		sp_opengl_check(glViewport(_viewport.x, _viewport.y, _viewport.width, _viewport.height));
@@ -84,7 +84,7 @@ namespace NAMESPACE_RENDERING
 
 		render3D(renderData);
 
-		_camera->getHUDProjectionMatrix((sp_float)_viewport.width, (sp_float)_viewport.height, renderData.projectionMatrix);
+		_camera->hudProjectionMatrix((sp_float)_viewport.width, (sp_float)_viewport.height, renderData.projectionMatrix);
 
 		sp_opengl_check(glDisable(GL_DEPTH_TEST));
 		sp_opengl_check(glDisable(GL_CULL_FACE));

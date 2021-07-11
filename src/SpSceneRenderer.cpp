@@ -12,10 +12,13 @@ namespace NAMESPACE_RENDERING
 		const sp_uint typeUIntId = renderingApi->typeUIntId();
 		const sp_uint typeTriangleId = renderingApi->typeTriangleId();
 
-		SpCamera* camera = rendererData.scene->cameras()->get(rendererData.cameraIndex);
-		camera->updateProjectionPerspectiveAspect(rendererData.viewportData.aspectRatio());
-		const Mat4 projectionMatrix = camera->getProjectionMatrix();
-		const Mat4 viewMatrix = camera->getViewMatrix();
+		SpCameraManager* cameraManager = rendererData.scene->camerasManager();
+		SpCamera* camera = cameraManager->get(rendererData.cameraIndex);
+		camera->update(rendererData.viewportData.aspectRatio());
+		const Mat4 projectionMatrix = camera->projectionMatrix();
+		const Mat4 viewMatrix = camera->viewMatrix();
+
+		cameraManager->updateGpuBuffer();
 
 		rendererData.framebuffer->use();
 

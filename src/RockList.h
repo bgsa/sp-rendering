@@ -162,8 +162,12 @@ namespace NAMESPACE_RENDERING
 			_buffer->use();
 			glVertexAttribPointer(positionAttribute, 3, GL_FLOAT, GL_FALSE, 0, 0);
 			glEnableVertexAttribArray(positionAttribute);
-			glVertexAttribPointer(normalAttribute, 3, GL_FLOAT, GL_FALSE, 0, (void*)(vertexesLength * VEC3_LENGTH * sizeof(sp_float)));
-			glEnableVertexAttribArray(normalAttribute);
+
+			if (normalAttribute != -1)
+			{
+				glVertexAttribPointer(normalAttribute, 3, GL_FLOAT, GL_FALSE, 0, (void*)(vertexesLength * VEC3_LENGTH * sizeof(sp_float)));
+				glEnableVertexAttribArray(normalAttribute);
+			}
 
 			SpWorldManagerInstance->current()->transformsGPU()->use();
 			_indexesBuffer->use();

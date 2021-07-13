@@ -28,11 +28,11 @@ namespace NAMESPACE_RENDERING
 			sp_opengl_check(glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, _bufferId));
 		}
 
-		API_INTERFACE inline SpTextureBufferOpenGL* use() override
+		API_INTERFACE inline SpTextureBufferOpenGL* use(const sp_uint textureIndex = 0) override
 		{
 			sp_opengl_check(glBindBuffer(GL_TEXTURE_BUFFER, _bufferId));
 
-			sp_opengl_check(glActiveTexture(GL_TEXTURE0));
+			sp_opengl_check(glActiveTexture(GL_TEXTURE0 + textureIndex));
 			sp_opengl_check(glBindTexture(GL_TEXTURE_BUFFER, _textureId));
 
 			return this;

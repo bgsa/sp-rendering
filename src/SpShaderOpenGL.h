@@ -326,10 +326,6 @@ namespace NAMESPACE_RENDERING
 		/// </summary>
 		API_INTERFACE inline sp_int uniform(const sp_char* name)
 		{
-#ifdef DEBUG
-			sp_log_info1s("Shader uniform not found: ");
-			sp_log_info1s(name); sp_log_newline();
-#endif
 			return glGetUniformLocation(program, name);
 		}
 

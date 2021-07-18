@@ -156,6 +156,19 @@ namespace NAMESPACE_RENDERING
 			return shader;
 		}
 
+		API_INTERFACE inline SpShader* createManipulatorShader() override
+		{
+			SpShaderOpenGL* shader = sp_mem_new(SpShaderOpenGL)();
+			shader->name("Manipulator");
+
+			shader
+				->buildFromFile(GL_VERTEX_SHADER, "resources/shaders/opengl/manipulator/shader.vs")
+				->buildFromFile(GL_FRAGMENT_SHADER, "resources/shaders/opengl/manipulator/shader.fs")
+				->link();
+
+			return shader;
+		}
+
 	};
 }
 

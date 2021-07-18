@@ -334,10 +334,6 @@ namespace NAMESPACE_RENDERING
 		/// </summary>
 		API_INTERFACE inline sp_int attribute(const sp_char* name)
 		{
-#ifdef DEBUG
-			sp_log_info1s("Shader attribute not found: ");
-			sp_log_info1s(name); sp_log_newline();
-#endif	
 			return glGetAttribLocation(program, name);
 		}
 
@@ -398,6 +394,30 @@ namespace NAMESPACE_RENDERING
 		API_INTERFACE inline SpShader* setUniform(const sp_int id, const Mat4& value) override
 		{
 			sp_opengl_check(glUniformMatrix4fv(id, ONE_INT, GL_FALSE, value));
+			return this;
+		}
+
+		/// <summary>
+		/// Set the uniform with vec3 value
+		/// </summary>
+		/// <param name="id">Uniform Id</param>
+		/// <param name="value">Vec3</param>
+		/// <returns>Current shader</returns>
+		API_INTERFACE inline SpShader* setUniform(const sp_int id, const Vec3& value) override
+		{
+			sp_opengl_check(glUniform3fv(id, ONE_INT, (sp_float*)&value));
+			return this;
+		}
+
+		/// <summary>
+		/// Set the uniform with vec4 value
+		/// </summary>
+		/// <param name="id">Uniform Id</param>
+		/// <param name="value">Vec4</param>
+		/// <returns>Current shader</returns>
+		API_INTERFACE inline SpShader* setUniform(const sp_int id, const Vec4& value) override
+		{
+			sp_opengl_check(glUniform4fv(id, ONE_INT, (sp_float*)&value));
 			return this;
 		}
 

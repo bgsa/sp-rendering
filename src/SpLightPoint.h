@@ -1,24 +1,24 @@
-#ifndef SP_LIGHT_SOURCE_HEADER
-#define SP_LIGHT_SOURCE_HEADER
+#ifndef SP_LIGHT_POINT_HEADER
+#define SP_LIGHT_POINT_HEADER
 
 #include "SpectrumRendering.h"
-#include "ColorRGB.h"
+#include "SpColorRGB.h"
 
 namespace NAMESPACE_RENDERING
 {
-	class SpLightSource
+	class SpLightPoint
 	{
 	private:
 		Vec3 _position;
 		sp_bool _enabled;
-		ColorRGB _color;
+		SpColorRGB _color;
 
 	public:
 
-		API_INTERFACE SpLightSource()
+		API_INTERFACE SpLightPoint()
 		{
 			_position = Vec3Zeros;
-			_color = ColorRGB(1.0f, 1.0f, 1.0f);
+			_color = SpColorRGB(1.0f, 1.0f, 1.0f);
 			_enabled = true;
 		}
 
@@ -32,12 +32,12 @@ namespace NAMESPACE_RENDERING
 			_position = newPosition;
 		}
 
-		API_INTERFACE inline ColorRGB color()
+		API_INTERFACE inline SpColorRGB color()
 		{
 			return _color;
 		}
 
-		API_INTERFACE inline void color(const ColorRGB& newColor)
+		API_INTERFACE inline void color(const SpColorRGB& newColor)
 		{
 			_color = newColor;
 		}
@@ -60,4 +60,4 @@ namespace NAMESPACE_RENDERING
 	};
 }
 
-#endif // SP_LIGHT_SOURCE_HEADER
+#endif // SP_LIGHT_POINT_HEADER

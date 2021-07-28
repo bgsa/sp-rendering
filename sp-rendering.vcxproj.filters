@@ -168,7 +168,7 @@
     <ClInclude Include="src\SpLightManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\SpLightSource.h">
+    <ClInclude Include="src\SpLightPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\SpMaterial.h">

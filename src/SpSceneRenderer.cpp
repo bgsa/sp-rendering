@@ -50,9 +50,13 @@ namespace NAMESPACE_RENDERING
 
 			scene->transformManager()->gpuBuffer()->use(1);
 			shader->setUniform(1, 1);
+
+			scene->lightingManager()->gpuBuffer()->use(2);
+			shader->setUniform(2, 2);
 			
-			shader->setUniform(2, rendererData.cameraIndex);
-			shader->setUniform(3, renderableObject->gameObjectIndex);
+			shader->setUniform(3, (sp_int)scene->lightingManager()->length());
+			shader->setUniform(4, rendererData.cameraIndex);
+			shader->setUniform(5, renderableObject->gameObjectIndex);
 
 			// enable all buffers
 			for (SpVectorItem<SpGpuBuffer*>* bufferItem = renderableObject->buffers.begin(); bufferItem != nullptr; bufferItem = bufferItem->next())

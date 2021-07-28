@@ -70,7 +70,7 @@
     <ClInclude Include="src\SphereRenderer.h" />
     <ClInclude Include="src\SphereX.h" />
     <ClInclude Include="src\SpLightManager.h" />
-    <ClInclude Include="src\SpLightSource.h" />
+    <ClInclude Include="src\SpLightPoint.h" />
     <ClInclude Include="src\SpMaterial.h" />
     <ClInclude Include="src\SpOpenGL.h" />
     <ClInclude Include="src\SpRenderingAPIOpenGL.h" />

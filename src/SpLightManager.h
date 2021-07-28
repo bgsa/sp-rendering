@@ -2,7 +2,7 @@
 #define SP_LIGHT_MANAGER_HEADER
 
 #include "SpectrumRendering.h"
-#include "SpLightSource.h"
+#include "SpLightPoint.h"
 
 #define SP_LIGHT_MAX_SOURCE 10
 
@@ -12,7 +12,7 @@ namespace NAMESPACE_RENDERING
 	{
 	private:
 		sp_uint _lightLength;
-		SpLightSource _lights[SP_LIGHT_MAX_SOURCE];
+		SpLightPoint _lights[SP_LIGHT_MAX_SOURCE];
 		
 		/// <summary>
 		/// Default constructor
@@ -21,13 +21,13 @@ namespace NAMESPACE_RENDERING
 		{
 			_lightLength = ZERO_UINT;
 
-			environmentLight.Red = 0.3f;
-			environmentLight.Green = 0.3f;
-			environmentLight.Blue = 0.3f;
+			environmentLight.red = 0.3f;
+			environmentLight.green = 0.3f;
+			environmentLight.blue = 0.3f;
 		}
 
 	public:
-		ColorRGB environmentLight;
+		SpColorRGB environmentLight;
 
 		/// <summary>
 		/// Get the instance of the light manager
@@ -45,7 +45,7 @@ namespace NAMESPACE_RENDERING
 		/// <param name="color">Color</param>
 		/// <param name="position">Position</param>
 		/// <returns>void</returns>
-		API_INTERFACE inline void addLight(const ColorRGB& color, const Vec3& position)
+		API_INTERFACE inline void addLight(const SpColorRGB& color, const Vec3& position)
 		{
 			sp_assert(_lightLength < SP_LIGHT_MAX_SOURCE, "InvalidOperationException");
 
@@ -59,7 +59,7 @@ namespace NAMESPACE_RENDERING
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		API_INTERFACE inline SpLightSource* lights(const sp_uint index)
+		API_INTERFACE inline SpLightPoint* lights(const sp_uint index)
 		{
 			sp_assert(index < SP_LIGHT_MAX_SOURCE, "InvalidOperationException");
 

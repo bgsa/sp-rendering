@@ -41,6 +41,7 @@ namespace NAMESPACE_RENDERING
 		for (sp_uint i = 0; i < renderableObjectManager->length(); i++)
 		{
 			SpRenderableObject* renderableObject = renderableObjectManager->get(i);
+			SpGameObject* gameObject = rendererData.scene->gameObject(renderableObject->gameObjectIndex);
 			const SpMeshData* mesh = scene->meshManager()->get(renderableObject->meshDataIndex);
 			SpShader* shader = scene->shaders[renderableObject->shaderIndex];
 			shader->enable();
@@ -53,10 +54,14 @@ namespace NAMESPACE_RENDERING
 
 			scene->lightingManager()->gpuBuffer()->use(2);
 			shader->setUniform(2, 2);
+
+			scene->renderableObjectManager()->gpuBufferMaterials()->use(3);
+			shader->setUniform(3, 3);
 			
-			shader->setUniform(3, (sp_int)scene->lightingManager()->length());
-			shader->setUniform(4, rendererData.cameraIndex);
-			shader->setUniform(5, renderableObject->gameObjectIndex);
+			shader->setUniform(4, (sp_int)scene->lightingManager()->length());
+			shader->setUniform(5, rendererData.cameraIndex);
+			shader->setUniform(6, renderableObject->gameObjectIndex);
+			shader->setUniform(7, gameObject->managerIndex());
 
 			// enable all buffers
 			for (SpVectorItem<SpGpuBuffer*>* bufferItem = renderableObject->buffers.begin(); bufferItem != nullptr; bufferItem = bufferItem->next())

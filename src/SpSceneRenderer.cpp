@@ -41,44 +41,48 @@ namespace NAMESPACE_RENDERING
 		for (sp_uint i = 0; i < renderableObjectManager->length(); i++)
 		{
 			SpRenderableObject* renderableObject = renderableObjectManager->get(i);
-			SpGameObject* gameObject = rendererData.scene->gameObject(renderableObject->gameObjectIndex);
-			const SpMeshData* mesh = scene->meshManager()->get(renderableObject->meshDataIndex);
-			SpShader* shader = scene->shaders[renderableObject->shaderIndex];
-			shader->enable();
 
-			scene->camerasManager()->gpuBuffer()->use(0);
-			shader->setUniform(0, 0);
+			if (renderableObject->isVisible())
+			{
+				SpGameObject* gameObject = rendererData.scene->gameObject(renderableObject->gameObjectIndex);
+				const SpMeshData* mesh = scene->meshManager()->get(renderableObject->meshDataIndex);
+				SpShader* shader = scene->shaders[renderableObject->shaderIndex];
+				shader->enable();
 
-			scene->transformManager()->gpuBuffer()->use(1);
-			shader->setUniform(1, 1);
+				scene->camerasManager()->gpuBuffer()->use(0);
+				shader->setUniform(0, 0);
 
-			scene->lightingManager()->gpuBuffer()->use(2);
-			shader->setUniform(2, 2);
+				scene->transformManager()->gpuBuffer()->use(1);
+				shader->setUniform(1, 1);
 
-			scene->renderableObjectManager()->gpuBufferMaterials()->use(3);
-			shader->setUniform(3, 3);
-			
-			shader->setUniform(4, (sp_int)scene->lightingManager()->length());
-			shader->setUniform(5, rendererData.cameraIndex);
-			shader->setUniform(6, renderableObject->gameObjectIndex);
-			shader->setUniform(7, gameObject->managerIndex());
+				scene->lightingManager()->gpuBuffer()->use(2);
+				shader->setUniform(2, 2);
 
-			// enable all buffers
-			for (SpVectorItem<SpGpuBuffer*>* bufferItem = renderableObject->buffers.begin(); bufferItem != nullptr; bufferItem = bufferItem->next())
-				bufferItem->value()->use();
-				
-			shader->enableVertexAttribute(0, 3, typeFloatId, false, sizeof(sp_float) * 6, 0);
-			shader->enableVertexAttribute(1, 3, typeFloatId, false, sizeof(sp_float) * 6, (void*)(sizeof(sp_float) * 3));
+				scene->renderableObjectManager()->gpuBufferMaterials()->use(3);
+				shader->setUniform(3, 3);
 
-			shader->drawElements(typeTriangleId, mesh->facesLength * 3, typeUIntId);
+				shader->setUniform(4, (sp_int)scene->lightingManager()->length());
+				shader->setUniform(5, rendererData.cameraIndex);
+				shader->setUniform(6, renderableObject->gameObjectIndex);
+				shader->setUniform(7, gameObject->managerIndex());
 
-			// disable all buffers
-			for (SpVectorItem<SpGpuBuffer*>* bufferItem = renderableObject->buffers.begin(); bufferItem != nullptr; bufferItem = bufferItem->next())
-				bufferItem->value()->disable();
+				// enable all buffers
+				for (SpVectorItem<SpGpuBuffer*>* bufferItem = renderableObject->buffers.begin(); bufferItem != nullptr; bufferItem = bufferItem->next())
+					bufferItem->value()->use();
 
-			scene->transformManager()->gpuBuffer()->disable();
+				shader->enableVertexAttribute(0, 3, typeFloatId, false, sizeof(sp_float) * 6, 0);
+				shader->enableVertexAttribute(1, 3, typeFloatId, false, sizeof(sp_float) * 6, (void*)(sizeof(sp_float) * 3));
 
-			shader->disable();
+				shader->drawElements(typeTriangleId, mesh->facesLength * 3, typeUIntId);
+
+				// disable all buffers
+				for (SpVectorItem<SpGpuBuffer*>* bufferItem = renderableObject->buffers.begin(); bufferItem != nullptr; bufferItem = bufferItem->next())
+					bufferItem->value()->disable();
+
+				scene->transformManager()->gpuBuffer()->disable();
+
+				shader->disable();
+			}
 		}
 
 		//camera->getHUDProjectionMatrix((sp_float)_viewport.width, (sp_float)_viewport.height, renderData.projectionMatrix);

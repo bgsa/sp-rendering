@@ -44,9 +44,9 @@ namespace NAMESPACE_RENDERING
 
 			if (renderableObject->isVisible())
 			{
-				SpGameObject* gameObject = rendererData.scene->gameObject(renderableObject->gameObjectIndex);
-				const SpMeshData* mesh = scene->meshManager()->get(renderableObject->meshDataIndex);
-				SpShader* shader = scene->shaders[renderableObject->shaderIndex];
+				SpGameObject* gameObject = rendererData.scene->gameObject(renderableObject->gameObject());
+				const SpMeshData* mesh = scene->meshManager()->get(renderableObject->meshData());
+				SpShader* shader = scene->shaders[renderableObject->shader()];
 				shader->enable();
 
 				scene->camerasManager()->gpuBuffer()->use(0);
@@ -63,12 +63,12 @@ namespace NAMESPACE_RENDERING
 
 				shader->setUniform(4, (sp_int)scene->lightingManager()->length());
 				shader->setUniform(5, rendererData.cameraIndex);
-				shader->setUniform(6, renderableObject->gameObjectIndex);
-				shader->setUniform(7, gameObject->managerIndex());
+				shader->setUniform(6, renderableObject->gameObject());
+				shader->setUniform(7, gameObject->renderableObjectIndex());
 
 				// enable all buffers
-				for (SpVectorItem<SpGpuBuffer*>* bufferItem = renderableObject->buffers.begin(); bufferItem != nullptr; bufferItem = bufferItem->next())
-					bufferItem->value()->use();
+				for (sp_int i = 0; i < renderableObject->buffersLength(); i++)
+					renderableObject->buffers(i)->use();
 
 				shader->enableVertexAttribute(0, 3, typeFloatId, false, sizeof(sp_float) * 6, 0);
 				shader->enableVertexAttribute(1, 3, typeFloatId, false, sizeof(sp_float) * 6, (void*)(sizeof(sp_float) * 3));
@@ -76,8 +76,8 @@ namespace NAMESPACE_RENDERING
 				shader->drawElements(typeTriangleId, mesh->facesLength * 3, typeUIntId);
 
 				// disable all buffers
-				for (SpVectorItem<SpGpuBuffer*>* bufferItem = renderableObject->buffers.begin(); bufferItem != nullptr; bufferItem = bufferItem->next())
-					bufferItem->value()->disable();
+				for (sp_int i = 0; i < renderableObject->buffersLength(); i++)
+					renderableObject->buffers(i)->disable();
 
 				scene->transformManager()->gpuBuffer()->disable();
 

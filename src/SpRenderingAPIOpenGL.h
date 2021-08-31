@@ -7,6 +7,7 @@
 #include "SpGpuBuffer.h"
 #include "OpenGLBuffer.h"
 #include "SpTextureBufferOpenGL.h"
+#include "SpShaderStorageBufferObjectOpenGL.h"
 
 namespace NAMESPACE_RENDERING
 {
@@ -110,6 +111,11 @@ namespace NAMESPACE_RENDERING
 			return sp_mem_new(SpShaderOpenGL)();
 		}
 
+		API_INTERFACE inline SpGpuBuffer* createShaderStorageBufferObject() override
+		{
+			return sp_mem_new(SpShaderStorageBufferObjectOpenGL)();
+		}
+
 		API_INTERFACE inline SpGpuBuffer* createArrayBuffer() override
 		{
 			return createBuffer(GL_ARRAY_BUFFER);
@@ -135,9 +141,22 @@ namespace NAMESPACE_RENDERING
 			SpShaderOpenGL* shader = sp_mem_new(SpShaderOpenGL)();
 			shader->name("Primitive");
 
+			sp_char dir[512];
+			currentDirectory(dir, 512);
+			sp_size dirLength = std::strlen(dir);
+
+			directoryAddPath(dir, dirLength, "resources/shaders/opengl/primitive", 36);
+			dirLength += 35;
+
+			sp_char vsShader[512];
+			directoryAddPath(dir, dirLength, "shader.vs", 9, vsShader);
+
+			sp_char fsShader[512];
+			directoryAddPath(dir, dirLength, "shader.fs", 9, fsShader);
+
 			shader
-				->buildFromFile(GL_VERTEX_SHADER, "resources/shaders/opengl/primitive/shader.vs")
-				->buildFromFile(GL_FRAGMENT_SHADER, "resources/shaders/opengl/primitive/shader.fs")
+				->buildFromFile(GL_VERTEX_SHADER, vsShader)
+				->buildFromFile(GL_FRAGMENT_SHADER, fsShader)
 				->link();
 
 			return shader;

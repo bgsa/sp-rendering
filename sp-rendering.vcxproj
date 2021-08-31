@@ -44,6 +44,7 @@
     <ClInclude Include="src\IGraphicObjectRenderer.h" />
     <ClInclude Include="src\DOP18ListRenderer.h" />
     <ClInclude Include="src\OpenGLFramebuffer.h" />
+    <ClInclude Include="src\SpShaderStorageBufferObjectOpenGL.h" />
     <ClInclude Include="src\SpTextureBufferOpenGL.h" />
     <ClInclude Include="src\RendererList.h" />
     <ClInclude Include="src\Line.h" />

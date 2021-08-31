@@ -198,6 +198,9 @@
     <ClInclude Include="src\SpRenderingAPIOpenGL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\SpShaderStorageBufferObjectOpenGL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BSPEditor2D.cpp">

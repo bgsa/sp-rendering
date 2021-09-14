@@ -171,9 +171,6 @@
     <ClInclude Include="src\SpLightPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\SpMaterial.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\SpGpuRenderingFactoryOpenGL.h">
       <Filter>Header Files</Filter>
     </ClInclude>

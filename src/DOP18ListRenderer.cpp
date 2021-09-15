@@ -173,8 +173,9 @@ namespace NAMESPACE_RENDERING
 	void DOP18ListRenderer::render(const SpRenderData& renderData, DOP18* listOfDOP18, sp_uint length)
 	{
 		shader->enable();
-		shader->setUniform(projectionMatrixLocation, renderData.projectionMatrix);
-		shader->setUniform(viewMatrixLocation, renderData.viewMatrix);
+		shader
+			->setUniform4<sp_float>(projectionMatrixLocation, (sp_float*)renderData.projectionMatrix)
+			->setUniform4<sp_float>(viewMatrixLocation, (sp_float*)renderData.viewMatrix);
 
 		updateVertexBuffer(listOfDOP18, length);
 		_buffer->use();

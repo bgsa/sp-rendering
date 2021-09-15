@@ -454,7 +454,7 @@ namespace NAMESPACE_RENDERING
 		/// <returns>Current shader</returns>
 		API_INTERFACE inline SpShader* setUniform(const sp_int id, const sp_size value) override
 		{
-			sp_opengl_check(glUniform1uiv(id, value));
+			sp_opengl_check(glUniform1ui64ARB(id, value));
 			return this;
 		}
 #endif

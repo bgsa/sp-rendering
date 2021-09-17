@@ -514,7 +514,7 @@ namespace NAMESPACE_RENDERING
 		/// <param name="stride">Stride of elements</param>
 		/// <param name="pointer">Pointer to start of element</param>
 		/// <returns></returns>
-		API_INTERFACE inline SpShader* enableVertexAttribute(const sp_uint index, sp_int size, sp_int type, sp_bool normalize, sp_size stride, const void* pointer) override
+		API_INTERFACE inline SpShader* enableVertexAttribute(const sp_uint index, sp_int size, sp_int type, sp_bool normalize, sp_int stride, const void* pointer) override
 		{
 			sp_opengl_check(glVertexAttribPointer(index, size, type, normalize, stride, pointer));
 			sp_opengl_check(glEnableVertexAttribArray(index));
@@ -532,7 +532,7 @@ namespace NAMESPACE_RENDERING
 			return this;
 		}
 
-		API_INTERFACE inline SpShader* drawArray(const sp_uint primitiveTypeId, const sp_int first, const sp_size count) override
+		API_INTERFACE inline SpShader* drawArray(const sp_uint primitiveTypeId, const sp_int first, const sp_uint count) override
 		{
 			sp_opengl_check(glDrawArrays(primitiveTypeId, first, count));
 			return this;
@@ -540,13 +540,13 @@ namespace NAMESPACE_RENDERING
 
 		API_INTERFACE inline SpShader* drawElements(const sp_uint primitiveTypeId, const sp_size indexesLength, const sp_int indexTypeId, const void* indexes = NULL) override
 		{
-			sp_opengl_check(glDrawElements(primitiveTypeId, indexesLength, indexTypeId, indexes));
+			sp_opengl_check(glDrawElements(primitiveTypeId, (GLsizei)indexesLength, indexTypeId, indexes));
 			return this;
 		}
 
 		API_INTERFACE inline SpShader* drawElementsInstanced(const sp_uint primitiveTypeId, const sp_size indexesLength, const sp_int indexTypeId, const void* indexes = NULL, const sp_size primitiveCount = 0) override
 		{
-			sp_opengl_check(glDrawElementsInstanced(primitiveTypeId, indexesLength, indexTypeId, indexes, primitiveCount));
+			sp_opengl_check(glDrawElementsInstanced(primitiveTypeId, (GLsizei)indexesLength, indexTypeId, indexes, (GLsizei) primitiveCount));
 			return this;
 		}
 
